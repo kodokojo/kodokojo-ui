@@ -24,7 +24,8 @@ http {
             proxy_pass      http://@@BACK_HOST@@:@@BACK_PORT@@;
         }
         location ~ .* {
-          root    /var/www/;
+          #root    /var/www/;
+          try_files $uri /var/www/index.html
         }
       }
 }
