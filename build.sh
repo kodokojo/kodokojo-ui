@@ -3,8 +3,10 @@
 KODOKOJO_UI_VERSION="0.1.0"
 
 docker build --no-cache -t="kodokojo/kodokojo-ui:builder" docker/builder/
-docker run -v $(pwd):/src -v $(pwd)/docker/delivery/:/target -e "KODOKOJO_UI_VERSION=0.1.0" kodokojo/kodokojo-ui:builder
-containerId=$(docker ps -a -q -l)
+containerId=$(docker create -e "KODOKOJO_UI_VERSION=0.1.0" kodokojo/kodokojo-ui:builder)
+docker cp $(pwd)/. ${containerId}:/src/
+docker start -a $containerId
+docker cp ${containerId}:/target/ $(pwd)/docker/delivery/
 rc=$(docker inspect -f {{.State.ExitCode}} $containerId)
 docker rm $containerId
 if [ "$rc" != 0 ]; then
