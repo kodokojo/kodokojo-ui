@@ -15,7 +15,7 @@ if [ "$rc" != 0 ]; then
 fi
 cd docker/delivery
 mkdir static
-tar zxvf kodokojo-ui-${KODOKOJO_UI_VERSION}.tar.gz -C static
+tar zxvf target/kodokojo-ui-${KODOKOJO_UI_VERSION}.tar.gz -C static
 rc=$?
 if [ "$rc" != 0 ]; then
   exit $rc
