@@ -2,8 +2,7 @@ import path from 'path'
 import express from 'express'
 import bodyParser from 'body-parser'
 import webpack from 'webpack'
-import webpackConfigDev from './webpack.config.dev'
-import webpackConfigDefault from './webpack.config'
+import webpackConfig from './webpack.config'
 import config from './config/config'
 import logger from './config/logger'
 
@@ -27,13 +26,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // routes
 apiRoutes(app)
 
-// webpack dev server config
-let webpackConfig
-if (process.env.BUILD_ENV === 'production') {
-  webpackConfig = webpackConfigDefault
-} else {
-  webpackConfig = webpackConfigDev
-}
+// webpack config
 const compiler = webpack(webpackConfig)
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
@@ -50,7 +43,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
 app.use(require('webpack-hot-middleware')(compiler))
 
 // static content
-app.use('/static', express.static('static'))
+app.use(express.static('static'))
 
 // serve index.html for all get to anything but /api
 app.get(/^(\/(?!api).*)$/, (req, res) => {

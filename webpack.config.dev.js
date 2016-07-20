@@ -7,45 +7,24 @@ var webpack = require('webpack')
 // see https://github.com/react-toolbox/react-toolbox-example/issues/19
 
 module.exports = {
-  devtool: 'cheap-module-eval-source-map',
-  entry: [
-    'eventsource-polyfill',
-    'webpack-hot-middleware/client',
-    './src/app.js'
-  ],
+  entry: {
+    app: [
+      'eventsource-polyfill',
+      'webpack-hot-middleware/client'
+    ]
+  },
   output: {
     path: path.join(__dirname, 'static'),
-    filename: 'app.js',
+    filename: 'assets/scripts/[name].js',
     publicPath: '/'
   },
+  devtool: 'cheap-module-eval-source-map',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new webpack.NormalModuleReplacementPlugin(/^\.\/header/, 'custom-header')
   ],
-  resolve: {
-    extensions: ['', '.jsx', '.scss', '.js', '.json'],
-    modulesDirectories: [
-      'node_modules',
-      path.resolve(__dirname, './node_modules')
-    ],
-    alias: {
-      'custom-header': path.resolve('styleguide/ui/header.js')
-    }
-  },
   module: {
-    preLoaders: [
-      {
-        test: /\.jsx?$/,
-        exclude: [/node_modules/, /styleguide/],
-        loaders: ['eslint'],
-        include: [
-          path.join(__dirname, 'api'),
-          path.join(__dirname, 'config'),
-          path.join(__dirname, 'src')
-        ]
-      }
-    ],
     loaders: [
       {
         test: /\.js$/,
@@ -65,12 +44,6 @@ module.exports = {
         test: /(\.scss|\.css)$/,
         loader:
           'style!css?sourceMap&modules&localIdentName=[name]---[local]---[hash:base64:5]&importLoaders=2!resolve-url!sass?sourceMap'
-      },
-      {
-        test: /\.jpg|gif|png|svg$/, loader: 'file-loader?name=assets/images/[name].[ext]'
-      },
-      {
-        test: /\.ico$/, loader: 'file-loader?name=./[name].[ext]'
       }
     ]
   }

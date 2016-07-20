@@ -2,7 +2,7 @@
   "name": "kodokojo-ui",
   "version": "0.1.0",
   "description": "Kodo Kojo UI",
-  "main": "src/app.js",
+  "main": "src/scripts/app.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/kodokojo/kodokojo-ui.git"
@@ -10,12 +10,15 @@
   "scripts": {
     "dependencies": "ncu",
     "clean": "test -d ./node_modules/ && rm -rf ./node_modules || echo \"no node_modules/ folder, continue\"",
+    "clean:static": "test -d ./static/ && rm -rf ./static || echo \"no static/ folder, continue\"",
     "styleguide": "start-storybook -p 9001 -c ./styleguide",
+    "build": "mustache webpack-assets.json src/index.mustache > static/index.html",
     "build:styleguide": "build-storybook -c ./styleguide -o styleguide/dist",
-    "build:dev": "webpack --config webpack.config.dev.js --progress --colors && mustache config/json/index.dev.json src/index.mustache > static/index.html",
+    "build:dev": "npm run clean:static && webpack --progress --colors &&  npm run build",
     "start:dev": "npm run build:dev && node server.js",
-    "build:prod": "webpack -p --progress --colors && mustache config/json/index.prod.json src/index.mustache > static/index.html",
+    "build:prod": "npm run clean:static && webpack -p --progress --colors && npm run build",
     "start:prod": "npm run build:prod && node server.js",
+    "build:docker": "./build.sh",
     "lint": "eslint ./src/ ./api/ ./config/ --ext .js --ext .jsx",
     "test": "BABEL_ENV=test mocha --compilers js:babel-core/register --recursive --require ignore-styles --require intl --require ./test/utils.js -R dot './src/**/*.spec.js'",
     "test:watch": "npm test -- --watch",
@@ -46,6 +49,7 @@
   },
   "devDependencies": {
     "@kadira/storybook": "^1.29.0",
+    "assets-webpack-plugin": "^3.4.0",
     "babel-cli": "^6.6.5",
     "babel-core": "^6.5.2",
     "babel-eslint": "^6.0.2",
@@ -68,6 +72,7 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "chai-enzyme": "^0.4.1",
+    "compression-webpack-plugin": "^0.3.1",
     "css-loader": "^0.23.1",
     "enzyme": "^2.2.0",
     "eslint": "^2.11.1",
@@ -110,6 +115,8 @@
     "webpack-dev-middleware": "^1.5.1",
     "webpack-dev-server": "^1.14.1",
     "webpack-hot-middleware": "^2.7.1",
+    "webpack-merge": "^0.14.0",
+    "webpack-validator": "^2.2.3",
     "winston": "^2.2.0"
   },
   "dependencies": {
