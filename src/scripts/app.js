@@ -12,29 +12,29 @@ import injectTapEventPlugin from 'react-tap-event-plugin'
 
 // i18n
 // shim intl if not supported by browser
-import { shimIntl } from './scripts/i18n/shimIntl'
-import IntlProviderContainer from './scripts/commons/IntlProviderContainer'
+import { shimIntl } from './i18n/shimIntl'
+import IntlProviderContainer from './commons/IntlProviderContainer'
 import { addLocaleData } from 'react-intl'
-import en from 'react-intl/locale-data/en'
-import fr from 'react-intl/locale-data/fr'
+import en from '../../node_modules/react-intl/locale-data/en'
+import fr from '../../node_modules/react-intl/locale-data/fr'
 
 addLocaleData(en)
 addLocaleData(fr)
 
 // Application
-import configureStore from './scripts/store/configureStore'
-import initialState from './scripts/commons/init'
-import App from './scripts/components/app/App.component'
-import SignupPage from './scripts/pages/Signup.page.js'
-import LoginPage from './scripts/pages/Login.page'
-import FirstProjectPage from './scripts/pages/FirstProject.page'
-import StacksPage from './scripts/pages/Stacks.page'
-import MembersPage from './scripts/pages/Members.page'
-import UsersPage from './scripts/pages/UsersPage'
-import NotFoundPage from './scripts/pages/NotFoundPage'
+import configureStore from './store/configureStore'
+import initialState from './commons/init'
+import App from './components/app/App.component.js'
+import SignupPage from './pages/Signup.page.js'
+import LoginPage from './pages/Login.page.js'
+import FirstProjectPage from './pages/FirstProject.page.js'
+import StacksPage from './pages/Stacks.page.js'
+import MembersPage from './pages/Members.page.js'
+import UsersPage from './pages/UsersPage'
+import NotFoundPage from './pages/NotFoundPage'
 
-import AuthService from './scripts/services/auth.service'
-import { handleHistoryChange } from './scripts/services/history.service'
+import AuthService from './services/auth.service.js'
+import { handleHistoryChange } from './services/history.service.js'
 
 // Add the reducer to your store on the `routing` key
 const store = configureStore(initialState)

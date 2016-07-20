@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link href='https://fonts.googleapis.com/css?family=Roboto:400,300,500' rel='stylesheet' type='text/css'>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <title>Kodo Kojo</title>
-  <link rel="icon" href="favicon.ico"/>
-  <link rel="icon" type="image/png" href="assets/images/logo-kodokojo-icon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="favicon.ico">
+  <link rel="icon" type="image/png" href="/assets/images/logo-kodokojo-icon.png">
+  {{#app}}
+    <link rel=stylesheet type="text/css" href="{{& css}}">
+  {{/app}}
 </head>
 <body>
-<div id="app"></div>
-<script src="{{{app}}}"></script>
+  <div id="app"></div>
+  {{#app}}
+    <script charset="utf-8" src="{{& js}}"></script>
+  {{/app}}
+  {{#vendors}}
+    <script charset="utf-8" src="{{& js}}"></script>
+  {{/vendors}}
 </body>
 </html>
-

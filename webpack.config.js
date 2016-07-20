@@ -1,73 +1,25 @@
 'use strict'
 
-var path = require('path')
-var webpack = require('webpack')
+// imports
+var merge = require('webpack-merge')
+var validate = require('webpack-validator')
 
-// FIXME to prevent error, node-sass must be specifically 3.4.2
-// see https://github.com/react-toolbox/react-toolbox-example/issues/19
+// webpack configs
+var configCommon = require('./webpack.config.common')
+var configDev = require('./webpack.config.dev')
+var configProd = require('./webpack.config.prod')
+var TARGET = process.env.npm_lifecycle_event || process.env.BUILD_ENV
 
-module.exports = {
-  context: __dirname,
-  entry: [
-    './src/app.js'
-  ],
-  output: {
-    path: path.join(__dirname, 'static'),
-    filename: 'app.js',
-    publicPath: '/'
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': '"production"',
-      'process.env.BABEL_ENV': '"production"'
-    })
-  ],
-  resolve: {
-    extensions: ['', '.jsx', '.scss', '.js', '.json'],
-    modulesDirectories: [
-      'node_modules',
-      path.resolve(__dirname, './node_modules')
-    ]
-  },
-  module: {
-    preLoaders: [
-      {
-        test: /\.jsx?$/,
-        exclude: [/node_modules/, /styleguide/],
-        loaders: ['eslint'],
-        include: [
-          path.join(__dirname, 'api'),
-          path.join(__dirname, 'config'),
-          path.join(__dirname, 'src')
-        ]
-      }
-    ],
-    loaders: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loaders: ['babel'],
-        include: [
-          path.join(__dirname, 'src'),
-          path.join(__dirname, 'config/shared')
-        ]
-      },
-      {
-        test: /\.less$/,
-        exclude: /node_modules/,
-        loader: 'style!css!less'
-      },
-      {
-        test: /(\.scss|\.css)$/,
-        loader:
-          'style!css?modules&localIdentName=[name]---[local]---[hash:base64:5]&importLoaders=2!resolve-url!sass'
-      },
-      {
-        test: /\.jpg|gif|png|svg$/, loader: 'file-loader?name=assets/images/[name].[ext]'
-      },
-      {
-        test: /\.ico$/, loader: 'file-loader?name=./[name].[ext]'
-      }
-    ]
-  }
+switch (TARGET) {
+  default:
+  case 'development':
+  case 'build:dev':
+  case 'start:dev':
+    module.exports = validate(merge.smart(configCommon, configDev))
+    break
+  case 'production':
+  case 'build:prod':
+  case 'start:prod':
+    module.exports = validate(merge.smart(configCommon, configProd))
+    break
 }

@@ -29,6 +29,6 @@ sitespeed-result
 .envrc
 
 # webpack info to get assets name
-webpack-manifest.json
+webpack-assets.json
 
 stats.json
