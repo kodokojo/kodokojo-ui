@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { BRICK } from '../../commons/identifiers'
 import '../../../styles/_commons.less'
 import brickTheme from './brick.scss'
-import { getBrickStatus } from '../../services/param.service'
+import { getBrickStatus, enumBrickStatus } from '../../services/param.service'
 
 // TODO TU
 // Brick component
@@ -45,7 +45,7 @@ export class Brick extends Component {
           { brick ? brick.version : '-' }
         </div>
         <div className={ theme['brick-link'] }>
-          { brick && brick.url ?
+          { brick && brick.url && status.label === enumBrickStatus.RUNNING.label ?
             <a href={ brick.url } target="_blank">{ brick.url }</a> :
             '-'
           }

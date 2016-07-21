@@ -12,7 +12,7 @@ import brickJenkins from '../../images/brick-jenkins.svg'
 import brickNexus from '../../images/brick-nexus.svg'
 import brickDockerRegistry from '../../images/brick-docker-registry.svg'
 
-const enumBrickStatus = {
+export const enumBrickStatus = {
   CONFIGURING: {
     label: 'CONFIGURING',
     image: statusStarting
@@ -46,7 +46,7 @@ export const getBrickStatus = (state) => (
   }
 )
 
-const enumBrickLogos = {
+export const enumBrickLogos = {
   GITLAB: {
     name: 'gitlab',
     image: brickGitlab
