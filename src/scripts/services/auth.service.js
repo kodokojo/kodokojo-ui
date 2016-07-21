@@ -81,6 +81,7 @@ authService.getToken = () => storageService.get('token', 'session') || ''
  */
 authService.getAccount = () => (
   {
+    id: storageService.get('userId', 'session'),
     userName: storageService.get('userName', 'session'),
     password: authService.getToken()
   }

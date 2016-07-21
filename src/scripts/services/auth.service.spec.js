@@ -219,7 +219,10 @@ describe('auth service', () => {
       // Given
       const token = 'token'
       const userName = 'userName'
-      const getSpy = sinon.stub(storageService, 'get').returns(userName)
+      const userId = 'userId'
+      const getSpy = sinon.stub(storageService, 'get')
+      getSpy.onCall(0).returns(userId)
+      getSpy.onCall(1).returns(userName)
       const getTokenSpy = sinon.stub(authService, 'getToken').returns(token)
 
       // When
@@ -227,10 +230,12 @@ describe('auth service', () => {
 
       // Then
       expect(returned).to.deep.equal({
+        id: userId,
         userName,
         password: token
       })
-      expect(getSpy).to.have.callCount(1)
+      expect(getSpy).to.have.callCount(2)
+      expect(getSpy).to.have.been.calledWithExactly('userId', 'session')
       expect(getSpy).to.have.been.calledWithExactly('userName', 'session')
       expect(getTokenSpy).to.have.callCount(1)
       expect(getTokenSpy).to.have.been.calledWithExactly()

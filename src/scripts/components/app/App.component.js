@@ -23,6 +23,7 @@ import Content from '../_ui/content/Content.component.js'
 import AppHeader from './AppHeader.component'
 import Menu from '../menu/Menu.component'
 import { logout } from '../login/login.actions'
+import { requestWebsocket } from '../websocket/websocket.actions'
 
 class App extends Component {
 
@@ -33,9 +34,18 @@ class App extends Component {
     logout: PropTypes.func.isRequired,
     menu: PropTypes.array,
     navigation: PropTypes.bool,
+    requestWebsocket: PropTypes.func.isRequired,
     setLocale: PropTypes.func.isRequired,
     setNavVisibility: PropTypes.func.isRequired,
     theme: PropTypes.string.isRequired
+  }
+
+  componentWillMount = () => {
+    const { isAuthenticated, requestWebsocket } = this.props  // eslint-disable-line no-shadow
+
+    if (isAuthenticated) {
+      requestWebsocket()
+    }
   }
 
   render() {
@@ -85,6 +95,7 @@ export default themr(APP)(connect(
   mapStateProps,
   {
     logout,
+    requestWebsocket,
     setTheme,
     setLocale,
     setNavVisibility

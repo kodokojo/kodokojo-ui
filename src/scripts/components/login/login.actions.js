@@ -44,7 +44,6 @@ export function requestAuthentication() {
   }
 }
 
-// FIXME DRY usage of websocket.initSocket
 export function login(username, password) {
   const token = authService.getToken()
   if (!token && username && password) {
