@@ -27,18 +27,35 @@ import { USER } from '../../commons/identifiers'
 import '../../../styles/_commons.less'
 import userTheme from './user.scss'
 import Avatar from '../_ui/avatar/Avatar.component'
+import Checkbox from '../_ui/checkbox/Checkbox.component'
 
 // TODO TU
 // User component
 export class User extends Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      checked: false
+    }
+  }
+
   static propTypes = {
+    onSelected: PropTypes.func.isRequired,
     theme: PropTypes.object,
     user: PropTypes.object
   }
 
+  selectUser = () => {
+    const { userId, onSelected } = this.props
+    this.setState({ checked: !this.state.checked })
+    onSelected({
+      [userId]: { checked: this.state.checked }
+    })
+  }
+
   render() {
-    const { user, theme } = this.props // eslint-disable-line no-shadow
+    const { user, theme, onSelected } = this.props // eslint-disable-line no-shadow
     const userClasses = classNames(theme.user, theme['user-item'])
 
     return (
@@ -66,6 +83,12 @@ export class User extends Component {
         </div>
         <div className={ theme['user-email'] }>
           { user ? user.email : '-' }
+        </div>
+        <div className={ theme['user-selected'] }>
+          <Checkbox
+            checked={ this.state.checked }
+            onChange={ this.selectUser }
+          />
         </div>
       </div>
     )
