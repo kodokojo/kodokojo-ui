@@ -33,6 +33,7 @@ import User from '../components/user/User.component'
 import UserForm from '../components/user/UserForm.component'
 import { setNavVisibility } from '../components/app/app.actions'
 import { getProjectConfig } from '../components/projectConfig/projectConfig.actions'
+import Button from '../components/_ui/button/Button.component'
 
 // MembersPage component
 export class MembersPage extends Component {
@@ -48,7 +49,10 @@ export class MembersPage extends Component {
 
   constructor(props) {
     super(props)
-    this.state = { isFormActive: false }
+    this.state = {
+      isFormActive: false,
+      memberList: {}
+    }
   }
 
   componentWillMount() {
@@ -77,9 +81,20 @@ export class MembersPage extends Component {
     })
   }
 
+  handleUserSelection = (userState) => {
+    this.setState({
+      ...this.state,
+      memberList: {
+        ...this.state.memberList,
+        userState
+      }
+    })
+  }
+
   render() {
     const { members } = this.props
     const userClasses = classNames(userTheme.user, userTheme['user-header'])
+    const { formatMessage } = this.props.intl
 
     return (
       <Page>
@@ -108,15 +123,24 @@ export class MembersPage extends Component {
             <div className={ userTheme['user-email'] }>
               <FormattedMessage id={'email-label'} />
             </div>
+            <div className={ userTheme['user-delete'] }>
+              <FormattedMessage id={'delete-label'} />
+            </div>
           </div>
           { members && members.length &&
             members.map((userId, index) => (
               <User
                 key={ index }
                 userId={ userId }
+                onSelected={ this.handleUserSelection }
               />
             ))
           }
+          <div>
+            <Button
+              label={ formatMessage({ id: 'deletions-label' })}
+            />
+          </div>
         </Paragraph>
       </Page>
     )

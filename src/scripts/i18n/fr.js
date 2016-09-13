@@ -44,6 +44,8 @@ export default {
   'email-error-pattern': 'Invalid email address',
   'email-error-required': 'L’email est obligatoire',
   'entity-label': 'Entity',
+  'delete-label': 'Supprimer',
+  'deletions-label': 'Confirmer les suppressions',
   'general-input-required-error': '{fieldName} is required',
   'group-label': 'Group',
   'login-error-401': 'Account not found. Check your email or / and your password',
