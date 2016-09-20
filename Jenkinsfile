@@ -3,12 +3,12 @@ node() {
     def version
     def commit
     def commitMessage
-    slackSend channel: '#dev', color: '#6CBDEC', message: "*Starting * build job ${env.JOB_NAME} ${env.BUILD_NUMBER} from branch *${env.BRANCH_NAME}* (<${env.BUILD_URL}|Open>).\nCommit `${commit}` message :\n```${commitMessage}```"
     stage('Building docker tool image') {
         checkout scm
         version = version()
         commit = commitSha1()
         commitMessage = commitMessage()
+        slackSend channel: '#dev', color: '#6CBDEC', message: "*Starting * build job ${env.JOB_NAME} ${env.BUILD_NUMBER} from branch *${env.BRANCH_NAME}* (<${env.BUILD_URL}|Open>).\nCommit `${commit}` message :\n```${commitMessage}```"
         dir('docker/builder/') {
             builder = docker.build('kodokojo/kodokojo-ui:builder')
         }
