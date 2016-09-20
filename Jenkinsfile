@@ -13,8 +13,9 @@ node() {
     stage('Building kodokojo-ui') {
         checkout scm
         builder.inside(" -v ${pwd()}:/src -e \"KODOKOJO_UI_VERSION=${version}\" ") {
-            sh '/build.sh'
-            if (currentBuild.result != 'FAILURE') {
+
+            built = sh returnStatus: true, script: 'mkdir -p /src/static && /build.sh'
+            if (currentBuild.result != 'FAILURE' && built == 0) {
                 slackSend channel: '#dev', color: 'good', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *SUCCESS*."
             } else {
                 slackSend channel: '#dev', color: 'danger', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *FAILED*."
