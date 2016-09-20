@@ -1,11 +1,14 @@
-files:
-  npm-shrinkwrap.json:
+platform:
+  npm:
     jade:
-      deprecated: skip
+      tests:
+        deprecated: skip
     nomnomnomnom:
-      unmaintained: skip
+      tests:
+        unmaintained: skip
     react-pure-render:
-      unmaintained: skip
-  package.json:
+      tests:
+        unmaintained: skip
     isparta:
-      unmaintained: skip
+      tests:
+        unmaintained: skip
