@@ -1,0 +1,11 @@
+files:
+  npm-shrinkwrap.json:
+    jade:
+      deprecated: skip
+    nomnomnomnom:
+      unmaintained: skip
+    react-pure-render:
+      unmaintained: skip
+  package.json:
+    isparta:
+      unmaintained: skip
