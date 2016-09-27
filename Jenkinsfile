@@ -2,21 +2,26 @@ node() {
     def builder
     stage('Building docker tool image') {
         checkout scm
-        def version = version()
         def commit = commitSha1()
         def commitMessage = commitMessage()
         slackSend channel: '#dev', color: '#6CBDEC', message: "*Starting * build job ${env.JOB_NAME} ${env.BUILD_NUMBER} from branch *${env.BRANCH_NAME}* (<${env.BUILD_URL}|Open>).\nCommit `${commit}` message :\n```${commitMessage}```"
-        dir('docker/builder/') {
-            builder = docker.build('kodokojo/kodokojo-ui:builder')
+        try {
+            dir('docker/builder/') {
+                builder = docker.build('kodokojo/kodokojo-ui:builder')
+            }
+        } catch (Exception e) {
+            slackSend channel: '#dev', color: 'danger', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *FAILED*.\n"
         }
     }
     stage('Building kodokojo-ui') {
         checkout scm
-        def version = version()
+        def version = versionJs()
         def commit = commitSha1()
-        builder.inside(" -v ${pwd()}:/src -e \"KODOKOJO_UI_VERSION=${version}\" ") {
+        def c = builder.inside(" -v ${pwd()}:/src -e \"KODOKOJO_UI_VERSION=${version}\" ") {
 
             built = sh returnStatus: true, script: 'mkdir -p /src/static && /build.sh'
+
+            sh 'cp -R /target/* docker/delivery/'
             if (currentBuild.result != 'FAILURE' && built == 0) {
                 slackSend channel: '#dev', color: 'good', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *SUCCESS*."
             } else {
@@ -24,9 +29,10 @@ node() {
             }
         }
     }
+    buildAndPushDocker()
 }
 
-def version() {
+def versionJs() {
     def matcher = readFile('package.json') =~ '"version": "(.*)",'
     matcher ? matcher[0][1] : null
 }
@@ -43,4 +49,21 @@ def commitMessage() {
     def commitMessage = readFile('commitMessage')
     sh 'rm commitMessage'
     commitMessage
+}
+
+def buildAndPushDocker() {
+    stage('Building docker image then Push it') {
+        def version = versionJs()
+        def commit = commitSha1()
+        def imageName = "kodokojo/kodokojo-ui:latest"
+        try {
+
+            sh "mkdir -p ${pwd()}/docker/delivery/static && tar zxvf ${pwd()}/docker/delivery/kodokojo-ui-${version}.tar.gz -C ${pwd()}/docker/delivery/static"
+            sh "docker build -t=\"${imageName}\" ${pwd()}/docker/delivery/ && docker push ${imageName}"
+
+            slackSend channel: '#dev', color: '#6CBDEC', message: "Build and push Docker image *${imageName}* from branch *${env.BRANCH_NAME}* on commit `${commit}` *SUCCESS*."
+        } catch (Exception e) {
+            slackSend channel: '#dev', color: 'danger', message: "Build and push Docker image *${imageName}* from branch *${env.BRANCH_NAME}* on commit `${commit}` *FAILED*:\n```${e.getMessage()}```"
+        }
+    }
 }
