@@ -5,6 +5,6 @@ ADD start.sh /start.sh
 RUN chmod +x /start.sh
 ADD static/ /var/www/
 
-RUN chmod -R 755 /var/www
+RUN chmod -R 755 /var/www/
 
 CMD [ "/start.sh" ]

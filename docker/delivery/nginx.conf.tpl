@@ -18,7 +18,8 @@ http {
     sendfile        on;
     tcp_nopush   on;
     keepalive_timeout  65;
-    #include /etc/nginx/conf.d/*.conf;
+
+
     server {
         listen       80;
         location ~ ^/api.* {
@@ -26,7 +27,7 @@ http {
         }
 
         location / {
-          root /var/www;
+          root /var/www/;
           index index.html;
 
             try_files $uri $uri/ /index.html;
