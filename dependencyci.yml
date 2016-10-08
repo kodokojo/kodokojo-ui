@@ -1,6 +1,14 @@
 platform:
   npm:
     # third party dependency
+    isarray:
+      tests:
+        deprecated: skip
+    # third party dependency
+    deprecated:
+      tests:
+        deprecated: skip
+    # third party dependency
     escape-regexp-component:
       tests:
         unlicensed: skip
