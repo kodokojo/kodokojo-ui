@@ -5,7 +5,7 @@ platform:
       tests:
         deprecated: skip
     # third party dependency
-    deprecated:
+    lodash.assign:
       tests:
         deprecated: skip
     # third party dependency
