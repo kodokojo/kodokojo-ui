@@ -197,21 +197,23 @@ export class MembersPage extends Component {
           }
           { this.state.isAddUserFormActive &&
             <UserForm
+              creation
+              form={ 'userForm-new' }
               key={ 'addMember' }
               onCancel={ this.handleToggleMemberAdd }
-              onSubmitFailure={ () => {} }
-              onSubmitForm={ (email) => this.handleMemberAdd(email) }
-              onSubmitSuccess={ this.handleToggleMemberAdd }
+              onSubmitUserFailure={ () => {} }
+              onSubmitUserForm={ (email) => this.handleMemberAdd(email) }
+              onSubmitUserSuccess={ this.handleToggleMemberAdd }
               onUserEditCancel={ this.handleMemberChangeState }
-              onUserSelect={ this.handleMemberChangeState }
+              userId="new"
             />
           }
         </Action>
         <Paragraph>
           <div className={ userClasses }>
             <div className={ userTheme['user-name'] }>
-              <div className={ userTheme['user-spacer'] }>
-              </div>
+              <div className={ userTheme['user-spacer'] }
+              ></div>
               <FormattedMessage id={'name-label'} />
             </div>
             <div className={ userTheme['user-username'] }>
@@ -236,11 +238,13 @@ export class MembersPage extends Component {
                 return (
                   <UserForm
                     checked={ this.state.memberList[userId] ? this.state.memberList[userId].checked : false }
+                    edition
+                    form={ `userForm-${userId}` }
                     key={ index }
                     onCancel={ this.handleToggleUserEdit }
-                    onSubmitFailure={ () => {} }
-                    onSubmitForm={ (email) => this.handleMemberUpdate(email) }
-                    onSubmitSuccess={ (editedUserId) => this.handleToggleUserEdit(editedUserId) }
+                    onSubmitUserFailure={ () => {} }
+                    onSubmitUserForm={ (email) => this.handleMemberUpdate(email) }
+                    onSubmitUserSuccess={ (editedUserId) => this.handleToggleUserEdit(editedUserId) }
                     onUserEditCancel={ this.handleMemberChangeState }
                     onUserSelect={ this.handleMemberChangeState }
                     selectable

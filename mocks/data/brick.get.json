@@ -1,0 +1,22 @@
+[
+  {
+    "name": "nexus",
+    "type": "REPOSITORY",
+    "version": "2.13"
+  },
+  {
+    "name": "jenkins",
+    "type": "CI",
+    "version": "1.651"
+  },
+  {
+    "name": "haproxy",
+    "type": "LOADBALANCER",
+    "version": "1.6"
+  },
+  {
+    "name": "gitlab",
+    "type": "SCM",
+    "version": "8.5.2-ce"
+  }
+]

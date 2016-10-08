@@ -20,7 +20,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field, reduxForm, SubmissionError, propTypes } from 'redux-form'
-import { combineValidators } from 'revalidate'
+import { combineValidators, matchesField } from 'revalidate'
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
 import classNames from 'classnames'
 
@@ -30,17 +30,35 @@ import userTheme from '../user/user.scss'
 import Avatar from '../_ui/avatar/Avatar.component'
 import Button from '../_ui/button/Button.component'
 import Input from '../_ui/input/Input.component'
-import Checkbox from '../_ui/checkbox/Checkbox.component'
 import IconButton from '../_ui/button/IconButton.component'
 import CloseIcon from '../_ui/icons/CloseIcon.component'
-import { emailValidator } from '../../services/validator.service'
+import { 
+  alphabeticRequiredvalidator,
+  emailValidator,
+  passwordValidator,
+  sshkeyValidator
+} from '../../services/validator.service'
 import { returnErrorKey } from '../../services/error.service'
 import { getUser } from '../../commons/reducers'
 
 // validate function
-const validate = (values, props) => combineValidators({
-  email: emailValidator('email')
-})(values)
+const validate = (values, props) => {
+  if (props.creation) {
+    return combineValidators({
+      email: emailValidator('email')
+    })(values)
+  }
+  if (props.edition) {
+    return combineValidators({
+      email: emailValidator('email'),
+      name: alphabeticRequiredvalidator('name'),
+      password: passwordValidator('password', 'passwordConfirm'),
+      passwordConfirm: matchesField('password')({ message: 'password-confirm-error' }),
+      sshKeyPublic: sshkeyValidator('sshKeyPublic')
+    })(values)
+  }
+  return {}
+}
 
 // TODO UT
 // UserForm component
@@ -50,16 +68,17 @@ export class UserForm extends React.Component {
     addUserToProjectConfig: React.PropTypes.func,
     aggregatedStackStatus: React.PropTypes.object,
     checked: React.PropTypes.bool,
+    creation: React.PropTypes.bool,
     disabled: React.PropTypes.bool,
+    edition: React.PropTypes.bool,
     intl: intlShape.isRequired,
     onCancel: React.PropTypes.func.isRequired,
-    onSubmitFailure: React.PropTypes.func.isRequired,
-    onSubmitForm: React.PropTypes.func.isRequired,
-    onSubmitSuccess: React.PropTypes.func.isRequired,
+    onSubmitUserFailure: React.PropTypes.func.isRequired,
+    onSubmitUserForm: React.PropTypes.func.isRequired,
+    onSubmitUserSuccess: React.PropTypes.func.isRequired,
     onUserEditCancel: React.PropTypes.func.isRequired,
     onUserSelect: React.PropTypes.func.isRequired,
     projectConfigId: React.PropTypes.string,
-    selectable: React.PropTypes.bool,
     theme: React.PropTypes.object,
     user: React.PropTypes.object,
     userId: React.PropTypes.string,
@@ -67,7 +86,8 @@ export class UserForm extends React.Component {
   }
 
   static defaultProps = {
-    selectable: false
+    creation: false,
+    edition: false
   }
 
   constructor(props) {
@@ -111,39 +131,31 @@ export class UserForm extends React.Component {
 
   handleUserEditSubmit = ({email, firstName, lastName, password, sshKeyPublic}) => {
     const {
-      userId, onSubmitForm, onSubmitSuccess, onSubmitFailure
+      userId, onSubmitUserForm, onSubmitUserSuccess, onSubmitUserFailure
     } = this.props // eslint-disable-line no-shadow
     const { formatMessage } = this.props.intl // eslint-disable-line no-shadow 
 
-    const nextEmail = email.value ? email.value.trim() : ''
-    const error = validate({ email: nextEmail })
-    if (error.email) {
-      return Promise.reject({ email: error.email })
-    }
-    if (nextEmail && nextEmail) {
-      return onSubmitForm(nextEmail)
-        .then(() => {
-          onSubmitSuccess(userId)
-          return Promise.resolve()
-        })
-        .catch(err => {
-          onSubmitFailure(userId)
-          const errorMessageId = returnErrorKey(
-            {
-              component: 'email',
-              code: err.message
-            })
-          throw new SubmissionError(formatMessage({ id: errorMessageId }, { fieldName: formatMessage({ id: 'email-input-label' }) }))
-        })
-    }
-    // TODO add default error message
-    return Promise.reject()
+    const nextEmail = email ? email.trim() : ''
+
+    return onSubmitUserForm(nextEmail)
+      .then(() => {
+        return Promise.resolve(onSubmitUserSuccess(userId))
+      })
+      .catch(err => {
+        onSubmitUserFailure(userId)
+        const errorMessageId = returnErrorKey(
+          {
+            component: 'email',
+            code: err.message
+          })
+        throw new SubmissionError(formatMessage({ id: errorMessageId }, { fieldName: formatMessage({ id: 'email-input-label' }) }))
+      })
   }
 
   render() {
     const {
       email, firstName, lastName, userName, password, sshKeyPublic,
-      disabled, handleSubmit, pristine, reset, submitting, selectable, user
+      disabled, handleSubmit, pristine, reset, submitting, edition, creation, user
     } = this.props // eslint-disable-line no-shadow
     const { formatMessage } = this.props.intl
 
@@ -171,16 +183,18 @@ export class UserForm extends React.Component {
               <div style={{ display: 'flex', flexFlow: 'column wrap', justifyContent: 'flex-start', width: '100%' }}>
                 <Field
                   component={ Input }
+                  disabled={ creation }
                   label={ formatMessage({ id: 'name-first-label' }) }
                   name="firstName"
-                  required
+                  required={ edition }
                   type="text"
                 />
                 <Field
                   component={ Input }
+                  disabled={ creation }
                   label={ formatMessage({ id: 'name-last-label' }) }
                   name="lastName"
-                  required
+                  required={ edition }
                   type="text"
                 />
               </div>
@@ -191,7 +205,7 @@ export class UserForm extends React.Component {
                 disabled
                 label={ formatMessage({ id: 'username-label' }) }
                 name="userName"
-                required
+                required={ edition }
                 type="text"
               />
             </div>
@@ -214,13 +228,6 @@ export class UserForm extends React.Component {
               />
             </div>
             <div className={ userTheme['user-select--form']}>
-              { selectable &&
-                <Checkbox
-                  checked={ this.props.checked }
-                  disabled={ disabled }
-                  onChange={ this.handleUserSelect }
-                />
-              }
             </div>
             <div className={ userTheme['user-edit--form']}>
               <IconButton
@@ -241,7 +248,6 @@ export class UserForm extends React.Component {
           <Button
             disabled={ submitting || disabled }
             label={ formatMessage({ id: 'save-label' })}
-            onMouseUp={ handleSubmit(this.handleUserEditSubmit) }
             primary
             type="submit"
           />
@@ -274,7 +280,6 @@ const UserFormContainer = compose(
   injectIntl
 )(reduxForm(
   {
-    form: 'userForm',
     touchOnChange: true,
     validate
   }

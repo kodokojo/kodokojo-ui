@@ -32,7 +32,7 @@ global.__baseDirname = __dirname
 
 // Return error if DOCKER_HOST or API_ENV are not set
 if (config.api.host) {
-  logger.info('≈≈≈ 🐳  Docker host', config.api.host)
+  logger.info('≈≈≈ 🐳  Api Host', config.api.host)
 } else {
   logger.error('DOCKER_HOST or API_ENV are not set')
   config.api.error = true

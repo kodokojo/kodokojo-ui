@@ -33,8 +33,8 @@ import { returnErrorKey } from '../../services/error.service'
 
 // validate function
 const validate = (values, props) => combineValidators({
-  username: isRequired({ message: 'general-input-required-error' }),
-  password: isRequired({ message: 'general-input-required-error' })
+  username: isRequired({ message: 'general-input-error-required' }),
+  password: isRequired({ message: 'general-input-error-required' })
 })(values)
 
 // TODO if user already logged in, fetch user id from storage and fetch user from api to store
@@ -51,8 +51,7 @@ export class Login extends React.Component {
 
   handleSubmitLogin = (values) => {
     const { login } = this.props // eslint-disable-line no-shadow
-
-    // TODO add redux form validation
+    
     const nexUserName = values.username
     const nexPassword = values.password
 

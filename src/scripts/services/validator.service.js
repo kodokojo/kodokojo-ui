@@ -16,7 +16,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { createValidator, composeValidators, isRequired, hasLengthBetween } from 'revalidate'
+import {
+  createValidator,
+  composeValidators,
+  isRequired,
+  isAlphabetic,
+  hasLengthBetween
+} from 'revalidate'
 
 const validatorService = {}
 
@@ -35,7 +41,7 @@ validatorService.isEmailValid = (value) => !validatorService.isEmpty(value) &&
  * Revalidate email pattern validator
  */
 validatorService.emailValidator = composeValidators(
-  isRequired({ message: 'general-input-required-error' }),
+  isRequired({ message: 'general-input-error-required' }),
   createValidator(
     message => value => {
       if (!validatorService.isEmailValid(value)) {
@@ -55,6 +61,14 @@ validatorService.captchaValidator = composeValidators(
 )
 
 /**
+ * Revalidate alphanumeric and required
+ */
+validatorService.alphabeticRequiredvalidator = composeValidators(
+  isRequired({ message: 'general-input-error-required' }),
+  isAlphabetic({ message: 'general-input-error-alphabetic' })
+)
+
+/**
  * Return project name pattern matching
  *
  * @param value
@@ -67,7 +81,7 @@ validatorService.isProjectNameValid = (value) => !validatorService.isEmpty(value
  * Revalidate projectConfig name validator
  */
 validatorService.projectNameValidator = composeValidators(
-  isRequired({ message: 'general-input-required-error' }),
+  isRequired({ message: 'general-input-error-required' }),
   createValidator(
     message => value => {
       if (!validatorService.isProjectNameValid(value)) {
@@ -76,6 +90,58 @@ validatorService.projectNameValidator = composeValidators(
       return null
     },
     'project-name-error-pattern'
+  )
+)
+
+/**
+ * Return password pattern matching
+ *
+ * @param value
+ * @returns {boolean}
+ */
+// TODO
+validatorService.isPasswordValid = (value) => !validatorService.isEmpty(value) &&
+/^.*$/.test(value)
+
+/**
+ * Revalidate password pattern validator
+ */
+validatorService.passwordValidator = composeValidators(
+  isRequired({ message: 'general-input-error-required' }),
+  createValidator(
+    message => value => {
+      if (!validatorService.isPasswordValid(value)) {
+        return message
+      }
+      return null
+    },
+    'password-error-pattern'
+  )
+)
+
+/**
+ * Return sshkey pattern matching
+ *
+ * @param value
+ * @returns {boolean}
+ */
+// TODO
+validatorService.isSSHKeyValid = (value) => !validatorService.isEmpty(value) &&
+/^.*$/.test(value)
+
+/**
+ * Revalidate email pattern validator
+ */
+validatorService.sshkeyValidator = composeValidators(
+  isRequired({ message: 'general-input-error-required' }),
+  createValidator(
+    message => value => {
+      if (!validatorService.isSSHKeyValid(value)) {
+        return message
+      }
+      return null
+    },
+    'sshkey-error-pattern'
   )
 )
 
@@ -91,6 +157,9 @@ export const email = validatorService.email
 export const emailValidator = validatorService.emailValidator
 export const captchaValidator = validatorService.captchaValidator
 export const projectNameValidator = validatorService.projectNameValidator
+export const alphabeticRequiredvalidator = validatorService.alphabeticRequiredvalidator
+export const passwordValidator = validatorService.passwordValidator
+export const sshkeyValidator = validatorService.sshkeyValidator
 export const delayStandard = validatorService.delayStandard
 
 export default validatorService
