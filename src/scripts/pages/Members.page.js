@@ -21,6 +21,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
 import classNames from 'classnames'
+import some from 'lodash/some'
 
 // Component
 import '../../styles/_commons.less'
@@ -66,7 +67,8 @@ export class MembersPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isAddUserFormActive: false,
+      isUserFormAddActive: false,
+      isUserFormEditActive: false,
       isConfirmActive: false,
       memberList: {}
     }
@@ -97,13 +99,14 @@ export class MembersPage extends Component {
     // but fortunately, this warnings are not thrown in production mode
     this.setState({
       ...this.state,
-      isAddUserFormActive: !this.state.isAddUserFormActive
+      isUserFormAddActive: !this.state.isUserFormAddActive
     })
   }
 
   handleToggleUserEdit = (userId) => {
     this.setState({
       ...this.state,
+      isUserFormEditActive: false,
       memberList: {
         ...this.state.memberList,
         [userId]: {
@@ -118,6 +121,7 @@ export class MembersPage extends Component {
     // merge existing members with checked or unchecked one from user component
     this.setState({
       ...this.state,
+      isUserFormEditActive: some(userState, 'edited'),
       memberList: {
         ...this.state.memberList,
         ...userState
@@ -145,7 +149,8 @@ export class MembersPage extends Component {
     deleteUsersFromProjectConfig(projectConfigId, membersToDelete)
       .then(() => {
         this.setState({
-          isAddUserFormActive: false,
+          isUserFormAddActive: false,
+          isUserFormEditActive: false,
           isConfirmActive: false,
           memberList: {}
         })
@@ -178,7 +183,7 @@ export class MembersPage extends Component {
           <FormattedMessage id={'members-label'} />
         </h1>
         <Action>
-          { !this.state.isAddUserFormActive &&
+          { !this.state.isUserFormAddActive &&
           <div>
             { aggregatedStackStatus && aggregatedStackStatus.label !== 'RUNNING' &&
             <div className={ messageTheme['message--info'] }>
@@ -189,15 +194,19 @@ export class MembersPage extends Component {
             </div>
             }
             <UserAddButton
-              disabled={ aggregatedStackStatus && aggregatedStackStatus.label !== 'RUNNING' }
+              disabled={
+                (aggregatedStackStatus && aggregatedStackStatus.label !== 'RUNNING' ||
+                this.state.isUserFormEditActive)
+              }
               label={ formatMessage({ id: 'add-member-label' }) }
               onToggleForm={ this.handleToggleMemberAdd }
             />
           </div>
           }
-          { this.state.isAddUserFormActive &&
+          { this.state.isUserFormAddActive &&
             <UserForm
               creation
+              disabled={ this.state.isUserFormEditActive }
               form={ 'userForm-new' }
               key={ 'addMember' }
               onCancel={ this.handleToggleMemberAdd }
@@ -255,7 +264,10 @@ export class MembersPage extends Component {
               return (
                 <User
                   checked={ this.state.memberList[userId] ? this.state.memberList[userId].checked : false }
-                  disabled={ aggregatedStackStatus && aggregatedStackStatus.label !== 'RUNNING' }
+                  disabled={
+                    aggregatedStackStatus && aggregatedStackStatus.label !== 'RUNNING' ||
+                    this.state.isUserFormEditActive
+                  }
                   key={ index }
                   onUserEdit={ this.handleMemberChangeState }
                   onUserSelect={ this.handleMemberChangeState }
@@ -269,7 +281,10 @@ export class MembersPage extends Component {
               type="right"
             >
               <Button
-                disabled={ aggregatedStackStatus && aggregatedStackStatus.label !== 'RUNNING' }
+                disabled={
+                  aggregatedStackStatus && aggregatedStackStatus.label !== 'RUNNING' ||
+                  this.state.isUserFormEditActive
+                }
                 label={ formatMessage({ id: 'delete-action-label' })}
                 onClick={ this.handleOpenConfirmDelete }
               />

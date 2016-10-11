@@ -51,7 +51,8 @@ const validate = (values, props) => {
   if (props.edition) {
     return combineValidators({
       email: emailValidator('email'),
-      name: alphabeticRequiredvalidator('name'),
+      firstName: alphabeticRequiredvalidator('firstName'),
+      lastName: alphabeticRequiredvalidator('lastName'),
       password: passwordValidator('password', 'passwordConfirm'),
       passwordConfirm: matchesField('password')({ message: 'password-confirm-error' }),
       sshKeyPublic: sshkeyValidator('sshKeyPublic')
@@ -184,6 +185,7 @@ export class UserForm extends React.Component {
                 <Field
                   component={ Input }
                   disabled={ creation }
+                  errorKey="firstname-input-label"
                   label={ formatMessage({ id: 'name-first-label' }) }
                   name="firstName"
                   required={ edition }
@@ -192,6 +194,7 @@ export class UserForm extends React.Component {
                 <Field
                   component={ Input }
                   disabled={ creation }
+                  errorKey="lastname-input-label"
                   label={ formatMessage({ id: 'name-last-label' }) }
                   name="lastName"
                   required={ edition }
@@ -239,6 +242,21 @@ export class UserForm extends React.Component {
             </div>
           </div>
         </div>
+        { edition &&
+          <div className={ userTheme['user-miscellaneous']}>
+            <div className={ userTheme['user-sshkey--form'] }>
+              <Field
+                component={ Input }
+                errorKey="sshkey-public-input-label"
+                label={ formatMessage({ id: 'sshkey-public-label' }) }
+                multiline
+                name="sshKeyPublic"
+                required
+                type="sshKeyPublic"
+              />
+            </div>
+          </div>
+        }
         <div className={ userTheme['user-actions'] }>
           <Button
             disabled={ submitting || disabled }

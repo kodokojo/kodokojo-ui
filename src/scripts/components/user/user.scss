@@ -23,15 +23,15 @@
   align-items: center;
   flex-flow: row;
   justify-content: space-between;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: $spacing-smallest;
+  padding-right: $spacing-smallest;
   div[data-react-toolbox="avatar"] {
     display: flex;
     flex: 0 0 40px;
     align-items: center;
     height: 40px;
     width: 40px;
-    margin-right: 20px;
+    margin-right: $spacing-smallest;
     font-size: $font-size-large;
     background-color: $color-primary-2;
     .user-initials {
@@ -44,8 +44,9 @@
 }
 
 .user-item {
+  position: relative;
   &:not(:first-child) {
-    margin-bottom: 20px;
+    margin-bottom: $spacing-smallest;
   }
   height: 70px;
   background: $color-primary-3;
@@ -55,6 +56,13 @@
   }
 }
 
+.user-item--disabled {
+  height: 70px;
+  z-index: 10;
+  background: $color-primary-3;
+  opacity: .5;
+}
+
 .user-container {
   display: flex;
   width: 100%;
@@ -62,7 +70,7 @@
 
 .user-container--form {
   &:not(:first-child) {
-    margin-bottom: 20px;
+    margin-bottom: $spacing-smallest;
   }
 }
 
@@ -71,7 +79,7 @@
   flex-flow: row;
   align-items: center;
   height: 170px;
-  padding-top: 20px;
+  padding-top: $spacing-smallest;
   background: $color-primary-3;
   color: $color-font-4;
 }
@@ -90,16 +98,36 @@
 }
 
 .user-actions {
-  margin-top: 10px;
+  display: flex;
+  flex-flow: row;
+  justify-content: flex-end;
+  margin-top: $spacing-atomic;
   text-align: right;
   button {
-    margin-right: 10px;
+    &:not(:last-of-type) {
+      margin-right: $spacing-atomic;
+    }
+    &:last-of-type {
+      margin-left: 0;
+    }
   }
+}
+
+.user-miscellaneous {
+  display: flex;
+  align-items: center;
+  flex: 1 1 100%;
+  height: 140px;
+  background: $color-primary-3;
+  color: $color-font-4;
+  margin-top: $spacing-atomic;
+  padding-left: $spacing-smallest;
+  padding-right: $spacing-smallest;
 }
 
 .user-header {
   color: $color-font-4;
-  margin-bottom: 10px;
+  margin-bottom: $spacing-atomic;
 }
 
 %user-column {
@@ -125,6 +153,9 @@ $group-flex: 1 1 10%;
 $email-flex: 1 1 27%;
 $select-flex: 1 1 7%;
 $edit-flex: 1 1 7%;
+
+$sshkey-flex: 1 1 50%;
+$password-flex: 1 1 50%;
 
 $select-min-width: 31px;
 $edit-min-width: 58px;
@@ -162,7 +193,7 @@ $edit-min-width: 58px;
   flex: 0 0 40px;
   align-self: center;
   width: 40px;
-  margin-right: 20px;
+  margin-right: $spacing-smallest;
 }
 .user-name--form {
   @extend %user-column--form;
@@ -180,17 +211,25 @@ $edit-min-width: 58px;
   @extend %user-column--form;
   flex: $email-flex;
 }
+.user-sshkey--form {
+  @extend %user-column--form;
+  flex: $sshkey-flex;
+}
+.user-password--form {
+  @extend %user-column--form;
+  flex: $password-flex;
+}
 .user-select--form {
   @extend %user-column--form;
   flex: $select-flex;
   justify-content: center;
   min-width: $select-min-width;
-  margin-top: -10px;
+  margin-top: -$spacing-atomic;
 }
 .user-edit--form {
   @extend %user-column--form;
   flex: $edit-flex;
   justify-content: center;
   min-width: $edit-min-width;
-  margin-top: -10px;
+  margin-top: -$spacing-atomic;
 }

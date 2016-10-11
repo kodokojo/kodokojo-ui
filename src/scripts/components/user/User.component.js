@@ -93,7 +93,9 @@ export class User extends React.Component {
     const { disabled, user, theme } = this.props // eslint-disable-line no-shadow
     // const { formatMessage } = this.props.intl
 
-    const userClasses = classNames(theme.user, theme['user-item'])
+    const userClasses = classNames(theme.user, theme['user-item'], {
+      [userTheme['user-item--disabled']]: disabled
+    })
 
     return (
       <div className={ userClasses }>
