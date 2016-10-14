@@ -32,6 +32,13 @@ export const postUser = (request, response) => {
       .catch((err, resp) => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
 }
 
+export const updateUser = (request, response) => {
+  userRepository
+      .updateUser(request)
+      .then(data => response.status(200).send(data))
+      .catch((err, resp) => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
+}
+
 export const getUserAccount = (request, response) => {
   userRepository
       .getUserAccount(request)

@@ -33,6 +33,8 @@ router.get(`${config.api.routes.user}/`, user.getUserAccount)
 
 router.get(`${config.api.routes.user}/:userId`, user.getUser)
 
+router.patch(`${config.api.routes.user}/:userId`, user.updateUser)
+
 router.post(`${config.api.routes.projectConfig}/`, project.postProjectConfig)
 
 router.put(`${config.api.routes.projectConfig}/:projectConfigId${endpoints.projectConfigUser}`, project.putUserToProjectConfig)

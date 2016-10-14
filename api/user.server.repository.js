@@ -42,6 +42,38 @@ userRepository.initUser = (request) => {
   })
 }
 
+userRepository.updateUser = (request) => {
+  logger.debug('updateUser')
+
+  const { identifier, firstname, lastname, password, sshPublicKey, email, headers } = {
+    identifier: request.params.id,
+    firstname: firstname,
+    lastname: lastname,
+    password: password,
+    sshPublicKey: sshPublicKey,
+    email: request.body.email,
+    headers: request.headers
+  }
+  headers.host = config.api.host
+
+  const req = {
+    method: 'POST',
+    uri: `${config.api.protocol}${config.api.host}${config.api.routes.user}/${identifier}`,
+    json: true,
+    headers,
+    body: {
+      firstname,
+      lastname,
+      email,
+      password,
+      sshPublicKey
+    },
+    rejectUnauthorized: false,
+    requestCert: true
+  }
+  return requestWithLog(req)
+}
+
 userRepository.postUser = (request) => {
   logger.debug('postUser')
 
@@ -108,6 +140,7 @@ userRepository.getUser = (request) => {
 // Public methods
 export const initUser = userRepository.initUser
 export const postUser = userRepository.postUser
+export const updateUser = userRepository.updateUser
 export const getUserAccount = userRepository.getUserAccount
 export const getUser = userRepository.getUser
 
