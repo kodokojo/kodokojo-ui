@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [ -n "${KODOKOJO_PORT_80_TCP_PORT}" ]; then
   BACK_HOST=$KODOKOJO_PORT_80_TCP_ADDR
