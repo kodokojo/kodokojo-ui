@@ -20,7 +20,7 @@ import { CALL_API } from 'redux-api-middleware'
 
 import api from '../../commons/config'
 import { getHeaders } from '../../services/io.service'
-import { mapAccount, mapUser } from '../../services/mapping.service'
+import { mapAccount, mapUser, mapUserOutput } from '../../services/mapping.service'
 import {
   USER_NEW_ID_REQUEST,
   USER_NEW_ID_SUCCESS,
@@ -28,6 +28,9 @@ import {
   USER_NEW_REQUEST,
   USER_NEW_SUCCESS,
   USER_NEW_FAILURE,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAILURE,
   USER_REQUEST,
   USER_SUCCESS,
   USER_FAILURE
@@ -150,6 +153,45 @@ export function requestUser(userId) {
 
 export function getUser(userId) {
   return dispatch => dispatch(requestUser(userId))
+    .then(data => {
+      if (!data.error) {
+        return Promise.resolve(data)
+      }
+      throw new Error(data.payload.status)
+    })
+    .catch(error => Promise.reject(error.message || error))
+}
+
+export function requestUpdateUser(user) {
+  return {
+    [CALL_API]: {
+      method: 'PATCH',
+      endpoint:
+      `${window.location.protocol || 'http:'}//` +
+      `${window.location.host || 'localhost'}${api.user}/${user.id}`,
+      headers: getHeaders(),
+      body: JSON.stringify(mapUserOutput(user)),
+      types: [
+        USER_UPDATE_REQUEST,
+        {
+          type: USER_UPDATE_SUCCESS,
+          payload: (action, state, res) => res.json()
+            .then(data => (
+              {
+                user: user
+              }
+          ))
+        },
+        USER_UPDATE_FAILURE
+      ]
+
+      // schema: user
+    }
+  }
+}
+
+export function updateUser(user) {
+  return dispatch => dispatch(requestUpdateUser(user))
     .then(data => {
       if (!data.error) {
         return Promise.resolve(data)

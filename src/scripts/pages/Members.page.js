@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { Component, PropTypes } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
@@ -44,24 +44,26 @@ import {
   getProjectConfig,
   deleteUsersFromProjectConfig
 } from '../components/projectConfig/projectConfig.actions'
+import { updateUser } from '../components/user/user.actions'
 import { getAggregatedStackStatus } from '../commons/reducers'
 import { filterCheckedMembers } from '../services/stateUpdater.service'
 
 // TODO UT
 // MembersPage component
-export class MembersPage extends Component {
+export class MembersPage extends React.Component {
 
   static propTypes = {
-    addUserToProjectConfig: PropTypes.func,
-    aggregatedStackStatus: PropTypes.object,
-    deleteUsersFromProjectConfig: PropTypes.func.isRequired,
-    getProjectConfig: PropTypes.func,
-    getProjectConfigAndProject: PropTypes.func,
+    addUserToProjectConfig: React.PropTypes.func,
+    aggregatedStackStatus: React.PropTypes.object,
+    deleteUsersFromProjectConfig: React.PropTypes.func.isRequired,
+    getProjectConfig: React.PropTypes.func,
+    getProjectConfigAndProject: React.PropTypes.func,
     intl: intlShape.isRequired,
-    members: PropTypes.array,
-    projectConfigId: PropTypes.string,
-    projectId: PropTypes.string,
-    setNavVisibility: PropTypes.func.isRequired
+    members: React.PropTypes.array,
+    projectConfigId: React.PropTypes.string,
+    projectId: React.PropTypes.string,
+    setNavVisibility: React.PropTypes.func.isRequired,
+    updateUser: React.PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -161,14 +163,16 @@ export class MembersPage extends Component {
       })
   }
 
-  handleMemberAdd = (email) => {
+  handleMemberAdd = ({ email }) => {
     const { addUserToProjectConfig, projectConfigId } = this.props // eslint-disable-line no-shadow
 
     return addUserToProjectConfig(projectConfigId, email)
   }
 
-  handleMemberUpdate = (email) => {
-    // TODO updateUser action
+  handleMemberUpdate = (user) => {
+    const { updateUser } = this.props
+    
+    return updateUser(user)
   }
 
   render() {
@@ -211,7 +215,7 @@ export class MembersPage extends Component {
               key={ 'addMember' }
               onCancel={ this.handleToggleMemberAdd }
               onSubmitUserFailure={ () => {} }
-              onSubmitUserForm={ (email) => this.handleMemberAdd(email) }
+              onSubmitUserForm={ (user) => this.handleMemberAdd(user) }
               onSubmitUserSuccess={ this.handleToggleMemberAdd }
               onUserEditCancel={ this.handleMemberChangeState }
               userId="new"
@@ -252,8 +256,8 @@ export class MembersPage extends Component {
                     key={ index }
                     onCancel={ this.handleToggleUserEdit }
                     onSubmitUserFailure={ () => {} }
-                    onSubmitUserForm={ (email) => this.handleMemberUpdate(email) }
-                    onSubmitUserSuccess={ (editedUserId) => this.handleToggleUserEdit(editedUserId) }
+                    onSubmitUserForm={ (user) => this.handleMemberUpdate(user) }
+                    onSubmitUserSuccess={ (user) => this.handleToggleUserEdit(user.id) }
                     onUserEditCancel={ this.handleMemberChangeState }
                     onUserSelect={ this.handleMemberChangeState }
                     selectable
@@ -326,7 +330,8 @@ const MembersPageContainer = compose(
       deleteUsersFromProjectConfig,
       getProjectConfig,
       getProjectConfigAndProject,
-      setNavVisibility
+      setNavVisibility,
+      updateUser
     }
   ),
   injectIntl

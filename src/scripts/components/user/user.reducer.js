@@ -24,6 +24,9 @@ import {
   USER_NEW_REQUEST,
   USER_NEW_SUCCESS,
   USER_NEW_FAILURE,
+  USER_UPDATE_REQUEST,
+  USER_UPDATE_SUCCESS,
+  USER_UPDATE_FAILURE,
   USER_REQUEST,
   USER_SUCCESS,
   USER_FAILURE
@@ -71,6 +74,31 @@ export default function users(state = initialState, action) {
   }
 
   if (action.type === USER_NEW_FAILURE) {
+    return {
+      ...state,
+      isFetching: false
+    }
+  }
+
+  if (action.type === USER_UPDATE_REQUEST) {
+    return {
+      ...state,
+      isFetching: true
+    }
+  }
+
+  if (action.type === USER_UPDATE_SUCCESS) {
+    return merge(
+      {},
+      state,
+      {
+        [action.payload.user.id]: action.payload.user,
+        isFetching: false
+      }
+    )
+  }
+
+  if (action.type === USER_UPDATE_FAILURE) {
     return {
       ...state,
       isFetching: false

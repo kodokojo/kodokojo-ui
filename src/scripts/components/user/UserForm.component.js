@@ -53,7 +53,7 @@ const validate = (values, props) => {
       email: emailValidator('email'),
       firstName: alphabeticRequiredvalidator('firstName'),
       lastName: alphabeticRequiredvalidator('lastName'),
-      password: passwordValidator('password', 'passwordConfirm'),
+      password: passwordValidator('password'),
       passwordConfirm: matchesField('password')({ message: 'password-confirm-error' }),
       sshKeyPublic: sshkeyValidator('sshKeyPublic')
     })(values)
@@ -132,30 +132,37 @@ export class UserForm extends React.Component {
 
   handleUserEditSubmit = ({email, firstName, lastName, password, sshKeyPublic}) => {
     const {
-      userId, onSubmitUserForm, onSubmitUserSuccess, onSubmitUserFailure
+      user, onSubmitUserForm, onSubmitUserSuccess, onSubmitUserFailure
     } = this.props // eslint-disable-line no-shadow
     const { formatMessage } = this.props.intl // eslint-disable-line no-shadow 
 
-    const nextEmail = email ? email.trim() : ''
+    const nextUser = {
+      id: user.id,
+      email: email ? email.trim() : '',
+      firstName: firstName ? firstName.trim() : '',
+      lastName: lastName ? lastName.trim() : '',
+      password: password ? password.trim() : '',
+      sshKeyPublic: sshKeyPublic ? sshKeyPublic.trim() : ''
+    }
 
-    return onSubmitUserForm(nextEmail)
+    return onSubmitUserForm(nextUser)
       .then(() => {
-        return Promise.resolve(onSubmitUserSuccess(userId))
+        return Promise.resolve(onSubmitUserSuccess(nextUser))
       })
       .catch(err => {
-        onSubmitUserFailure(userId)
+        onSubmitUserFailure(nextUser)
         const errorMessageId = returnErrorKey(
           {
             component: 'email',
             code: err.message
           })
-        throw new SubmissionError(formatMessage({ id: errorMessageId }, { fieldName: formatMessage({ id: 'email-input-label' }) }))
+        throw new SubmissionError(formatMessage({ id: errorMessageId },
+          { fieldName: formatMessage({ id: 'email-input-label' }) }))
       })
   }
 
   render() {
     const {
-      email, firstName, lastName, userName, password, sshKeyPublic,
       disabled, handleSubmit, pristine, reset, submitting, edition, creation, user
     } = this.props // eslint-disable-line no-shadow
     const { formatMessage } = this.props.intl
@@ -243,7 +250,7 @@ export class UserForm extends React.Component {
           </div>
         </div>
         { edition &&
-          <div className={ userTheme['user-miscellaneous']}>
+          <div className={ userTheme['user-miscellaneous'] }>
             <div className={ userTheme['user-sshkey--form'] }>
               <Field
                 component={ Input }
@@ -251,9 +258,23 @@ export class UserForm extends React.Component {
                 label={ formatMessage({ id: 'sshkey-public-label' }) }
                 multiline
                 name="sshKeyPublic"
-                required
-                type="sshKeyPublic"
               />
+            </div>
+            <div className={ userTheme['user-password--form'] }>
+              <div style={{ display: 'flex', flexFlow: 'column wrap', justifyContent: 'flex-start', width: '100%' }}>
+                <Field
+                  component={ Input }
+                  label={ formatMessage({ id: 'password-label' }) }
+                  name="password"
+                  type="password"
+                />
+                <Field
+                  component={ Input }
+                  label={ formatMessage({ id: 'password-confirm-label' }) }
+                  name="passwordConfirm"
+                  type="password"
+                />
+              </div>
             </div>
           </div>
         }

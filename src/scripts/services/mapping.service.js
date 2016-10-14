@@ -62,7 +62,7 @@ mappingService.mapProjectConfigId = (data) => (
  * mapping for user
  *
  * @param data
- * @returns {{id: string, name: string, userName: string, email: string}}
+ * @returns {{id: string, firstName: string, lastName: string, name: string, userName: string, email: string}}
  */
 mappingService.mapUser = (data) => (
   {
@@ -71,6 +71,22 @@ mappingService.mapUser = (data) => (
     lastName: data.lastName,
     name: data.name,
     userName: data.username,
+    email: data.email
+  }
+)
+
+/**
+ * mapping for user to backend
+ * @param data
+ * @returns {{identifier: string, firstName: string, lastName: string, name: string, userName: string, email: string}}
+ */
+mappingService.mapUserOutput = (data) => (
+  {
+    identifier: data.id,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    name: data.name,
+    username: data.userName,
     email: data.email
   }
 )
@@ -206,6 +222,7 @@ mappingService.groupBricks = (data) => {
 // public API
 export const mapAccount = mappingService.mapAccount
 export const mapUser = mappingService.mapUser
+export const mapUserOutput = mappingService.mapUserOutput
 export const mapProject = mappingService.mapProject
 export const mapProjectConfig = mappingService.mapProjectConfig
 export const mapProjectConfigId = mappingService.mapProjectConfigId

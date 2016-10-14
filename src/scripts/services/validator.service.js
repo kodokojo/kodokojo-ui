@@ -107,7 +107,6 @@ validatorService.isPasswordValid = (value) => !validatorService.isEmpty(value) &
  * Revalidate password pattern validator
  */
 validatorService.passwordValidator = composeValidators(
-  isRequired({ message: 'general-input-error-required' }),
   createValidator(
     message => value => {
       if (!validatorService.isPasswordValid(value)) {
@@ -125,15 +124,13 @@ validatorService.passwordValidator = composeValidators(
  * @param value
  * @returns {boolean}
  */
-// TODO
 validatorService.isSSHKeyValid = (value) => !validatorService.isEmpty(value) &&
-/^.*$/.test(value)
+/^(?:ssh-.*|\B)$/.test(value)
 
 /**
  * Revalidate email pattern validator
  */
 validatorService.sshkeyValidator = composeValidators(
-  isRequired({ message: 'general-input-error-required' }),
   createValidator(
     message => value => {
       if (!validatorService.isSSHKeyValid(value)) {
