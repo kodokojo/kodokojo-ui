@@ -17,7 +17,7 @@ node() {
         checkout scm
         def version = versionJs()
         def commit = commitSha1()
-        def c = builder.inside(" -v ${pwd()}:/src -v -e \"KODOKOJO_UI_VERSION=${version}\" ") {
+        def c = builder.inside(" -v ${pwd()}:/src -e \"KODOKOJO_UI_VERSION=${version}\" ") {
 
             built = sh returnStatus: true, script: 'mkdir -p /src/static && /build.sh'
 
