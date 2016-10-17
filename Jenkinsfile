@@ -21,8 +21,8 @@ node() {
 
         def c = builder.inside(" -e \"KODOKOJO_UI_VERSION=${version}\" ") {
             sh "rm -rf mkdir -p ${pwd()}/static/ || true"
-            built = sh returnStatus: true, script: "mkdir -p ${pwd()}/static/ && chmod -R 777 ${pwd()}/static/  && /build.sh"
-            sh "cp -R ${pwd()}/static/* ${pwd()}/docker/delivery/static/"
+            built = sh returnStatus: true, script: "/build.sh"
+            sh "cp -r ${pwd()}/static ${pwd()}/docker/delivery/ && chmod -R 777 ${pwd()}/static/ "
             sh "ls -l ${pwd()}/docker/delivery/static"
         }
         slackSend channel: '#dev', color: 'good', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *SUCCESS*."
