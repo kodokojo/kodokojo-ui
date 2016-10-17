@@ -17,18 +17,22 @@ node() {
         checkout scm
         def version = versionJs()
         def commit = commitSha1()
-        def c = builder.inside(" -v ${pwd()}:/src -e \"KODOKOJO_UI_VERSION=${version}\" ") {
+        def currentDir = "/var/jen"
 
-            built = sh returnStatus: true, script: 'mkdir -p /src/static && /build.sh'
-
-            sh 'cp -R /target/* docker/delivery/'
-            sh 'ls -l docker/delivery/'
-            if (currentBuild.result != 'FAILURE' && built == 0) {
-                slackSend channel: '#dev', color: 'good', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *SUCCESS*."
-            } else {
-                slackSend channel: '#dev', color: 'danger', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *FAILED*."
-            }
+        def c = builder.inside(" -e \"KODOKOJO_UI_VERSION=${version}\" ") {
+            sh "rm -rf mkdir -p ${pwd()}/static/ || true"
+            built = sh returnStatus: true, script: "mkdir -p ${pwd()}/static/ && chmod -R 777 ${pwd()}/static/  && /build.sh"
+            sh "cp -R ${pwd()}/static/* ${pwd()}/docker/delivery/static/"
+            sh "ls -l ${pwd()}/docker/delivery/static"
         }
+        slackSend channel: '#dev', color: 'good', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *SUCCESS*."
+        /*
+               if (currentBuild.result == 'SUCCESS') {
+                   slackSend channel: '#dev', color: 'good', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *SUCCESS*."
+               } else {
+                   slackSend channel: '#dev', color: 'danger', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *FAILED*."
+               }
+               */
     }
     buildAndPushDocker()
 }
@@ -58,8 +62,7 @@ def buildAndPushDocker() {
         def commit = commitSha1()
         def imageName = "kodokojo/kodokojo-ui:latest"
         try {
-            sh 'docker/delivery'
-            sh "mkdir -p docker/delivery/static && tar zxvf docker/delivery/kodokojo-ui-${version}.tar.gz -C docker/delivery/static"
+            sh "rm -rf ${pwd()}/static/static || true"
             sh "docker build --no-cache -t=\"${imageName}\" ${pwd()}/docker/delivery/ && docker push ${imageName}"
 
             slackSend channel: '#dev', color: '#6CBDEC', message: "Build and push Docker image *${imageName}* from branch *${env.BRANCH_NAME}* on commit `${commit}` *SUCCESS*."
