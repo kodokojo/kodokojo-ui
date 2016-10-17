@@ -21,7 +21,7 @@ node() {
 
             built = sh returnStatus: true, script: 'mkdir -p /src/static && /build.sh'
 
-            sh 'cp -R /target/* docker/delivery/'
+            sh 'cp -R /target/* /src/docker/delivery/'
             if (currentBuild.result != 'FAILURE' && built == 0) {
                 slackSend channel: '#dev', color: 'good', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *SUCCESS*."
             } else {
