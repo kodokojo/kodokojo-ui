@@ -17,7 +17,7 @@ node() {
         checkout scm
         def version = versionJs()
         def commit = commitSha1()
-        def c = builder.inside(" --no-cache -v ${pwd()}:/src -e \"KODOKOJO_UI_VERSION=${version}\" ") {
+        def c = builder.inside(" -v ${pwd()}:/src -e \"KODOKOJO_UI_VERSION=${version}\" ") {
 
             built = sh returnStatus: true, script: 'mkdir -p /src/static && /build.sh'
 
@@ -59,7 +59,7 @@ def buildAndPushDocker() {
         try {
 
             sh "mkdir -p ${pwd()}/docker/delivery/static && tar zxvf ${pwd()}/docker/delivery/kodokojo-ui-${version}.tar.gz -C ${pwd()}/docker/delivery/static"
-            sh "docker build -t=\"${imageName}\" ${pwd()}/docker/delivery/ && docker push ${imageName}"
+            sh "docker build --no-cache -t=\"${imageName}\" ${pwd()}/docker/delivery/ && docker push ${imageName}"
 
             slackSend channel: '#dev', color: '#6CBDEC', message: "Build and push Docker image *${imageName}* from branch *${env.BRANCH_NAME}* on commit `${commit}` *SUCCESS*."
         } catch (Exception e) {
