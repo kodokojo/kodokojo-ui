@@ -63,9 +63,33 @@ validatorService.captchaValidator = composeValidators(
 /**
  * Revalidate alphanumeric and required
  */
-validatorService.alphabeticRequiredvalidator = composeValidators(
+validatorService.alphabeticRequiredValidator = composeValidators(
   isRequired({ message: 'general-input-error-required' }),
   isAlphabetic({ message: 'general-input-error-alphabetic' })
+)
+
+/**
+ * Return alphabetic extended pattern matching
+ * @param value
+ */
+// TODO UT
+validatorService.isAlphabeticExtended = (value) => !validatorService.isEmpty(value) &&
+  /^[A-Za-z0-9\s'’-]+$/.test(value)
+
+/**
+ * Revalidate alphanumeric and required
+ */
+validatorService.alphabeticExtendedRequiredValidator = composeValidators(
+  isRequired({ message: 'general-input-error-required' }),
+  createValidator(
+    message => value => {
+      if (!validatorService.isAlphabeticExtended(value)) {
+        return message
+      }
+      return null
+    },
+    'alphabetic-extended-error-pattern'
+  )
 )
 
 /**
@@ -74,6 +98,7 @@ validatorService.alphabeticRequiredvalidator = composeValidators(
  * @param value
  * @returns {boolean}
  */
+// TODO UT
 validatorService.isProjectNameValid = (value) => !validatorService.isEmpty(value) &&
   /^[^\s]([a-zA-Z0-9\-_]{4,20})$/.test(value)
 
@@ -99,9 +124,8 @@ validatorService.projectNameValidator = composeValidators(
  * @param value
  * @returns {boolean}
  */
-// TODO
-validatorService.isPasswordValid = (value) => !validatorService.isEmpty(value) &&
-/^.*$/.test(value)
+// TODO UT
+validatorService.isPasswordValid = (value) => /^(?:[^\s]{5,256}|\B)$/.test(value)
 
 /**
  * Revalidate password pattern validator
@@ -124,8 +148,9 @@ validatorService.passwordValidator = composeValidators(
  * @param value
  * @returns {boolean}
  */
-validatorService.isSSHKeyValid = (value) => !validatorService.isEmpty(value) &&
-/^(?:ssh-.*|\B)$/.test(value)
+// TODO UT
+validatorService.isSSHKeyValid = (value) => validatorService.isEmpty(value) ||
+  /^(?:ssh-.*|\B)$/.test(value)
 
 /**
  * Revalidate email pattern validator
@@ -154,7 +179,8 @@ export const email = validatorService.email
 export const emailValidator = validatorService.emailValidator
 export const captchaValidator = validatorService.captchaValidator
 export const projectNameValidator = validatorService.projectNameValidator
-export const alphabeticRequiredvalidator = validatorService.alphabeticRequiredvalidator
+export const alphabeticRequiredValidator = validatorService.alphabeticRequiredValidator
+export const alphabeticExtendedRequiredValidator = validatorService.alphabeticExtendedRequiredValidator
 export const passwordValidator = validatorService.passwordValidator
 export const sshkeyValidator = validatorService.sshkeyValidator
 export const delayStandard = validatorService.delayStandard

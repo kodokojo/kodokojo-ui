@@ -32,8 +32,8 @@ import Button from '../_ui/button/Button.component'
 import Input from '../_ui/input/Input.component'
 import IconButton from '../_ui/button/IconButton.component'
 import CloseIcon from '../_ui/icons/CloseIcon.component'
-import { 
-  alphabeticRequiredvalidator,
+import {
+  alphabeticExtendedRequiredValidator,
   emailValidator,
   passwordValidator,
   sshkeyValidator
@@ -51,8 +51,8 @@ const validate = (values, props) => {
   if (props.edition) {
     return combineValidators({
       email: emailValidator('email'),
-      firstName: alphabeticRequiredvalidator('firstName'),
-      lastName: alphabeticRequiredvalidator('lastName'),
+      firstName: alphabeticExtendedRequiredValidator('firstName'),
+      lastName: alphabeticExtendedRequiredValidator('lastName'),
       password: passwordValidator('password'),
       passwordConfirm: matchesField('password')({ message: 'password-confirm-error' }),
       sshKeyPublic: sshkeyValidator('sshKeyPublic')

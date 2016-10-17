@@ -138,13 +138,7 @@
 %user-column--form {
   @extend %user-column;
   align-items: baseline;
-  input[type="text"] {
-    width: 90%;
-  }
-  input[type="email"] {
-    width: 95%;
-  }
-  textarea {
+  div[data-react-toolbox="input"] {
     width: 95%;
   }
 }

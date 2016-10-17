@@ -22,6 +22,7 @@ export default {
   'account-error-412': 'User identifier is not valid',
   'account-error-428': 'Error during account creation, please retry',
   'add-member-label': 'Add member',
+  'alphabetic-extended-error-pattern' : '{fieldName} must be alphabetic',
   'app-lang-fr-label': 'Français',
   'app-lang-en-label': 'English',
   'app-nav-home-label': 'Home',
