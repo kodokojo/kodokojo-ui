@@ -13,5 +13,9 @@ RUN apt-get update
 RUN apt-get install jq
 ADD build.sh /build.sh
 RUN chmod +x /build.sh
+ADD test.sh /test.sh
+RUN chmod +x /test.sh
+ADD makeTar.sh /makeTar.sh
+RUN chmod +x /makeTar.sh
 
 CMD ["/build.sh"]

@@ -21,20 +21,20 @@ node() {
 
         def c = builder.inside(" -e \"KODOKOJO_UI_VERSION=${version}\" ") {
             sh "rm -rf mkdir -p ${pwd()}/static/ || true"
-            built = sh returnStatus: true, script: "/build.sh"
+            built = sh returnStatus: true, script: "/test.sh"
             sh "cp -r ${pwd()}/static ${pwd()}/docker/delivery/ && chmod -R 777 ${pwd()}/static/ "
             sh "ls -l ${pwd()}/docker/delivery/static"
         }
-        slackSend channel: '#dev', color: 'good', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *SUCCESS*."
-        /*
-               if (currentBuild.result == 'SUCCESS') {
-                   slackSend channel: '#dev', color: 'good', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *SUCCESS*."
-               } else {
-                   slackSend channel: '#dev', color: 'danger', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *FAILED*."
-               }
-               */
+        if (currentBuild.result == 'SUCCESS' && built == 0) {
+            slackSend channel: '#dev', color: 'good', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *SUCCESS*."
+        } else {
+            slackSend channel: '#dev', color: 'danger', message: "Building job ${env.JOB_NAME} in version $version from branch *${env.BRANCH_NAME}* on commit `${commit}` \n Job ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>) *FAILED*."
+        }
+
     }
-    buildAndPushDocker()
+    if (currentBuild.result == 'SUCCESS' && built == 0) {
+        buildAndPushDocker()
+    }
 }
 
 def versionJs() {
@@ -46,7 +46,7 @@ def commitSha1() {
     sh 'git rev-parse HEAD > commit'
     def commit = readFile('commit').trim()
     sh 'rm commit'
-    commit.substring(0,7)
+    commit.substring(0, 7)
 }
 
 def commitMessage() {
