@@ -32,9 +32,9 @@ node() {
         }
 
     }
-    if (currentBuild.result == 'SUCCESS' && built == 0) {
-        buildAndPushDocker()
-    }
+
+    buildAndPushDocker()
+
 }
 
 def versionJs() {
