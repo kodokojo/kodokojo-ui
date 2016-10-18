@@ -21,7 +21,3 @@ if [ "$rc" != 0 ]; then
   exit $rc
 fi
 npm test
-rc=$?
-if [ "$rc" != 0 ]; then
-  exit $rc
-fi
