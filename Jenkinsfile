@@ -60,7 +60,7 @@ def buildAndPushDocker() {
     stage('Building docker image then Push it') {
         def version = versionJs()
         def commit = commitSha1()
-        def imageName = "kodokojo/kodokojo-ui:latest"
+        def imageName = "kodokojo/kodokojo-ui:dev"
         try {
             sh "rm -rf ${pwd()}/static/static || true"
             sh "docker build --no-cache -t=\"${imageName}\" ${pwd()}/docker/delivery/ && docker push ${imageName}"
