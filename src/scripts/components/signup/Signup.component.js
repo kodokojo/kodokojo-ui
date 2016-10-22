@@ -21,12 +21,15 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Field, reduxForm, SubmissionError, propTypes } from 'redux-form'
 import { combineValidators } from 'revalidate'
-import { intlShape, injectIntl } from 'react-intl'
+import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
+import { Link } from 'react-router'
 import Promise from 'bluebird'
 
 // Component
 import '../../../styles/_commons.less'
+import signupTheme from './signup.scss'
 import Input from '../../components/_ui/input/Input.component'
+import Checkbox from '../../components/_ui/checkbox/Checkbox.component'
 import Button from '../../components/_ui/button/Button.component'
 import Captcha from '../../components/captcha/Captcha.component'
 import ErrorMessage from '../../components/message/ErrorMessage.component'
@@ -56,6 +59,13 @@ export class Signup extends React.Component {
     resetCaptcha: React.PropTypes.func.isRequired,
     updateCaptcha: React.PropTypes.func.isRequired,
     ...propTypes
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      TOSAgreement : false
+    }
   }
 
   handleSubmitSignup = (values) => {
@@ -95,6 +105,12 @@ export class Signup extends React.Component {
     const { updateCaptcha } = this.props // eslint-disable-line no-shadow
 
     updateCaptcha(nextCaptcha)
+  }
+
+  handleChangeTOSAgreement = () => {
+    this.setState({
+      TOSAgreement: !this.state.TOSAgreement
+    })
   }
 
   render() {
@@ -142,8 +158,25 @@ export class Signup extends React.Component {
             name="captcha"
           />
         </div>
+        <div className={ signupTheme['terms-container'] }>
+          <Checkbox
+            checked={ !!this.state.TOSAgreement }
+            label={
+              <FormattedMessage
+                id="terms-of-service-text"
+                style={{ color: '#FFF' }}
+                values={{
+                  termsLinkComponent: (
+                    <a className={ signupTheme['terms-link'] } href="https://kodokojo.io/terms-of-service.html" target="_blank" ><FormattedMessage id="terms-of-service-label"/></a>
+                  )
+                }}
+              />
+            }
+            onChange={ () => this.handleChangeTOSAgreement() }
+          />
+        </div>
         <Button
-            disabled={ submitting }
+            disabled={ submitting || !this.state.TOSAgreement }
             label={ formatMessage({ id: 'signup-label' }) }
             primary
             title={ formatMessage({ id: 'signup-label' }) }

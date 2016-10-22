@@ -104,5 +104,7 @@ export default {
   'username-hint-label': 'characters before @email.com',
   'report-label': 'Report',
   'repository-label': 'Repository',
+  'terms-of-service-label': 'Terms of Service',
+  'terms-of-service-text': 'I have read and agree the {termsLinkComponent}',
   'version-label': 'Version'
 }

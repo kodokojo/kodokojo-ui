@@ -1,0 +1,21 @@
+@import '../../../styles/meta';
+
+.terms-container {
+  display: flex;
+  align-items: center;
+  padding-top: 5px;
+  padding-bottom: 25px;
+}
+
+div[data-react-toolbox="check"] {
+  border-color: $color-font-5;
+}
+
+span[data-react-toolbox="label"] {
+  color: $color-font-5;
+  text-wrap: normal;
+}
+
+.terms-link {
+  color: $color-font-6;
+}
