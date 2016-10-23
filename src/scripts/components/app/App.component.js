@@ -33,12 +33,18 @@ import AppHeader from './AppHeader.component'
 import Menu from '../menu/Menu.component'
 import { logout } from '../login/login.actions'
 import { requestWebsocket } from '../_utils/websocket/websocket.actions'
-import { setTheme, setLocale, setNavVisibility } from './app.actions'
+import {
+  getApiVersion,
+  setTheme,
+  setLocale,
+  setNavVisibility
+} from './app.actions'
 
 class App extends React.Component {
 
   static propTypes = {
     children: React.PropTypes.element.isRequired,
+    getApiVersion: React.PropTypes.func.isRequired,
     isAuthenticated: React.PropTypes.bool.isRequired,
     locale: React.PropTypes.string.isRequired,
     logout: React.PropTypes.func.isRequired,
@@ -47,19 +53,22 @@ class App extends React.Component {
     requestWebsocket: React.PropTypes.func.isRequired,
     setLocale: React.PropTypes.func.isRequired,
     setNavVisibility: React.PropTypes.func.isRequired,
-    theme: React.PropTypes.string.isRequired
+    theme: React.PropTypes.string.isRequired,
+    version: React.PropTypes.object
   }
 
   componentWillMount = () => {
-    const { isAuthenticated, requestWebsocket } = this.props // eslint-disable-line no-shadow
+    const { isAuthenticated, requestWebsocket, getApiVersion } = this.props // eslint-disable-line no-shadow
 
     if (isAuthenticated) {
       requestWebsocket()
     }
+
+    getApiVersion()
   }
 
   render() {
-    const { children, isAuthenticated, locale, logout, menu, navigation, setLocale, theme } = this.props // eslint-disable-line no-shadow
+    const { children, isAuthenticated, locale, logout, menu, navigation, setLocale, theme, version } = this.props // eslint-disable-line no-shadow
 
     return (
       <Layout>
@@ -68,6 +77,7 @@ class App extends React.Component {
           languageSelected={ locale }
           onLanguageChange={ (value) => setLocale(value) }
           onLogout={ () => logout() }
+          version={ version }
         />
         <Panel>
           <Nav
@@ -92,13 +102,15 @@ const mapStateProps = (state, ownProps) => (
     theme: state.prefs.theme,
     menu: state.menu,
     navigation: state.prefs.navigation,
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    version: state.prefs.version
   }
 )
 
 export default themr(APP)(connect(
   mapStateProps,
   {
+    getApiVersion,
     logout,
     requestWebsocket,
     setTheme,

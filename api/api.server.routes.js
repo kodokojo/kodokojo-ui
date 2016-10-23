@@ -24,6 +24,7 @@ import endpoints from '../config/shared/api.endpoints'
 import * as user from './user.server.controller'
 import * as project from './project.server.controller'
 import * as brick from './brick.server.controller'
+import * as application from './application.server.controller'
 
 router.post(config.api.routes.user, user.initUser)
 
@@ -48,6 +49,8 @@ router.post(`${config.api.routes.project}/:projectConfigId`, project.postProject
 router.get(`${config.api.routes.project}/:projectId`, project.getProject)
 
 router.get(`${config.api.routes.brick}`, brick.getBricks)
+
+router.get(`${config.api.routes.version}`, application.getVersion)
 
 export default (app) => {
   app.use(router)

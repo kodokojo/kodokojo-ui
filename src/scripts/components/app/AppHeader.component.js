@@ -32,11 +32,12 @@ export class AppHeader extends React.Component {
     isAuthenticated: React.PropTypes.bool.isRequired,
     languageSelected: React.PropTypes.string.isRequired,
     onLanguageChange: React.PropTypes.func.isRequired,
-    onLogout: React.PropTypes.func.isRequired
+    onLogout: React.PropTypes.func.isRequired,
+    version: React.PropTypes.object
   }
 
   render() {
-    const { languageSelected, onLanguageChange, onLogout, isAuthenticated } = this.props // eslint-disable-line no-shadow
+    const { languageSelected, onLanguageChange, onLogout, isAuthenticated, version } = this.props // eslint-disable-line no-shadow
     const { formatMessage } = this.props.intl
 
     return (
@@ -44,6 +45,7 @@ export class AppHeader extends React.Component {
         flat
         isAuthenticated={ isAuthenticated }
         onLogout={ () => onLogout() }
+        version={ version }
       />
       // FIXME this is for testing purpose, delete when tabs are implemented
       // <Navigation type="horizontal">

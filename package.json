@@ -16,7 +16,7 @@
     "styleguide": "start-storybook -p 9001 -c ./styleguide",
     "license": "gulp license",
     "build": "npm run build:env && npm run build:index",
-    "build:env": "node ./config/config.output.js | mustache - config/shared/api.env.mustache > config/shared/api.env.js",
+    "build:env": "node ./config/config.output.js | mustache - config/shared/api.env.mustache > config/shared/api.env.js && npm run version",
     "build:index": "mustache webpack-assets.json src/index.mustache > static/index.html",
     "build:styleguide": "build-storybook -c ./styleguide -o styleguide/dist",
     "prebuild:dev": "NODE_ENV=development BABEL_ENV=development npm run build:env",
@@ -40,7 +40,8 @@
     "pretest": "NODE_ENV=development BABEL_ENV=test npm run build:env",
     "test": "BABEL_ENV=test mocha --compilers js:./test/compiler.js --recursive --require ignore-styles --require intl --require ./test/utils.js -R dot './src/**/*.spec.js'",
     "test:watch": "npm test -- --watch",
-    "coverage": "BABEL_ENV=test babel-node node_modules/isparta/bin/isparta cover _mocha --root src/ --include-all-sources --default-excludes -- --recursive './src/**/*.spec.js' --require ignore-styles --require intl --require ./test/utils.js"
+    "coverage": "BABEL_ENV=test babel-node node_modules/isparta/bin/isparta cover _mocha --root src/ --include-all-sources --default-excludes -- --recursive './src/**/*.spec.js' --require ignore-styles --require intl --require ./test/utils.js",
+    "version": "node ./config/ui.version.js"
   },
   "pre-commit": [
     "lint",
@@ -110,6 +111,7 @@
     "isparta": "4.0.0",
     "jsdom": "8.1.0",
     "kodokojo-mocks": "0.2.0",
+    "json-loader": "^0.5.4",
     "less": "2.6.1",
     "less-loader": "2.2.3",
     "mocha": "2.5.3",

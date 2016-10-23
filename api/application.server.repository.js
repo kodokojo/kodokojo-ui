@@ -16,10 +16,33 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export const prefs = {
-  theme: 'dark',
-  locale: 'en',
-  navigation: false,
-  version: {},
-  isFetching: false
+import config from '../config/config'
+import logger from '../config/logger'
+
+import { requestWithLog } from './utils.server.service'
+
+const applicationRepository = {}
+
+applicationRepository.getVersion = (request) => {
+  logger.debug('getVersion')
+
+  const { headers } = {
+    headers: request.headers
+  }
+  headers.host = config.api.host
+
+  return requestWithLog({
+    method: 'GET',
+    uri: `${config.api.protocol}${config.api.host}${config.api.routes.version}`,
+    json: true,
+    headers,
+    rejectUnauthorized: false,
+    requestCert: true
+  })
 }
+
+// Public API
+export const getVersion = applicationRepository.getVersion
+
+// Service instance
+export default applicationRepository

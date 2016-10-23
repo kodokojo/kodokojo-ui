@@ -46,11 +46,12 @@ export class AppBar extends Component {
     intl: intlShape.isRequired,
     isAuthenticated: PropTypes.bool.isRequired,
     onLogout: PropTypes.func.isRequired,
-    theme: PropTypes.object
+    theme: PropTypes.object,
+    version: React.PropTypes.object
   }
 
   render() {
-    const { children, fixed, flat, isAuthenticated, onLogout, theme } = this.props // eslint-disable-line no-shadow
+    const { children, fixed, flat, isAuthenticated, onLogout, theme, version } = this.props // eslint-disable-line no-shadow
     const { formatMessage } = this.props.intl
 
     return (
@@ -59,7 +60,14 @@ export class AppBar extends Component {
         fixed={ fixed }
         flat={ flat }
       >
-        <img className={ theme['logo-kodokojo'] } src={ logoKodoKojo } />
+        <img
+          className={ theme['logo-kodokojo'] }
+          src={ logoKodoKojo }
+          title={
+            `api\n${version.api.version}\n${version.api.branch}\n${version.api.commit}\n\n` +
+            `ui\n${version.ui.version}\n${version.ui.branch}\n${version.ui.commit}`
+          }
+        />
         { children }
         { isAuthenticated &&
           <IconButton

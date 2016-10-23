@@ -43,7 +43,8 @@ const all = {
       event: `${api.event}`,
       projectConfig: `${api.projectConfig}`,
       project: `${api.project}`,
-      user: `${api.user}`
+      user: `${api.user}`,
+      version: `${api.version}`
     }
   }
 }

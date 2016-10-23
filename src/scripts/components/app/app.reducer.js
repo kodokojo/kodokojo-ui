@@ -20,6 +20,9 @@ import has from 'lodash/has'
 
 import { prefs as prefsDefault } from './prefs'
 import {
+  API_VERSION_REQUEST,
+  API_VERSION_SUCCESS,
+  API_VERSION_FAILURE,
   PREF_THEME_SET,
   PREF_LOCALE_SET,
   PREF_NAV_VISIBILITY_SET
@@ -32,17 +35,42 @@ export default function prefs(state = prefsDefault, action) {
       theme: action.theme
     }
   }
+
   if (action.type === PREF_LOCALE_SET && has(action, 'locale')) {
     return {
       ...state,
       locale: action.locale
     }
   }
+
   if (action.type === PREF_NAV_VISIBILITY_SET && has(action, 'navigation')) {
     return {
       ...state,
       navigation: action.navigation
     }
   }
+
+  if (action.type === API_VERSION_REQUEST) {
+    return {
+      ...state,
+      iSFetching: true
+    }
+  }
+
+  if (action.type === API_VERSION_SUCCESS) {
+    return {
+      ...state,
+      version: action.payload.version,
+      iSFetching: false
+    }
+  }
+
+  if (action.type === API_VERSION_FAILURE) {
+    return {
+      ...state,
+      iSFetching: false
+    }
+  }
+
   return state
 }

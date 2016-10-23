@@ -24,5 +24,6 @@ export default {
   project: `${api.v1}/project`,
   projectConfig: `${api.v1}/projectconfig`,
   projectConfigUser: '/user',
-  user: `${api.v1}/user`
+  user: `${api.v1}/user`,
+  version: `${api.v1}`
 }

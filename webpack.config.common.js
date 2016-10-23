@@ -61,6 +61,10 @@ module.exports = {
       {
         test: /\.ico$/,
         loader: 'file-loader?name=./[name].[ext]'
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
       }
     ]
   }

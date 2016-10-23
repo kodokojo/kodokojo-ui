@@ -16,11 +16,59 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { CALL_API } from 'redux-api-middleware'
+import Promise from 'bluebird'
+
+import api from '../../commons/config'
 import {
+  API_VERSION_REQUEST,
+  API_VERSION_SUCCESS,
+  API_VERSION_FAILURE,
   PREF_THEME_SET,
   PREF_LOCALE_SET,
   PREF_NAV_VISIBILITY_SET
 } from '../../commons/constants'
+import versionUi from '../../../../config/shared/ui.version.json'
+
+export function fetchApiVersion() {
+  return {
+    [CALL_API]: {
+      method: 'GET',
+      endpoint:
+      `${window.location.protocol || 'http:'}//` +
+      `${window.location.host || 'localhost'}${api.version}`,
+      types: [
+        API_VERSION_REQUEST,
+        {
+          type: API_VERSION_SUCCESS,
+          payload: (action, state, res) => res.json()
+            .then(versionApi => (
+              {
+                version: {
+                  api: versionApi,
+                  ui: versionUi
+                }
+              }
+            ))
+        },
+        API_VERSION_FAILURE
+      ]
+    }
+  }
+}
+
+export function getApiVersion() {
+  return dispatch =>  dispatch(fetchApiVersion())
+    .then(data => {
+      if (!data.error) {
+        return Promise.resolve()
+      }
+      throw new Error(data.payload.status)
+    })
+    .catch(error => {
+      throw new Error(error.message || error)
+    })
+}
 
 export function setTheme(theme) {
   return {
