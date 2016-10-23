@@ -38,6 +38,7 @@ import { IntlProvider } from 'react-intl'
 // component
 import { Signup, __RewireAPI__ as SignupRewire } from './Signup.component'
 
+// TODO fix tests with mounted component and redux-form
 describe.skip('<Signup> component', () => {
   let props
   let messages

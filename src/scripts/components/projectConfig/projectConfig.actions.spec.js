@@ -84,6 +84,7 @@ describe('project config actions', () => {
       actionsRewireApi.__ResetDependency__('createProject')
     })
 
+    // TODO UT add test for users array and stackConfig params
     it('should create project config', (done) => {
       // Given
       const projectConfigName = 'Acme'

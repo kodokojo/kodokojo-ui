@@ -134,6 +134,7 @@ describe('<Login> component', () => {
     expect(component.find(Login).props().logout).to.be.instanceof(Function)
   })
 
+  // TODO fix tests with mounted component and redux-form
   describe.skip('handle submit', () => {
     it('should trigger login if username & password inputs are not empty', () => {
       // Given
