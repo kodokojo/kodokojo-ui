@@ -10,7 +10,7 @@ You MUST format commit messages as follow:
 **[type]**: between square brackets, it define commit type.  
 Possible categories are:  
 
-**[feat]**: adding a feature  
+**[feature]**: adding a feature  
 **[refactor]**: code refactoring   
 **[fix]**: bug fixing  
 **[doc]**: add / modify documentation  
