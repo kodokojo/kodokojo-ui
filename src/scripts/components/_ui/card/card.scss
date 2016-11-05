@@ -40,12 +40,29 @@
   &:first-of-type {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    border-bottom-left-radius: $radius-standard;
   }
   &:last-of-type {
+    border-top-right-radius: $radius-standard;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
 }
+@media (max-width: 850px) {
+  .card--merged {
+    &:first-of-type {
+      border-top-right-radius: $radius-standard;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+    &:last-of-type {
+      border-top-right-radius: 0;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: $radius-standard;
+    }
+  }
+}
+
 .card--default {
   background: $color-primary-3;
 }

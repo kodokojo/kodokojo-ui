@@ -17,6 +17,10 @@
  */
 
 .content {
-  flex: 1;
+  display: flex;
+  flex: 1 1 auto;
   overflow: auto;
+  flex-flow: row;
+  align-items: center;
+  justify-content: stretch;
 }

@@ -19,6 +19,14 @@
 @import '../../../../styles/meta';
 
 .paragraph {
+  display: flex;
+  flex: 1 0 auto;
+  flex-flow: column;
   font-weight: $font-weight-thin;
+  height: auto;
   margin: 0;
+  form {
+    display: flex;
+    flex: 1 1 auto;
+  }
 }
