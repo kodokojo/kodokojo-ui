@@ -115,11 +115,11 @@ First start mock server in a terminal:
     
     $ npm run start:server:mock
     
-Then start kodokojo-uiin an other terminal:
+Then start kodokojo-ui in an other terminal:
 
     $ npm run start:mock
 
-Finally, open ui project in browser.
+Finally, open ui project in browser:
 
     $ open http://localhost:3000
     
