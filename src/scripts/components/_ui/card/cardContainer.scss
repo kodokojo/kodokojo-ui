@@ -31,3 +31,9 @@
 .card-container--wrap {
   flex-wrap: wrap;
 }
+
+@media (max-width: 850px) {
+  .card-container {
+    flex-direction: column;
+  }
+}
