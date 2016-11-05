@@ -19,6 +19,13 @@
 @import '../../../../styles/meta';
 
 .page {
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  align-self: stretch;
+  flex: 1 1 auto;
+  flex-flow: column;
+  width: 100%;
   padding: 40px;
   h1 {
     font-weight: $font-weight-thin;

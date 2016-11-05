@@ -137,7 +137,7 @@ export class ProjectConfigForm extends React.Component {
             onSubmit={ handleSubmit(this.handleSubmitProject) }
       >
         <CardContainer>
-          <div style={{ display: 'block', width: '100%', height: '100%' }}>
+          <div style={{ display: 'flex', flex: '1 1 auto', flexFlow: 'column', alignContent: 'stretch', alignSelf: 'stretch' }}>
             <div style={{ display: 'flex', flexFlow: 'row' }}>
               <Card
                 primary
@@ -180,10 +180,10 @@ export class ProjectConfigForm extends React.Component {
                 </CardContent>
               </Card>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'no-wrap', justifyContent: 'stretch' }}>
+            <div style={{ display: 'flex', flex: '0 0 auto' }}>
               <div style={{ display: 'flex', flex: '0 200px', flexFlow: 'column', alignItems: 'stretch', justifyContent: 'stretch' }}>
                 <Card
-                  style={{ height: '100%', marginRight: '10px' }}
+                  style={{ flex: '1 1 auto', marginRight: '10px' }}
                 >
                   <CardContent
                     className={ utilsTheme['content-gutter--large'] }
@@ -194,7 +194,7 @@ export class ProjectConfigForm extends React.Component {
                       style={{ display: 'flex', flexFlow: 'column wrap', alignItems: 'flex-start' }}
                     >
                       <div
-                        style={{ display: 'flex', flexFlow: 'column wrap', alignItems: 'center', flex: '1 100%' }}
+                        style={{ display: 'flex', flexFlow: 'column wrap', alignItems: 'center', flex: '1 1 auto' }}
                       >
                         <div
                           className={ classNames(utilsTheme['title--default']) }
@@ -212,19 +212,18 @@ export class ProjectConfigForm extends React.Component {
                   </CardContent>
                 </Card>
               </div>
-              <div style={{ display: 'flex', flex: '1 60%', flexFlow: 'column' }} >
-                <div style={{ display: 'flex', flexFlow: 'column', flex: '1 100%' }}>
+              <div style={{ display: 'flex', flex: '1 1 60%', flexFlow: 'column' }} >
+                <div style={{ display: 'flex', flex: '1 1 auto', flexFlow: 'column' }}>
                   { bricksDetails && bricksDetails.length > 0 &&
                     bricksDetails.map((brickType, brickTypeIndex) => (
                       <div
                         key={ brickTypeIndex }
-                        style={{ dispay: 'flex', flex: '1 100%', flewFlow: 'column' }}
+                        style={{ display: 'flex', flex: '1 0 auto', flewFlow: 'column' }}
                       >
                         <Card
                         style={ brickTypeIndex > 0 ?
-                          { flex: '1 1 100%', justifyContent: 'center', alignItems: 'stretch', display: 'flex',
-                            height: 'calc(100% - 10px)', marginTop: '10px' } :
-                          { flex: '1 1 100%', justifyContent: 'center', alignItems: 'stretch', display: 'flex', height: '100%' }
+                          { display: 'flex', flex: '1 1 auto', justifyContent: 'center', alignItems: 'stretch', marginTop: '10px' } :
+                          { display: 'flex', flex: '1 1 auto', justifyContent: 'center', alignItems: 'stretch' }
                         }
                       >
                         <CardContent
@@ -233,7 +232,7 @@ export class ProjectConfigForm extends React.Component {
                           row
                         >
                           <div
-                            style={{ flex: '1 30%' }}
+                            style={{ display: 'flex', flex: '1 1 30%' }}
                           >
                             <div
                               className={ classNames(utilsTheme['title--default']) }
@@ -242,13 +241,13 @@ export class ProjectConfigForm extends React.Component {
                             </div>
                           </div>
                           <div
-                            style={{ flex: '1 70%' }}
+                            style={{ display: 'flex', flex: '1 1 70%' }}
                           >
                             { brickType.length > 0 &&
                               brickType.map((brick, brickIndex) => (
                                 <div
                                   key={ brickIndex }
-                                  style={{ display: 'flex', minHeight: '70px', alignItems: 'center' }}
+                                  style={{ display: 'flex', flex: '1 1 auto', height: '70px', alignItems: 'center' }}
                                 >
                                   <Checkbox
                                     checked={
@@ -258,7 +257,7 @@ export class ProjectConfigForm extends React.Component {
                                     }
                                     disabled={ isEmpty(this.state.brickList) }
                                     label={
-                                      <span style={{ display: 'flex', flexFlow: 'row', alignItems: 'center' }}>
+                                      <span style={{ display: 'flex', flex: '1 1 auto', flexFlow: 'row', alignItems: 'center' }}>
                                         { getBrickLogo(brick).image &&
                                           <img src={ getBrickLogo(brick).image } style={{ width: '70px', height: '70px' }} />
                                         }
