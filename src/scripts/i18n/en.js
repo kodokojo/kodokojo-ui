@@ -79,7 +79,7 @@ export default {
   'project-config-owner-label': 'Created by',
   'project-name-label': 'Project name',
   'project-name-error-pattern':
-    'Name must have between 4 and 20 non special, unaccented characters',
+    'Name must have between 4 and 20 non space, non special, unaccented characters',
   'projects-label': 'Projects',
   'save-label': 'Save',
   'scm-label': 'SCM',
