@@ -39,7 +39,8 @@ export const enumStatus = {
   UNKNOWN: {
     order: 1,
     label: 'UNKNOWN',
-    image: statusDefault
+    // FIXME to prove that something is running, default status as been replace by starting until best idea
+    image: statusStarting
   },
   STARTING: {
     order: 2,
