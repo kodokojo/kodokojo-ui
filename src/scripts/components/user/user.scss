@@ -75,6 +75,7 @@
 .user-form {
   display: flex;
   flex-flow: row;
+  flex: 1 1 auto;
   align-items: center;
   height: 170px;
   padding-top: $spacing-smallest;
@@ -98,6 +99,7 @@
 .user-actions {
   display: flex;
   flex-flow: row;
+  flex: 1 1 auto;
   justify-content: flex-end;
   margin-top: $spacing-atomic;
   text-align: right;
