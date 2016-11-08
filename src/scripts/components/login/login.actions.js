@@ -63,8 +63,7 @@ export function requestAuthentication() {
 }
 
 export function login(username, password) {
-  const token = authService.getToken()
-  if (!token && username && password) {
+  if (username && password) {
     authService.setAuth(username, password)
   }
   return (dispatch, getState) => dispatch(requestAuthentication())
