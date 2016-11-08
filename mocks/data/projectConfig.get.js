@@ -4,10 +4,20 @@ const uuid = require('uuid')
 var callCount = 0
 
 exports.controller = function(req, res, next) {
-  console.log('call count to projectConfig GET', callCount++, req.params)
-  const projectConfig = {
-    "identifier":`${req.params.identifier}`,
-    "name":"Acme",
+  console.log('call count to projectConfig GET', callCount++)
+
+  var projectConfigId = req.params.identifier
+  var projectName
+
+  if (projectConfigId === '000-stackstate-projectConfigId') {
+    projectName = 'StackStatusUnknown'
+  } else {
+    projectName = 'Acme'
+  }
+
+  var projectConfig = {
+    "identifier":`${projectConfigId}`,
+    "name":`${projectName}`,
     "admins": [
       {
         "identifier":"61e8209320eb5c1257e992db84bffe7e14cc7eb1",
@@ -49,7 +59,7 @@ exports.controller = function(req, res, next) {
       }
     ]
   }
-  
+
   if (callCount > 1) {
     var usersIterator = callCount - 1
     for (var i = usersIterator; i > 0; i--) {
