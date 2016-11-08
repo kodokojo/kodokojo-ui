@@ -47,6 +47,7 @@ export default {
   'email-hint-label': 'your.email@domain.ext',
   'email-input-label': 'Email',
   'email-label': 'Email',
+  'email-error-428': 'Error during account creation, email may already exist',
   'email-error-pattern': 'Invalid email address',
   'email-error-required': 'email is required',
   'firstname-input-label': 'First name',

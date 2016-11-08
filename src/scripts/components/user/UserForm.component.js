@@ -151,13 +151,14 @@ export class UserForm extends React.Component {
       })
       .catch(err => {
         onSubmitUserFailure(nextUser)
-        const errorMessageId = returnErrorKey(
-          {
-            component: 'email',
-            code: err.message
-          })
-        throw new SubmissionError(formatMessage({ id: errorMessageId },
-          { fieldName: formatMessage({ id: 'email-input-label' }) }))
+        throw new SubmissionError(
+          { email: returnErrorKey(
+            {
+              component: 'email',
+              code: err.message
+            })
+          }
+        )
       })
   }
 
