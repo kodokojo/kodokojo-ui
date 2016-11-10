@@ -100,7 +100,7 @@ validatorService.alphabeticExtendedRequiredValidator = composeValidators(
  */
 // TODO UT
 validatorService.isProjectNameValid = (value) => !validatorService.isEmpty(value) &&
-  /^[^\s]([a-zA-Z0-9\-_]{4,20})$/.test(value)
+  /^[^\s]([a-zA-Z0-9\-_]{3,20})$/.test(value)
 
 /**
  * Revalidate projectConfig name validator
