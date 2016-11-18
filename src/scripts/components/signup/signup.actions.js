@@ -24,6 +24,7 @@ import { createUser } from '../user/user.actions'
 import {
   ACCOUNT_NEW_REQUEST,
   ACCOUNT_NEW_SUCCESS,
+  ACCOUNT_NEW_ACCEPTED,
   ACCOUNT_NEW_FAILURE
 } from '../../commons/constants'
 
@@ -40,6 +41,13 @@ export function requestAccountSuccess(data) {
   }
 }
 
+export function requestAccountAccepted(data) {
+  return {
+    type: ACCOUNT_NEW_ACCEPTED,
+    payload: data
+  }
+}
+
 export function requestAccountFailure(data) {
   return {
     type: ACCOUNT_NEW_FAILURE,
@@ -52,14 +60,20 @@ export function createAccount(email, captcha) {
   return dispatch => dispatch(requestAccountRequest())
     .then(data => dispatch(createUser(email, captcha)))
     .then(data => {
-      if (!data.error && data.payload) {
+      if (!data.error && data.payload && data.payload.status === 202) {
+        return dispatch(requestAccountAccepted(data.payload))
+      }
+      if (!data.error && data.payload && data.payload.status === 201) {
         return dispatch(requestAccountSuccess(data.payload))
       }
       dispatch(requestAccountFailure(data.payload))
       throw new Error(data.payload.status)
     })
     .then(data => {
-      if (!data.error) {
+      if (!data.error && data.payload.status === 202) {
+        return Promise.resolve(data.payload)
+      }
+      if (!data.error && data.payload) {
         // we set auth
         setAuth(data.payload.account.userName, data.payload.account.password)
         putAuth(data.payload.account.id, data.payload.account.userName)

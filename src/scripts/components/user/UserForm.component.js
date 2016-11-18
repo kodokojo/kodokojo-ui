@@ -142,9 +142,10 @@ export class UserForm extends React.Component {
       firstName: firstName ? firstName.trim() : '',
       lastName: lastName ? lastName.trim() : '',
       password: password ? password.trim() : '',
-      sshKeyPublic: sshKeyPublic ? sshKeyPublic.trim() : ''
+      sshKeyPublic: sshKeyPublic ? sshKeyPublic.trim() : '' 
     }
 
+    // TODO try to put this in parent component
     return onSubmitUserForm(nextUser)
       .then(() => {
         return Promise.resolve(onSubmitUserSuccess(nextUser))

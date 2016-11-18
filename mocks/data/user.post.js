@@ -13,6 +13,11 @@ exports.controller = function(req, res, next) {
     res.contentType = 'application/json'
     res.send(428)
     next()
+  } else if (userEmail === 'sass-sandbox@new.io') {
+    console.log('202')
+    res.contentType = 'application/json'
+    res.send(202)
+    next()
   } else {
     if (callCount > 1) {
       userId = req.params.id
@@ -40,7 +45,7 @@ exports.controller = function(req, res, next) {
     }
   
     res.contentType = 'application/json'
-    res.send(200, firstUser)
+    res.send(201, firstUser)
     next()
   }
 }

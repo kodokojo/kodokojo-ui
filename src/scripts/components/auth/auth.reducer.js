@@ -20,6 +20,7 @@ import authService from '../../services/auth.service'
 import {
   ACCOUNT_NEW_REQUEST,
   ACCOUNT_NEW_SUCCESS,
+  ACCOUNT_NEW_ACCEPTED,
   ACCOUNT_NEW_FAILURE,
   AUTH_REQUEST,
   AUTH_SUCCESS,
@@ -67,6 +68,13 @@ export default function auth(state = authReducerInit(), action) {
       ...state,
       account: action.payload.account,
       isAuthenticated: true,
+      isFetching: false
+    }
+  }
+
+  if (action.type === ACCOUNT_NEW_ACCEPTED) {
+    return {
+      ...state,
       isFetching: false
     }
   }

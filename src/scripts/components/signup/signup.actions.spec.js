@@ -47,7 +47,7 @@ const middlewares = [
 const mockStore = configureMockStore(middlewares)
 
 describe('signup actions', () => {
-  describe('create auth', () => {
+  describe.skip('create auth', () => {
     let pushHistorySpy
     let setAuthSpy
     let putAuthSpy

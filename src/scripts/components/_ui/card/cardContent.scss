@@ -47,7 +47,7 @@
   }
   padding-bottom: $spacing-standard;
   p {
-    @extend %content-p
+    @extend %content-p;
   }
 }
 
@@ -62,7 +62,7 @@
     padding-bottom: $spacing-large;
   }
   p {
-    @extend %content-p
+    @extend %content-p;
   }
 }
 
@@ -77,7 +77,7 @@
     padding-bottom: $spacing-smallest;
   }
   p {
-    @extend %content-p
+    @extend %content-p;
   }
 }
 
@@ -85,4 +85,16 @@
   font-weight: $font-weight-thin;
   font-size: $font-size-large;
   color: $color-secondary-1;
+}
+
+.card-paragraph--default {
+  color: $color-font-3 !important;
+}
+
+.card-paragraph--light {
+  color: $color-font-5 !important;
+}
+
+.card-paragraph--warning {
+  color: $color-ternary-1 !important;
 }

@@ -90,12 +90,20 @@ export function requestNewUser(email, userId, captcha) {
         USER_NEW_REQUEST,
         {
           type: USER_NEW_SUCCESS,
-          payload: (action, state, res) => res.json()
-            .then(data => (
-              {
-                account: mapAccount(data)
-              }
-            ))
+          payload: (action, state, res) => {
+            if (res.status === 201) {
+              return res.json()
+                .then(data => {
+                  return {
+                    status: res.status,
+                    account: mapAccount(data)
+                  }
+                })
+            }
+            return {
+              status: res.status
+            }
+          }
         },
         USER_NEW_FAILURE
       ]
