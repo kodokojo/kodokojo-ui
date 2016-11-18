@@ -19,7 +19,7 @@
 import React from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { Field, reduxForm, SubmissionError, propTypes } from 'redux-form'
+import { Field, reduxForm, SubmissionError, propTypes, reset } from 'redux-form'
 import { combineValidators } from 'revalidate'
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
 import { Link } from 'react-router'
@@ -31,6 +31,7 @@ import signupTheme from './signup.scss'
 import Input from '../../components/_ui/input/Input.component'
 import Checkbox from '../../components/_ui/checkbox/Checkbox.component'
 import Button from '../../components/_ui/button/Button.component'
+import Dialog from '../../components/_ui/dialog/Dialog.component'
 import Captcha from '../../components/captcha/Captcha.component'
 import ErrorMessage from '../../components/message/ErrorMessage.component'
 import { createAccount } from './signup.actions'
@@ -64,7 +65,8 @@ export class Signup extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      TOSAgreement : false
+      TOSAgreement : false,
+      isDialogActive: false
     }
   }
 
@@ -75,7 +77,12 @@ export class Signup extends React.Component {
     const nexCaptcha = values.captcha
 
     return createAccount(nextEmail.trim(), nexCaptcha)
-      .then(Promise.resolve())
+      .then(data => {
+        if (data.status) {
+          this.handleAccountAccepted()
+        }
+        return Promise.resolve()
+      })
       .catch(err => {
         const error = new SubmissionError(
           { email: returnErrorKey(
@@ -95,6 +102,17 @@ export class Signup extends React.Component {
       })
   }
 
+  handleAccountAccepted = () => {
+    const { resetCaptcha, reset } = this.props
+
+    reset('signupForm')
+    resetCaptcha()
+    this.setState({
+      isDialogActive: true,
+      TOSAgreement: false
+    })
+  }
+
   handleCaptchaInit = () => {
     const { initCaptcha } = this.props // eslint-disable-line no-shadow
     
@@ -107,9 +125,15 @@ export class Signup extends React.Component {
     updateCaptcha(nextCaptcha)
   }
 
-  handleChangeTOSAgreement = () => {
+  handleTOSAgreementChange = () => {
     this.setState({
       TOSAgreement: !this.state.TOSAgreement
+    })
+  }
+
+  handleDialogClose = () => {
+    this.setState({
+      isDialogActive: false
     })
   }
 
@@ -172,16 +196,37 @@ export class Signup extends React.Component {
                 }}
               />
             }
-            onChange={ () => this.handleChangeTOSAgreement() }
+            onChange={ () => this.handleTOSAgreementChange() }
           />
         </div>
-        <Button
+        {/*
+         // TODO add configuration to toggle button
+         */}
+        {/*<Button
             disabled={ submitting || !this.state.TOSAgreement }
             label={ formatMessage({ id: 'signup-label' }) }
             primary
             title={ formatMessage({ id: 'signup-label' }) }
             type="submit"
+        />*/}
+        <Button
+            disabled={ submitting || !this.state.TOSAgreement }
+            label={ formatMessage({ id: 'register-label' }) }
+            primary
+            title={ formatMessage({ id: 'register-label' }) }
+            type="submit"
         />
+        <Dialog
+          actions={[
+            { label: formatMessage({ id: 'close-label' }), onClick: this.handleDialogClose }
+          ]}
+          active={ this.state.isDialogActive }
+          onEscKeyDown={ this.handleDialogClose }
+          onOverlayClick={ this.handleDialogClose }
+          // title={ formatMessage({ id: 'account-label' }) }
+        >
+          <FormattedMessage id="account-accepted-text"/>
+        </Dialog>
       </form>
     )
   }
@@ -204,7 +249,8 @@ const SignupContainer = compose(
       createAccount,
       initCaptcha,
       updateCaptcha,
-      resetCaptcha
+      resetCaptcha,
+      reset
     }
   ),
   injectIntl

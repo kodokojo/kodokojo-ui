@@ -17,6 +17,7 @@
  */
 
 export default {
+  'account-accepted-text': 'Thanks! Your email has been registered in our waiting list, we will contact you as soon as an account is available.',
   'account-label': 'Account',
   'account-error-409': 'L’email existe déjà',
   'account-error-412': 'User identifier is not valid',
@@ -82,6 +83,10 @@ export default {
   'project-name-error-pattern':
     'Name must have between 4 and 20 non space, non special, unaccented characters',
   'projects-label': 'Projects',
+  'register-label': 'Register',
+  'register-waiting-list-label': 'sign on our waiting list',
+  'report-label': 'Report',
+  'repository-label': 'Repository',
   'save-label': 'Save',
   'scm-label': 'SCM',
   'sshkey-error-pattern': 'SSH Key is not valid',
@@ -90,6 +95,7 @@ export default {
   'signup-title-label': 'Don’t have an account?',
   'signup-label': 'S’inscrire',
   'signup-to-login-text': 'Access all your projects, manage users and monitor stacks.',
+  'signup-wait-list-text': 'Due to the success of the platform, you have to {registerWaitingList} before gaining access to it.',
   'stack-bricks-label': 'Bricks stack',
   'stacks-label': 'Stacks',
   'status-label': 'Status',
@@ -103,8 +109,6 @@ export default {
   'user-select-tooltip-disabled': 'You can’t delete yourself from project',
   'username-label': 'User name',
   'username-hint-label': 'characters before @email.com',
-  'report-label': 'Report',
-  'repository-label': 'Repository',
   'terms-of-service-label': 'Terms of Service',
   'terms-of-service-text': 'I have read and agree the {termsLinkComponent}',
   'version-label': 'Version'

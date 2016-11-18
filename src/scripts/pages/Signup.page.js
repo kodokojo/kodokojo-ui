@@ -24,6 +24,7 @@ import { browserHistory } from 'react-router'
 
 // Component
 import '../../styles/_commons.less'
+import themeCardContent from '../components/_ui/card/cardContent.scss'
 import Card from '../components/_ui/card/Card.component'
 import CardContent from '../components/_ui/card/CardContent.component'
 import CardContainer from '../components/_ui/card/CardContainer.component'
@@ -72,16 +73,31 @@ class SignupPage extends React.Component {
         <Card
           merged
           primary
-          style={{ width: '400px', height: '420px', overflow: 'hidden' }}
+          // style={{ width: '400px', height: '420px', overflow: 'hidden' }}
+          style={{ width: '400px', height: '590px', overflow: 'hidden' }}
           title={ formatMessage({ id: 'signup-title-label' }) }
         >
           <CardContent>
+            {/*
+              // TODO add configuration to toggle message
+            */}
+            <p className={ themeCardContent['card-paragraph--warning'] }>
+              <FormattedMessage
+                id="signup-wait-list-text"
+                values={{
+                  registerWaitingList: (
+                    <strong><FormattedMessage id="register-waiting-list-label"/></strong>
+                  )
+                }}
+              />
+            </p>
             <Signup />
           </CardContent>
         </Card>
         <Card
           merged
-          style={{ width: '400px', height: '420px', overflow: 'hidden' }}
+          // style={{ width: '400px', height: '420px', overflow: 'hidden' }}
+          style={{ width: '400px', height: '590px', overflow: 'hidden' }}
           title={ formatMessage({ id: 'login-title-label' }) }
         >
           <CardContent>
