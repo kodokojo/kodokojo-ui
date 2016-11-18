@@ -21,6 +21,6 @@ import * as applicationRepository from './application.server.repository'
 export const getVersion = (request, response) => {
   applicationRepository
     .getVersion(request)
-    .then(data => response.status(200).send(data))
+    .then(({res, data}) => response.status(200).send(data))
     .catch((err, resp) => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
 }

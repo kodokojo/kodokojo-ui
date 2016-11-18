@@ -21,34 +21,34 @@ import * as userRepository from './user.server.repository'
 export const initUser = (request, response) => {
   userRepository
     .initUser(request)
-    .then(data => response.status(201).send(data))
+    .then(({res, data}) => response.status(res.statusCode ? res.statusCode : 201).send(data))
     .catch((err, resp) => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
 }
 
 export const postUser = (request, response) => {
   userRepository
       .postUser(request)
-      .then(data => response.status(201).send(data))
+      .then(({res, data}) => response.status(res.statusCode ? res.statusCode : 201).send(data))
       .catch((err, resp) => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
 }
 
 export const updateUser = (request, response) => {
   userRepository
       .updateUser(request)
-      .then(data => response.status(200).send(data))
+      .then(({res, data}) => response.status(200).send(data))
       .catch((err, resp) => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
 }
 
 export const getUserAccount = (request, response) => {
   userRepository
       .getUserAccount(request)
-      .then(data => response.status(200).send(data))
+      .then(({res, data}) => response.status(200).send(data))
       .catch((err, resp) => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
 }
 
 export const getUser = (request, response) => {
   userRepository
       .getUser(request)
-      .then(data => response.status(200).send(data))
+      .then(({res, data}) => response.status(200).send(data))
       .catch((err, resp) => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
 }

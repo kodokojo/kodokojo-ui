@@ -16,8 +16,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import requestPromise from 'request-promise'
+import request from 'request'
+import Promise from 'bluebird'
 import logger from '../config/logger'
+
+const requestPromise = Promise.promisify(request, { multiArgs: true })
 
 export const requestWithLog = (options) => {
   let startMessage = `${options.method} request on uri ${options.uri}`
@@ -29,10 +32,13 @@ export const requestWithLog = (options) => {
   }
 
   return requestPromise(options)
-    .then((res) => {
+    .spread((res, data) => {
       logger.debug(startMessage)
       logger.debug(JSON.stringify(res, null, 2))
-      return res
+      return {
+        res,
+        data
+      }
     })
     .catch((error, response, body) => {
       logger.error(startMessage)
