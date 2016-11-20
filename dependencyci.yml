@@ -5,26 +5,19 @@ platform:
       tests:
         deprecated: skip
     # third party dependency
-    lodash.assign:
-      tests:
-        deprecated: skip
-    # third party dependency
     escape-regexp-component:
       tests:
         unlicensed: skip
     # third party dependency
-    jade:
-      tests:
-        deprecated: skip
-    # third party dependency
-    nomnomnomnom:
-      tests:
-        unmaintained: skip
-    # third party dependency
     react-pure-render:
       tests:
         unmaintained: skip
-    # TODO remove when replaced by istanbul pure coverage
-    isparta:
+    # third party dependency
+    postcss-load-plugins:
+      tests:
+        deprecated: skip
+    # third party dependency
+    nomnom:
       tests:
         unmaintained: skip
+    
