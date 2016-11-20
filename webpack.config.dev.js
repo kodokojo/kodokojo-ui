@@ -21,9 +21,6 @@
 var path = require('path')
 var webpack = require('webpack')
 
-// FIXME to prevent error, node-sass must be specifically 3.4.2
-// see https://github.com/react-toolbox/react-toolbox-example/issues/19
-
 module.exports = {
   entry: {
     app: [
