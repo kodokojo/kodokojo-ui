@@ -76,10 +76,18 @@ class LoginPage extends React.Component {
               <FormattedMessage id={'login-to-signup-text'}/>
             </p>
             <div>
+              {/*
+              // TODO use toggle feature
               <Button
                 label={ formatMessage({ id: 'signup-label' }) }
                 onClick={ () => browserHistory.push('/') }
                 title={ formatMessage({ id: 'signup-label' }) }
+              />
+              */}
+              <Button
+                label={ formatMessage({ id: 'register-label' }) }
+                onClick={ () => browserHistory.push('/') }
+                title={ formatMessage({ id: 'register-label' }) }
               />
             </div>
           </CardContent>
