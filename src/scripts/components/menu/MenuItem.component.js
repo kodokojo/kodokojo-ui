@@ -74,9 +74,7 @@ export class MenuItem extends React.Component {
       >
         <div
           className={ theme['menu-highlight'] }
-        >
-          &nbsp;
-        </div>
+        />
         <div className={ theme['menu-label'] }>
           { labelKey &&
             formatMessage({ id: labelKey })

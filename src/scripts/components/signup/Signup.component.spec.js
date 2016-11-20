@@ -83,7 +83,7 @@ describe.skip('<Signup> component', () => {
     intlProvider = new IntlProvider({ locale: 'en' }, {})
     captchaMock = class componentCaptchaMock extends React.Component {
       render() {
-        return <div id="captcha"></div>
+        return <div id="captcha"/>
       }
     }
     SignupRewire.__Rewire__('Captcha', captchaMock)

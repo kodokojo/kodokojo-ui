@@ -31,6 +31,18 @@ import AppBar from './AppBar.component'
 const initialState = {}
 
 const store = configureStore(initialState)
+const version = {
+  api: {
+    version: '1.1.0',
+    branch: 'dev',
+    commit: '26e77589fed6eb62f146dc9332c80614a0f49f40'
+  },
+  ui: {
+    version: '1.1.0',
+    branch: 'dev',
+    commit: '26e77589fed6eb62f146dc9332c80614a0f49f40'
+  }
+}
 
 storiesOf('AppBar', module)
   .addDecorator((story) => (
@@ -41,6 +53,7 @@ storiesOf('AppBar', module)
   .add('with children', () => (
     <AppBar
       store={store}
+      version={version}
     >
       <div>children</div>
     </AppBar>
@@ -49,6 +62,7 @@ storiesOf('AppBar', module)
     <AppBar
       flat
       store={store}
+      version={version}
     />
   ))
   .add('with fixed prop', () => (
@@ -56,6 +70,7 @@ storiesOf('AppBar', module)
         <div>
           <AppBar
             fixed
+            version={version}
           />
           <div>
             <br/>

@@ -51,10 +51,17 @@
       fill: $color-font-1;
     }
   }
+  & span:not([data-react-toolbox="tooltip"]) {
+    display: flex;
+    justify-content: center;
+    flex: 1 1 auto;
+  }
   // hard code fill for custom svg, warning for variants icon button
   & span > svg {
     fill: $color-font-4;
-    margin-top: -30%;
+    display: flex;
+    justify-content: center;
+    //margin-top: -30%;
   }
 }
 

@@ -113,6 +113,7 @@ export function resetAuthentication() {
   }
 }
 
+// TODO add possible reason to logout, display message in toaster
 export function logout() {
   return dispatch => dispatch(resetAuthentication())
     .then(data => {

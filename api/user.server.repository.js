@@ -18,7 +18,6 @@
 
 import config from '../config/config'
 import logger from '../config/logger'
-import merge from 'lodash/merge'
 
 import { requestWithLog } from './utils.server.service'
 
@@ -58,7 +57,7 @@ userRepository.updateUser = (request) => {
   delete headers.referer
   delete headers.origin
 
-  const req = {
+  return requestWithLog({
     method: 'PATCH',
     uri: `${config.api.protocol}${config.api.host}${config.api.routes.user}/${identifier}`,
     json: true,
@@ -72,8 +71,7 @@ userRepository.updateUser = (request) => {
     },
     rejectUnauthorized: false,
     requestCert: true
-  }
-  return requestWithLog(req)
+  })
 }
 
 userRepository.postUser = (request) => {
@@ -87,7 +85,7 @@ userRepository.postUser = (request) => {
   }
   headers.host = config.api.host
 
-  const req = {
+  return requestWithLog({
     method: 'POST',
     uri: `${config.api.protocol}${config.api.host}${config.api.routes.user}/${id}`,
     json: true,
@@ -98,8 +96,7 @@ userRepository.postUser = (request) => {
     },
     rejectUnauthorized: false,
     requestCert: true
-  }
-  return requestWithLog(req)
+  })
 }
 
 userRepository.getUserAccount = (request) => {
