@@ -88,7 +88,7 @@ describe('signup actions', () => {
       actionsRewireApi.__ResetDependency__('createUser')
     })
 
-    it('should create auth navigate to firstProject page', (done) => {
+    it('should create auth navigate to firstProject page', () => {
       // Given
       createUserSpy = sinon.stub().returns({
         type: 'MOCKED_CREATE_USER',
@@ -137,12 +137,10 @@ describe('signup actions', () => {
           expect(putAuthSpy).to.have.callCount(1)
           expect(putAuthSpy).to.have.been.calledWith(account.id)
           expect(requestWebsocketSpy).to.have.callCount(1)
-          done()
         })
-        .catch(done)
     })
 
-    it('should not create auth, accept account and return 202', (done) => {
+    it('should not create auth, accept account and return 202', () => {
       // Given
       createUserSpy = sinon.stub().returns({
         type: 'MOCKED_CREATE_USER',
@@ -182,12 +180,10 @@ describe('signup actions', () => {
           expect(setAuthSpy).to.have.callCount(0)
           expect(putAuthSpy).to.have.callCount(0)
           expect(requestWebsocketSpy).to.have.callCount(0)
-          done()
         })
-        .catch(done)
     })
 
-    it('should fail to create auth', (done) => {
+    it('should fail to create auth', () => {
       // Given
       const error = {
         status: {
@@ -221,7 +217,7 @@ describe('signup actions', () => {
       // Then
       return store.dispatch(actions.createAccount(account.email))
         .then(() => {
-          done(new Error('This fail case test passed'))
+          new Error('This fail case test passed')
         })
         .catch(() => {
           expect(store.getActions()).to.deep.equal(expectedActions)
@@ -231,7 +227,6 @@ describe('signup actions', () => {
           expect(setAuthSpy).to.have.callCount(0)
           expect(putAuthSpy).to.have.callCount(0)
           expect(requestWebsocketSpy).to.have.callCount(0)
-          done()
         })
     })
   })

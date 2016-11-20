@@ -87,7 +87,7 @@ describe('login actions', () => {
       actionsRewireApi.__ResetDependency__('requestWebsocket')
     })
 
-    it('should request auth', (done) => {
+    it('should request auth', () => {
       // Given
       const username = 'test'
       const password = 'psUs3r'
@@ -154,11 +154,10 @@ describe('login actions', () => {
         expect(historyPushSpy).to.have.callCount(1)
         expect(historyPushSpy).to.have.been.calledWith('/stacks')
         expect(requestWebsocketSpy).to.have.callCount(1)
-        done()
-      }).catch(done)
+      })
     })
 
-    it('should redirect to first project', (done) => {
+    it('should redirect to first project', () => {
       // Given
       const username = 'test'
       const password = 'psUs3r'
@@ -204,11 +203,10 @@ describe('login actions', () => {
         expect(historyPushSpy).to.have.callCount(1)
         expect(historyPushSpy).to.have.been.calledWith('/firstProject')
         expect(requestWebsocketSpy).to.have.callCount(1)
-        done()
-      }).catch(done)
+      })
     })
 
-    it('should redirect to origin location', (done) => {
+    it('should redirect to origin location', () => {
       // Given
       const username = 'test'
       const password = 'psUs3r'
@@ -263,11 +261,10 @@ describe('login actions', () => {
         expect(historyPushSpy).to.have.callCount(1)
         expect(historyPushSpy).to.have.been.calledWith('/someprotectedurl')
         expect(requestWebsocketSpy).to.have.callCount(1)
-        done()
-      }).catch(done)
+      })
     })
 
-    it('should fail to request auth', (done) => {
+    it('should fail to request auth', () => {
       // Given
       const username = 'test'
       const password = 'psUs3r'
@@ -312,7 +309,7 @@ describe('login actions', () => {
       // Then
       return store.dispatch(actions.login(username, password))
         .then(() => {
-          done(new Error('This fail case test passed'))
+          new Error('This fail case test passed')
         })
         .catch(() => {
           expect(store.getActions()).to.deep.equal(expectedActions)
@@ -321,7 +318,6 @@ describe('login actions', () => {
           expect(putAuthSpy).to.have.callCount(0)
           expect(getHeadersSpy).to.have.callCount(1)
           expect(requestWebsocketSpy).to.have.callCount(0)
-          done()
         })
     })
   })
@@ -340,7 +336,7 @@ describe('login actions', () => {
       actionsRewireApi.__ResetDependency__('stopWebsocket')
     })
 
-    it('should reset auth', (done) => {
+    it('should reset auth', () => {
       // Given
       const expectedActions = [
         {
@@ -363,8 +359,7 @@ describe('login actions', () => {
           expect(stopWebsocketSpy).to.have.callCount(1)
           expect(historyPushSpy).to.have.callCount(1)
           expect(historyPushSpy).to.have.been.calledWith('/login')
-          done()
-        }).catch(done)
+        })
     })
   })
 })
