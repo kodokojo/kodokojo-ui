@@ -30,7 +30,7 @@ function cleanFile() {
       if (err) {
         resolve('no version file, continue')
       } else {
-        fs.writeFile(versionFilePath, 'Hello Node.js', 'utf8', function(err) {
+        fs.writeFile(versionFilePath, 'version file', 'utf8', function(err) {
           if (err) {
             console.log(err)
           }

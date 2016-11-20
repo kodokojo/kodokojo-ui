@@ -35,7 +35,12 @@ module.exports = {
     modulesDirectories: [
       'node_modules',
       path.resolve(__dirname, './node_modules')
-    ]
+    ],
+    // FIXME there a bug in redux-api-middleware, this is a workaround
+    // see https://github.com/agraboso/redux-api-middleware/issues/83
+    alias: {
+      'redux-api-middleware': path.resolve(__dirname, './node_modules/@aftonbladet/redux-api-middleware/lib/index.js')
+    }
   },
   plugins: [
     new AssetsPlugin()

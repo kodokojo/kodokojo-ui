@@ -85,7 +85,7 @@ describe('project config actions', () => {
     })
 
     // TODO UT add test for users array and stackConfig params
-    it('should create project config', (done) => {
+    it('should create project config', () => {
       // Given
       const projectConfigName = 'Acme'
       const projectConfigAdmins = ['idUs3r']
@@ -143,9 +143,7 @@ describe('project config actions', () => {
           expect(createProjectSpy).to.have.been.calledWith(projectConfigId)
           expect(historyPushSpy).to.have.callCount(1)
           expect(historyPushSpy).to.have.been.calledWith('/stacks')
-          done()
         })
-        .catch(done)
     })
   })
 
@@ -170,7 +168,7 @@ describe('project config actions', () => {
       actionsRewireApi.__ResetDependency__('updateMenuProject')
     })
 
-    it('should return project config', (done) => {
+    it('should return project config', () => {
       // Given
       const projectConfigName = 'Acme'
       const projectConfigAdmins = [
@@ -233,9 +231,7 @@ describe('project config actions', () => {
           expect(getUserSpy).to.have.calledWith('otherUserId')
           expect(updateMenuProjectSpy).to.have.callCount(1)
           expect(updateMenuProjectSpy).to.have.calledWith('Acme')
-          done()
         })
-        .catch(done)
     })
   })
 
@@ -265,7 +261,7 @@ describe('project config actions', () => {
       actionsRewireApi.__ResetDependency__('getProjectConfig')
     })
 
-    it('should return project config', (done) => {
+    it('should return project config', () => {
       // Given
       const projectConfigName = 'Acme'
       const projectConfigAdmins = ['idUs3r']
@@ -316,9 +312,7 @@ describe('project config actions', () => {
           expect(getHeadersSpy).to.have.callCount(1)
           expect(createUserSpy).to.have.callCount(1)
           expect(createUserSpy).to.have.calledWith(userEmail)
-          done()
         })
-        .catch(done)
     })
   })
 })

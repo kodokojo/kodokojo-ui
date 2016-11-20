@@ -71,7 +71,7 @@ describe('user actions', () => {
       actionsRewireApi.__ResetDependency__('mapAccount')
     })
 
-    it('should create user', (done) => {
+    it('should create user', () => {
       // Given
       const email = 'test@email.com'
       const id = 'idUs3r'
@@ -80,6 +80,7 @@ describe('user actions', () => {
         userName: 'test',
         password: 'password'
       }
+      const status = 201
       const expectedActions = [
         {
           type: USER_NEW_ID_REQUEST,
@@ -105,12 +106,8 @@ describe('user actions', () => {
         {
           type: USER_NEW_SUCCESS,
           payload: {
-            account: {
-              id,
-              userName: account.userName,
-              password: account.password
-            },
-            status: 201
+            account,
+            status
           },
           meta: undefined
         }
@@ -119,7 +116,10 @@ describe('user actions', () => {
         .post(`${api.user}`)
         .reply(201, () => id)
         .post(`${api.user}/${id}`)
-        .reply(201, () => account)
+        .reply(201, {
+          account,
+          status
+        })
 
       mapAccountSpy = sinon.stub().returns(account)
       actionsRewireApi.__Rewire__('mapAccount', mapAccountSpy)
@@ -128,24 +128,19 @@ describe('user actions', () => {
       const store = mockStore({})
 
       // Then
-      return store.dispatch(actions.createUser(email))
+      return store.dispatch(actions.createUser(email, 'captcha'))
         .then(() => {
           expect(store.getActions()).to.deep.equal(expectedActions)
           expect(getHeadersSpy).to.have.callCount(2)
-          done()
+          expect(mapAccountSpy).to.have.callCount(1)
         })
-        .catch(done)
     })
 
-    it('should add user to waiting list', (done) => {
+    it('should add user to waiting list', () => {
       // Given
       const email = 'test@email.com'
       const id = 'idUs3r'
-      const account = {
-        id,
-        userName: 'test',
-        password: 'password'
-      }
+      const status = 202
       const expectedActions = [
         {
           type: USER_NEW_ID_REQUEST,
@@ -180,9 +175,11 @@ describe('user actions', () => {
         .post(`${api.user}`)
         .reply(201, () => id)
         .post(`${api.user}/${id}`)
-        .reply(202, () => account)
+        .reply(202, {
+          status
+        })
 
-      mapAccountSpy = sinon.stub().returns(account)
+      mapAccountSpy = sinon.spy()
       actionsRewireApi.__Rewire__('mapAccount', mapAccountSpy)
 
       // When
@@ -193,12 +190,11 @@ describe('user actions', () => {
         .then(() => {
           expect(store.getActions()).to.deep.equal(expectedActions)
           expect(getHeadersSpy).to.have.callCount(2)
-          done()
+          expect(mapAccountSpy).to.have.callCount(0)
         })
-        .catch(done)
     })
 
-    it('should fail to create user id', (done) => {
+    it('should fail to create user id', () => {
       // Given
       const email = 'test@email.com'
       const expectedActions = [
@@ -239,15 +235,16 @@ describe('user actions', () => {
 
       // Then
       return store.dispatch(actions.createUser(email))
-        .then(done, () => {
+        .then(() => {
+          new Error('This fail case test passed')
+        })
+        .catch(() => {
           expect(store.getActions()).to.deep.equal(expectedActions)
           expect(getHeadersSpy).to.have.callCount(1)
-          done()
         })
-        .catch(done)
     })
 
-    it('should fail to create user', (done) => {
+    it('should fail to create user', () => {
       // Given
       const email = 'test@email.com'
       const id = 'idUs3r'
@@ -307,12 +304,11 @@ describe('user actions', () => {
       // Then
       return store.dispatch(actions.createUser(email))
         .then(() => {
-          done(new Error('This fail case test passed'))
+          new Error('This fail case test passed')
         })
         .catch(() => {
           expect(store.getActions()).to.deep.equal(expectedActions)
           expect(getHeadersSpy).to.have.callCount(2)
-          done()
         })
     })
   })
@@ -323,7 +319,7 @@ describe('user actions', () => {
       actionsRewireApi.__ResetDependency__('mapUser')
     })
 
-    it('should get user', (done) => {
+    it('should get user', () => {
       // Given
       const user = {
         id: 'idus3r',
@@ -363,12 +359,10 @@ describe('user actions', () => {
         .then(() => {
           expect(store.getActions()).to.deep.equal(expectedActions)
           expect(getHeadersSpy).to.have.callCount(1)
-          done()
         })
-        .catch(done)
     })
 
-    it('should fail to get user', (done) => {
+    it('should fail to get user', () => {
       // Given
       const userId = 'idUs3r'
       const expectedActions = [
@@ -404,12 +398,11 @@ describe('user actions', () => {
       // Then
       return store.dispatch(actions.getUser(userId))
         .then(() => {
-          done(new Error('This fail case test passed'))
+          new Error('This fail case test passed')
         })
         .catch(() => {
           expect(store.getActions()).to.deep.equal(expectedActions)
           expect(getHeadersSpy).to.have.callCount(1)
-          done()
         })
     })
   })

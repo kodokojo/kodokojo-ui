@@ -7,4 +7,4 @@ reporting:
     print: summary
     reports:
         - lcov
-    dir: ./coverage
+    dir: ./reports/coverage
