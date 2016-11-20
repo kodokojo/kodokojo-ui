@@ -91,6 +91,7 @@ export function requestNewUser(email, userId, captcha) {
         {
           type: USER_NEW_SUCCESS,
           payload: (action, state, res) => {
+            // if status is 201, user is created
             if (res.status === 201) {
               return res.json()
                 .then(data => {
@@ -100,6 +101,7 @@ export function requestNewUser(email, userId, captcha) {
                   }
                 })
             }
+            // else status is 202, user is added to waiting list
             return {
               status: res.status
             }

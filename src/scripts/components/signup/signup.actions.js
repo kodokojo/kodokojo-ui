@@ -55,7 +55,6 @@ export function requestAccountFailure(data) {
   }
 }
 
-// TODO update TU
 export function createAccount(email, captcha) {
   return dispatch => dispatch(requestAccountRequest())
     .then(data => dispatch(createUser(email, captcha)))
@@ -73,7 +72,7 @@ export function createAccount(email, captcha) {
       if (!data.error && data.payload.status === 202) {
         return Promise.resolve(data.payload)
       }
-      if (!data.error && data.payload) {
+      if (!data.error && data.payload.status === 201) {
         // we set auth
         setAuth(data.payload.account.userName, data.payload.account.password)
         putAuth(data.payload.account.id, data.payload.account.userName)
