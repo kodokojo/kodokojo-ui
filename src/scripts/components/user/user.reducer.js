@@ -67,7 +67,6 @@ export default function users(state = initialState, action) {
 
   // TODO add new user to users list?
   if (action.type === USER_NEW_SUCCESS && action.payload.status === 201) {
-    console.log('user reducer 201')
     return {
       ...state,
       isFetching: false
@@ -75,7 +74,6 @@ export default function users(state = initialState, action) {
   }
 
   if (action.type === USER_NEW_SUCCESS && action.payload.status === 202) {
-    console.log('user reducer 202')
     return {
       ...state,
       isFetching: false

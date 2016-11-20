@@ -71,7 +71,7 @@ describe('user actions', () => {
       actionsRewireApi.__ResetDependency__('mapAccount')
     })
 
-    it.skip('should create user', (done) => {
+    it('should create user', (done) => {
       // Given
       const email = 'test@email.com'
       const id = 'idUs3r'
@@ -109,7 +109,8 @@ describe('user actions', () => {
               id,
               userName: account.userName,
               password: account.password
-            }
+            },
+            status: 201
           },
           meta: undefined
         }
@@ -119,6 +120,67 @@ describe('user actions', () => {
         .reply(201, () => id)
         .post(`${api.user}/${id}`)
         .reply(201, () => account)
+
+      mapAccountSpy = sinon.stub().returns(account)
+      actionsRewireApi.__Rewire__('mapAccount', mapAccountSpy)
+
+      // When
+      const store = mockStore({})
+
+      // Then
+      return store.dispatch(actions.createUser(email))
+        .then(() => {
+          expect(store.getActions()).to.deep.equal(expectedActions)
+          expect(getHeadersSpy).to.have.callCount(2)
+          done()
+        })
+        .catch(done)
+    })
+
+    it('should add user to waiting list', (done) => {
+      // Given
+      const email = 'test@email.com'
+      const id = 'idUs3r'
+      const account = {
+        id,
+        userName: 'test',
+        password: 'password'
+      }
+      const expectedActions = [
+        {
+          type: USER_NEW_ID_REQUEST,
+          payload: {
+            email
+          },
+          meta: undefined
+        },
+        {
+          type: USER_NEW_ID_SUCCESS,
+          payload: {
+            account: {
+              id
+            }
+          },
+          meta: undefined
+        },
+        {
+          type: USER_NEW_REQUEST,
+          payload: undefined,
+          meta: undefined
+        },
+        {
+          type: USER_NEW_SUCCESS,
+          payload: {
+            status: 202
+          },
+          meta: undefined
+        }
+      ]
+      nock('http://localhost')
+        .post(`${api.user}`)
+        .reply(201, () => id)
+        .post(`${api.user}/${id}`)
+        .reply(202, () => account)
 
       mapAccountSpy = sinon.stub().returns(account)
       actionsRewireApi.__Rewire__('mapAccount', mapAccountSpy)

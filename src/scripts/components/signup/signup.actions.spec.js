@@ -36,6 +36,7 @@ import { __RewireAPI__ as actionsRewireApi } from './signup.actions'
 import {
   ACCOUNT_NEW_REQUEST,
   ACCOUNT_NEW_SUCCESS,
+  ACCOUNT_NEW_ACCEPTED,
   ACCOUNT_NEW_FAILURE
 } from '../../commons/constants'
 
@@ -47,7 +48,7 @@ const middlewares = [
 const mockStore = configureMockStore(middlewares)
 
 describe('signup actions', () => {
-  describe.skip('create auth', () => {
+  describe('create auth', () => {
     let pushHistorySpy
     let setAuthSpy
     let putAuthSpy
@@ -87,12 +88,13 @@ describe('signup actions', () => {
       actionsRewireApi.__ResetDependency__('createUser')
     })
 
-    it('should create auth', (done) => {
+    it('should create auth navigate to firstProject page', (done) => {
       // Given
       createUserSpy = sinon.stub().returns({
         type: 'MOCKED_CREATE_USER',
         payload: {
-          account
+          account,
+          status: 201
         }
       })
       actionsRewireApi.__Rewire__('createUser', createUserSpy)
@@ -103,13 +105,15 @@ describe('signup actions', () => {
         {
           type: 'MOCKED_CREATE_USER',
           payload: {
-            account
+            account,
+            status: 201
           }
         },
         {
           type: ACCOUNT_NEW_SUCCESS,
           payload: {
-            account
+            account,
+            status: 201
           }
         },
         {
@@ -133,6 +137,51 @@ describe('signup actions', () => {
           expect(putAuthSpy).to.have.callCount(1)
           expect(putAuthSpy).to.have.been.calledWith(account.id)
           expect(requestWebsocketSpy).to.have.callCount(1)
+          done()
+        })
+        .catch(done)
+    })
+
+    it('should not create auth, accept account and return 202', (done) => {
+      // Given
+      createUserSpy = sinon.stub().returns({
+        type: 'MOCKED_CREATE_USER',
+        payload: {
+          status: 202
+        }
+      })
+      actionsRewireApi.__Rewire__('createUser', createUserSpy)
+      const expectedActions = [
+        {
+          type: ACCOUNT_NEW_REQUEST
+        },
+        {
+          type: 'MOCKED_CREATE_USER',
+          payload: {
+            status: 202
+          }
+        },
+        {
+          type: ACCOUNT_NEW_ACCEPTED,
+          payload: {
+            status: 202
+          }
+        }
+      ]
+
+      // When
+      const store = mockStore({})
+
+      // Then
+      return store.dispatch(actions.createAccount(account.email))
+        .then(() => {
+          expect(store.getActions()).to.deep.equal(expectedActions)
+          expect(createUserSpy).to.have.callCount(1)
+          expect(createUserSpy).to.have.been.calledWith(account.email)
+          expect(pushHistorySpy).to.have.callCount(0)
+          expect(setAuthSpy).to.have.callCount(0)
+          expect(putAuthSpy).to.have.callCount(0)
+          expect(requestWebsocketSpy).to.have.callCount(0)
           done()
         })
         .catch(done)

@@ -97,7 +97,7 @@ describe('user reducer', () => {
     })
   })
 
-  it.skip('should handle USER_NEW_SUCCESS', () => {
+  it('should handle USER_NEW_SUCCESS and status 201', () => {
     // Given
     const state = {}
     const action = {
@@ -111,7 +111,27 @@ describe('user reducer', () => {
           password: 'password',
           sshKeyPublic: 'sshPublicKey',
           sshKeyPrivate: 'privateKey'
-        }
+        },
+        status: 201
+      }
+    }
+
+    // When
+    const nextState = userReducer(state, action)
+
+    // Then
+    expect(nextState).to.deep.equal({
+      isFetching: false
+    })
+  })
+
+  it('should handle USER_NEW_SUCCESS and status 202', () => {
+    // Given
+    const state = {}
+    const action = {
+      type: ActionsTypes.USER_NEW_SUCCESS,
+      payload: {
+        status: 202
       }
     }
 
