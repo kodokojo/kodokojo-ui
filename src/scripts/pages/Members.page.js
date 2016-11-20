@@ -225,8 +225,7 @@ export class MembersPage extends React.Component {
         <Paragraph>
           <div className={ userClasses }>
             <div className={ userTheme['user-name'] }>
-              <div className={ userTheme['user-spacer'] }
-              ></div>
+              <div className={ userTheme['user-spacer'] }/>
               <FormattedMessage id={'name-label'} />
             </div>
             <div className={ userTheme['user-username'] }>

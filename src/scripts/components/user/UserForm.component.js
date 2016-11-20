@@ -239,8 +239,7 @@ export class UserForm extends React.Component {
                 type="email"
               />
             </div>
-            <div className={ userTheme['user-select--form']}>
-            </div>
+            <div className={ userTheme['user-select--form']}/>
             <div className={ userTheme['user-edit--form']}>
               <IconButton
                 className="iconButton"
@@ -260,6 +259,7 @@ export class UserForm extends React.Component {
                 label={ formatMessage({ id: 'sshkey-public-label' }) }
                 multiline
                 name="sshKeyPublic"
+                style={{ maxHeight: '104px' }}
               />
             </div>
             <div className={ userTheme['user-password--form'] }>

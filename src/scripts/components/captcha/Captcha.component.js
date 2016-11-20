@@ -188,7 +188,7 @@ class Captcha extends React.Component {
           classNames(className, captchaTheme['captcha-container'])
         }
         id={ elementID }
-      ></div>
+      />
     )
   }
 }
