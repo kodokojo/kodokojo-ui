@@ -20,6 +20,7 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { IntlProvider } from 'react-intl'
 import { storiesOf, linkTo } from '@kadira/storybook'
+import merge from 'lodash/merge'
 
 // contexte
 import configureStore from '../store/configureStore'
@@ -50,21 +51,21 @@ const initialState = {
       }
     }
   },
-  menu: [
-    {
+  menu: {
+    0: {
       index: 0,
       labelKey: 'projects-label',
       level: 0,
       route: '#projects',
       titleKey: 'projects-label'
     },
-    {
+    1: {
       index: 1,
       disabled: true,
       labelText: 'Kodo Kojo',
       titleText: 'Kodo Kojo'
     },
-    {
+    2: {
       active: true,
       index: 2,
       labelKey: 'stacks-label',
@@ -72,7 +73,7 @@ const initialState = {
       route: '/stacks',
       titleKey: 'stacks-label'
     },
-    {
+    3: {
       active: false,
       index: 3,
       labelKey: 'members-label',
@@ -81,7 +82,7 @@ const initialState = {
       route: '/members',
       titleKey: 'members-label'
     }
-  ],
+  },
   projectConfig: {
     stacks: [
       {
@@ -124,11 +125,69 @@ const location = {
   pathname: '/stacks'
 }
 
-const store = configureStore(initialState)
+const storeInitial = configureStore(initialState)
+const storeWithAlerts = configureStore(merge(
+  {},
+  initialState,
+  {
+    alerts: {
+      display: {
+        id: 2,
+        active: true,
+        icon: 'question_answer',
+        label: 'Some important message 1',
+        toasterVariant: 'warning'
+      },
+      list: [
+        {
+          id: 2,
+          active: false,
+          icon: 'question_answer',
+          label: 'Some important message 1',
+          toasterVariant: 'warning'
+        },
+        {
+          id: 4,
+          active: false,
+          icon: 'question_answer',
+          label: 'Some important message with timer 4',
+          timeout: 1000,
+          toasterVariant: 'info'
+        },
+        {
+          action:'I understand',
+          id: 3,
+          active: false,
+          icon: 'question_answer',
+          label: 'Some important message 3',
+          toasterVariant: 'accept'
+        },
+        {
+          id: 42,
+          active: false,
+          icon: 'question_answer',
+          label: 'Some important message 42',
+          toasterVariant: 'accept'
+        }
+      ]
+    }
+  }
+))
 
 storiesOf('StacksPage', module)
   .add('stack with all 4 status', () => (
-    <Provider store={store}>
+    <Provider store={storeInitial}>
+      <IntlProvider locale="en" messages={ en }>
+        <App>
+          <StacksPage
+            location={ location }
+          />
+        </App>
+      </IntlProvider>
+    </Provider>
+  ))
+  .add('stack with all 4 status and alerts', () => (
+    <Provider store={storeWithAlerts}>
       <IntlProvider locale="en" messages={ en }>
         <App>
           <StacksPage

@@ -20,6 +20,7 @@ import { combineReducers } from 'redux'
 import { routerReducer } from 'react-router-redux'
 import { reducer as formReducer } from 'redux-form'
 
+import alerts from '../components/alert/alert.reducer'
 import auth from '../components/auth/auth.reducer'
 import bricks from '../components/brick/brick.reducer'
 import menu from '../components/menu/menu.reducer'
@@ -29,6 +30,7 @@ import socket from '../components/_utils/websocket/websocket.reducer'
 import users, * as fromUser from '../components/user/user.reducer'
 
 const rootReducer = combineReducers({
+  alerts,
   auth,
   bricks,
   menu,
@@ -36,12 +38,16 @@ const rootReducer = combineReducers({
   projectConfig,
   socket,
   users,
+  // redux-form reducer
   form: formReducer,
+  // react-redux-router reducer
   routing: routerReducer
 })
 
 export default rootReducer
 
+
+// selectors
 export const getUser = (userId, state) => fromUser.getUser(userId, state.users)
 
 export const getAggregatedStackStatus = (state) => fromProjectConfig.getAggregatedStackStatus(state.projectConfig)
