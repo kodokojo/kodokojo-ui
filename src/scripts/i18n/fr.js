@@ -18,6 +18,10 @@
 
 export default {
   'account-accepted-text': 'Thanks! Your email has been registered in our waiting list, we will contact you as soon as an account is available.',
+  'alert-logout-password-text': 'You have been disconneted because you have changed your password. Please log in with the new one.',
+  'alert-member-create-text': 'The member has been added, it will be available soon on each brick of the project stack.',
+  'alert-stack-starting-text': 'Stack is starting. Each brick will start, then will be configured. ' +
+    'It could take some times until it will be totally up and running. Please be patient...',
   'account-label': 'Account',
   'account-error-409': 'L’email existe déjà',
   'account-error-412': 'User identifier is not valid',

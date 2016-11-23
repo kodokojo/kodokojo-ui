@@ -29,6 +29,8 @@ import { mapAccount } from '../../services/mapping.service'
 import { getProject } from '../project/project.actions'
 import { getProjectConfigAndProject } from '../projectConfig/projectConfig.actions'
 import { requestWebsocket, stopWebsocket } from '../_utils/websocket/websocket.actions'
+import { newAlert } from '../alert/alert.actions'
+
 import {
   AUTH_REQUEST,
   AUTH_SUCCESS,
@@ -113,8 +115,7 @@ export function resetAuthentication() {
   }
 }
 
-// TODO add possible reason to logout, display message in toaster
-export function logout() {
+export function logout(reason) {
   return dispatch => dispatch(resetAuthentication())
     .then(data => {
       if (!data.error) {
@@ -122,7 +123,21 @@ export function logout() {
         authService.resetAuth()
         storageService.clean()
         return dispatch(stopWebsocket())
-          .then(() => Promise.resolve(browserHistory.push('/login')))
+          .then(() => {
+            // TODO update UT
+            if (reason) {
+              const alert = {
+                icon: 'question_answer',
+                labelId: reason,
+                label: 'id',
+                timeout: 2000,
+                variant: 'warning'
+              }
+              dispatch(newAlert(alert))
+            }
+
+            return Promise.resolve(browserHistory.push('/login'))
+          })
       }
       throw new Error(data.payload.status)
     })

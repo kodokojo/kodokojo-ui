@@ -27,6 +27,7 @@ import { logout } from '../login/login.actions'
 import { createUser, getUser } from '../user/user.actions'
 import { createProject, getProject } from '../project/project.actions'
 import { updateMenuProject } from '../menu/menu.actions'
+import { newAlert } from '../alert/alert.actions'
 import {
   PROJECT_CONFIG_REQUEST,
   PROJECT_CONFIG_SUCCESS,
@@ -204,13 +205,21 @@ export function addUserToProjectConfig(projectConfigId, email) {
   return dispatch => dispatch(createUser(email))
     .then(data => {
       if (!data.error) {
-        // TODO add dispatch show user details when user is created
         return dispatch(requestAddUserToProjectConfig(projectConfigId, data.payload.account.id))
       }
       throw new Error(data.payload.status)
     })
     .then(data => {
       if (!data.error) {
+        const alert = {
+          icon: 'question_answer',
+          labelId: 'alert-member-create-text',
+          label: 'id',
+          timeout: 2000,
+          variant: 'warning'
+        }
+        dispatch(newAlert(alert))
+
         return dispatch(getProjectConfig(projectConfigId))
       }
       throw new Error(data.payload.status)

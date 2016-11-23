@@ -239,10 +239,11 @@ describe('project config actions', () => {
   describe('add user to project config', () => {
     let createUserSpy
     let getProjectConfigSpy
+    let newAlertSpy
 
     beforeEach(() => {
       createUserSpy = sinon.stub().returns({
-        type: 'MOCKED_ACTION',
+        type: 'MOCKED_USER_CREATE',
         payload: {
           account: {
             identifier: 'otherUserId'
@@ -251,14 +252,19 @@ describe('project config actions', () => {
       })
       actionsRewireApi.__Rewire__('createUser', createUserSpy)
       getProjectConfigSpy = sinon.stub().returns({
-        type: 'MOCKED_ACTION'
+        type: 'MOCKED_PROJECT_GET'
       })
       actionsRewireApi.__Rewire__('getProjectConfig', getProjectConfigSpy)
+      newAlertSpy = sinon.stub().returns({
+        type: 'MOCKED_ADD_ALERT'
+      })
+      actionsRewireApi.__Rewire__('newAlert', newAlertSpy)
     })
 
     afterEach(() => {
       actionsRewireApi.__ResetDependency__('createUser')
       actionsRewireApi.__ResetDependency__('getProjectConfig')
+      actionsRewireApi.__ResetDependency__('newAlert')
     })
 
     it('should return project config', () => {
@@ -275,9 +281,16 @@ describe('project config actions', () => {
         ]
       }
       const userEmail = 'email@test.com'
+      const alertAddMember = {
+        icon: 'question_answer',
+        labelId: 'alert-member-create-text',
+        label: 'id',
+        timeout: 2000,
+        variant: 'warning'
+      }
       const expectedActions = [
         {
-          type: 'MOCKED_ACTION',
+          type: 'MOCKED_USER_CREATE',
           payload: {
             account: {
               identifier: 'otherUserId'
@@ -295,7 +308,10 @@ describe('project config actions', () => {
           meta: undefined
         },
         {
-          type: 'MOCKED_ACTION'
+          type: 'MOCKED_ADD_ALERT'
+        },
+        {
+          type: 'MOCKED_PROJECT_GET'
         }
       ]
       nock('http://localhost')
@@ -312,6 +328,8 @@ describe('project config actions', () => {
           expect(getHeadersSpy).to.have.callCount(1)
           expect(createUserSpy).to.have.callCount(1)
           expect(createUserSpy).to.have.calledWith(userEmail)
+          expect(newAlertSpy).to.have.callCount(1)
+          expect(newAlertSpy).to.have.calledWith(alertAddMember)
         })
     })
   })

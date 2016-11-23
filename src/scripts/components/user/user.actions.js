@@ -208,7 +208,7 @@ export function updateUser(user) {
     .then(data => {
       if (!data.error) {
         if (data.payload && data.payload.user && data.payload.user.password) {
-          dispatch(logout())
+          dispatch(logout('alert-logout-password-text'))
         }
         return Promise.resolve(data)
       }
