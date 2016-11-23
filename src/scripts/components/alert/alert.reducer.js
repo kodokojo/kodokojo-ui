@@ -18,10 +18,13 @@
 
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
+import omitBy from 'lodash/omitBy'
+import isNil from 'lodash/isNil'
 
 // TODO UT
 
 import {
+  ALERT_ACTIVE_CLEAN,
   ALERT_ACTIVE_HIDE,
   ALERT_ACTIVE_REPLACE,
   ALERT_ACTIVE_SHOW,
@@ -41,14 +44,16 @@ export default function alerts(state = initialState, action) {
     const alertId = alerts.length > 0 ? sortBy(alerts, 'id')[alerts.length - 1].id + 1 : 0
     let alert = {
       id: alertId,
-      action: action.payload.action,
+      action: action.payload.alert.action,
       active: false,
-      icon: action.payload.icon,
-      label: action.payload.label,
-      timeout: action.payload.timeout,
-      toasterVariant: action.payload.toasterVariant
+      icon: action.payload.alert.icon,
+      label: action.payload.alert.label,
+      labelId: action.payload.alert.labelId,
+      timeout: action.payload.alert.timeout,
+      variant: action.payload.alert.variant
     }
-    alert = alert.filter(key => key !== undefined)
+    // alert = alert.filter(key => key !== undefined)
+    alert = omitBy(alert, isNil)
     alerts.push(alert)
     
     return {
@@ -58,6 +63,7 @@ export default function alerts(state = initialState, action) {
   }
 
   if (action.type === ALERT_REMOVE) {
+    const { display } = state
     const alerts = sortBy(state.list, 'id')
     const alertIndex = findIndex( alerts, { 'id': action.payload.alertId })
     alerts.splice(alertIndex, 1)
@@ -65,6 +71,13 @@ export default function alerts(state = initialState, action) {
     return {
       ...state,
       list: alerts
+    }
+  }
+
+  if (action.type === ALERT_ACTIVE_CLEAN) {
+    return {
+      ...state,
+      display: {}
     }
   }
 

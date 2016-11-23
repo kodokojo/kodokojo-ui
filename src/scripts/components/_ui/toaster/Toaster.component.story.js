@@ -39,7 +39,7 @@ storiesOf('Toaster', module)
       onClick={ () => {} }
       onTimeout={ () => {} }
       timeout={ 2000 }
-      toasterVariant="accept"
+      variant="accept"
     />
   ))
   .add('cancel', () => ( 
@@ -50,7 +50,7 @@ storiesOf('Toaster', module)
       onClick={ () => {} }
       onTimeout={ () => {} }
       timeout={ 2000 }
-      toasterVariant="info"
+      variant="info"
     />
   ))
   .add('warning', () => ( 
@@ -65,6 +65,6 @@ storiesOf('Toaster', module)
       onClick={ () => {} }
       onTimeout={ () => {} }
       timeout={ 2000 }
-      toasterVariant="warning"
+      variant="warning"
     />
   ))

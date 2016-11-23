@@ -136,7 +136,7 @@ const storeWithAlerts = configureStore(merge(
         active: true,
         icon: 'question_answer',
         label: 'Some important message 1',
-        toasterVariant: 'warning'
+        variant: 'warning'
       },
       list: [
         {
@@ -144,7 +144,7 @@ const storeWithAlerts = configureStore(merge(
           active: false,
           icon: 'question_answer',
           label: 'Some important message 1',
-          toasterVariant: 'warning'
+          variant: 'warning'
         },
         {
           id: 4,
@@ -152,7 +152,7 @@ const storeWithAlerts = configureStore(merge(
           icon: 'question_answer',
           label: 'Some important message with timer 4',
           timeout: 1000,
-          toasterVariant: 'info'
+          variant: 'info'
         },
         {
           action:'I understand',
@@ -160,14 +160,14 @@ const storeWithAlerts = configureStore(merge(
           active: false,
           icon: 'question_answer',
           label: 'Some important message 3',
-          toasterVariant: 'accept'
+          variant: 'accept'
         },
         {
           id: 42,
           active: false,
           icon: 'question_answer',
           label: 'Some important message 42',
-          toasterVariant: 'accept'
+          variant: 'accept'
         }
       ]
     }

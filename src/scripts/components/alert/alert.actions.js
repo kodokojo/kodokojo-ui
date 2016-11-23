@@ -19,10 +19,12 @@
 import Promise from 'bluebird'
 import sortBy from 'lodash/sortBy'
 import findIndex from 'lodash/findIndex'
+import isEmpty from 'lodash/isEmpty'
 
 // TODO UT
 
 import {
+  ALERT_ACTIVE_CLEAN,
   ALERT_ACTIVE_HIDE,
   ALERT_ACTIVE_REPLACE,
   ALERT_ACTIVE_SHOW,
@@ -30,11 +32,11 @@ import {
   ALERT_REMOVE
 } from '../../commons/constants'
 
-export function addAlert(alertId) {
+export function addAlert(alert) {
   return {
     type: ALERT_ADD,
     payload: {
-      alertId
+      alert
     }
   }
 }
@@ -66,6 +68,12 @@ export function showAlert(alertId) {
   }
 }
 
+export function cleanAlert() {
+  return {
+    type: ALERT_ACTIVE_CLEAN
+  }
+}
+
 export  function replaceAlert(alertId) {
   return {
     type: ALERT_ACTIVE_REPLACE,
@@ -73,6 +81,17 @@ export  function replaceAlert(alertId) {
       alertId
     }
   }
+}
+
+export function newAlert(alert) {
+  return (dispatch, getState) => dispatch(addAlert(alert))
+    .then(data => {
+      const { alerts } = getState()
+
+      if (alerts.list.length <= 1 && isEmpty(alerts.display)) {
+        dispatch(replaceAlert(alerts.list[0].id))
+      }
+    })
 }
 
 export  function replaceDisplayAlert(alertId) {
@@ -89,16 +108,26 @@ export function nextAlert(alertId) {
       const alertIndex = findIndex(alerts, { 'id': alertId })
       const nextAlertIndex = alertIndex + 1
       
-      return new Promise((resolve, reject) => {
-        if (alerts[nextAlertIndex] !== undefined) {
-          setTimeout(() => {
-            resolve(dispatch(replaceDisplayAlert(alerts[nextAlertIndex].id)))
-          }, 600)
-        } else {
-          resolve()
-        }
-      })
+      // 600ms is the animation time for an alert (in toaster) to play hide and show animation
+      if (alerts[nextAlertIndex] !== undefined) {
+        setTimeout(() => {
+          return Promise.resolve(dispatch(replaceDisplayAlert(alerts[nextAlertIndex].id)))
+        }, 600)
+      }
+      return Promise.resolve()
     })
     .then(data => dispatch(removeAlert(alertId)))
+    .then(data => {
+      const { alerts } = getState()
+
+      // if there is no more alerts, clean displayed alert
+      // 600ms is the animation time for an alert (in toaster) to play hide and show animation
+      if (alerts.list.length === 0) {
+        setTimeout(() => {
+          return Promise.resolve(dispatch(cleanAlert()))
+        }, 600)
+      }
+      return Promise.resolve()
+    })
     .catch(error => Promise.reject(error.message || error))
 }
