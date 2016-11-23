@@ -21,9 +21,29 @@
 
 .snackbar {
   background-color: $color-primary-1;
+  transition: all $animation-duration $animation-curve-default $animation-duration;
+  button {
+    min-width: inherit;
+    margin-left: $spacing-smallest !important;
+  }
 }
 
-.label {
-  flex-grow: 1;
+.message-content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-flow: row nowrap;
+}
+
+.message-icon {
+  display: flex;
+  font-size: $font-size-large !important;
+  margin-right: $spacing-atomic;
+  align-items: baseline !important;
+}
+
+.message-text {
+  flex: 1 1 100%;
+  display: flex;
   font-size: $font-size-default;
+
 }

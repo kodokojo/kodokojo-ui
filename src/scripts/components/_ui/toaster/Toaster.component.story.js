@@ -32,40 +32,39 @@ storiesOf('Toaster', module)
   ))
   .add('accept', () => (
     <Toaster
-      action="Accept"
+      action="I understand"
       active
       icon="question_answer"
-      label="Snackbar action accept"
+      label="Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo uti liz ado desde o século XVI."
       onClick={ () => {} }
       onTimeout={ () => {} }
       timeout={ 2000 }
       toasterVariant="accept"
-      type="accept"
     />
   ))
   .add('cancel', () => ( 
     <Toaster
-      action="Cancel"
       active
       icon="question_answer"
-      label="Snackbar action cancel"
+      label="Snackbar action info"
       onClick={ () => {} }
       onTimeout={ () => {} }
       timeout={ 2000 }
-      toasterVariant="cancel"
-      type="cancel"
+      toasterVariant="info"
     />
   ))
   .add('warning', () => ( 
     <Toaster
-      action="Close"
       active
       icon="question_answer"
-      label="Snackbar action warning"
+      label={
+      `
+        Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI.
+        Lorem Ipsum é simplesmente uma simulação de texto da indústria tipográfica e de impressos, e vem sendo utilizado desde o século XVI.
+      `}
       onClick={ () => {} }
       onTimeout={ () => {} }
       timeout={ 2000 }
       toasterVariant="warning"
-      type="warning"
     />
   ))

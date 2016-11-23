@@ -269,5 +269,15 @@
   padding: 0;
   margin: 0;
   font-size: 140px !important;
-  color: $color-font-1;
+}
+
+.icon--small {
+  padding: 0;
+  margin: 0;
+  font-size: 20px !important;
+}
+
+.icon--flex {
+  display: flex;
+  align-items: center;
 }

@@ -204,7 +204,7 @@ export class ProjectConfigForm extends React.Component {
                           </span>
                         </div>
                         <FontIcon
-                          className={ utilsTheme['icon--large'] }
+                          className={ classNames(utilsTheme['icon--large'], utilsTheme['font-color--1']) }
                           value="layers"
                         />
                       </div>

@@ -25,9 +25,12 @@ import { snackbarFactory as toolboxSnackbarFactory } from 'react-toolbox/lib/sna
 // component
 import '../../../../styles/_commons.less'
 import toasterAcceptTheme from './toasterAccept.scss'
-import toasterCancelTheme from './toasterCancel.scss'
+import toasterInfoTheme from './toasterInfo.scss'
 import toasterWarningTheme from './toasterWarning.scss'
 import Button from '../button/Button.component'
+import IconButton from '../button/IconButton.component'
+import FontIcon from '../fontIcon/FontIcon.component'
+import CloseIcon from '../icons/CloseIcon.component'
 
 /**
  * UI: Toaster component
@@ -36,11 +39,15 @@ import Button from '../button/Button.component'
 const ToolboxSnackbar = toolboxSnackbarFactory(ToolboxOverlay, Button)
 export class Toaster extends React.Component {
   static propTypes = {
-    toasterVariant: React.PropTypes.oneOf(['warning', 'action'])
+    action: React.PropTypes.string,
+    icon: React.PropTypes.string,
+    label: React.PropTypes.string,
+    onClick: React.PropTypes.func,
+    toasterVariant: React.PropTypes.oneOf(['accept', 'warning', 'info'])
   }
   
   render() {
-    const { toasterVariant } = this.props
+    const { action, icon, label, onClick, toasterVariant } = this.props
     const rest = { ...this.props }
     delete rest.toasterVariant
 
@@ -49,8 +56,9 @@ export class Toaster extends React.Component {
       case 'accept':
         theme = toasterAcceptTheme
         break
-      case 'cancel':
-        theme = toasterCancelTheme
+      default:
+      case 'info':
+        theme = toasterInfoTheme
         break
       case 'warning':
         theme = toasterWarningTheme
@@ -60,6 +68,25 @@ export class Toaster extends React.Component {
     return (
       <ToolboxSnackbar
         {...rest}
+        action={ action }
+        label={
+          <div className={ theme['message-content'] }>
+            <FontIcon
+              className={ theme['message-icon'] }
+              value={ icon }
+            />
+            <div className={ theme['message-text']} >
+              { label }
+            </div>
+            { !action &&
+              <IconButton
+                icon={ <CloseIcon/> }
+                onClick={ onClick }
+                style={{ flex: '1 0 auto', width: '3.5em', height: '3.5em', marginRight: '-30px' }}
+              />
+            }
+          </div>
+        }
         theme={ theme }
       />
     )
