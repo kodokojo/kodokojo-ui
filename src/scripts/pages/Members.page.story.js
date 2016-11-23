@@ -65,21 +65,21 @@ const initialState = {
       email: 'username4@email.ext'
     }
   },
-  menu: [
-    {
+  menu: {
+    0: {
       index: 0,
       labelKey: 'projects-label',
       level: 0,
       route: '#projects',
       titleKey: 'projects-label'
     },
-    {
+    1: {
       index: 1,
       disabled: true,
       labelText: 'Kodo Kojo',
       titleText: 'Kodo Kojo'
     },
-    {
+    2: {
       active: false,
       index: 2,
       labelKey: 'stacks-label',
@@ -88,7 +88,7 @@ const initialState = {
       onClick: linkTo('StacksPage'),
       titleKey: 'stacks-label'
     },
-    {
+    3: {
       active: true,
       index: 3,
       labelKey: 'members-label',
@@ -96,15 +96,15 @@ const initialState = {
       route: '/members',
       titleKey: 'members-label'
     }
-  ]
+  }
 }
 
 const location = {
   pathname: '/members'
 }
 
-const initialStore = configureStore(initialState)
-const withformStore = configureStore(merge(
+const storeInitial = configureStore(initialState)
+const storeWithForm = configureStore(merge(
   {},
   initialState,
   {
@@ -124,7 +124,7 @@ const withformStore = configureStore(merge(
 
 storiesOf('MembersPage', module)
   .add('with 3 users', () => (
-    <Provider store={initialStore}>
+    <Provider store={storeInitial}>
       <IntlProvider locale="en" messages={ en }>
         <App>
           <MembersPage
@@ -135,7 +135,7 @@ storiesOf('MembersPage', module)
     </Provider>
   ))
   .add('with form not disabled', () => (
-    <Provider store={withformStore}>
+    <Provider store={storeWithForm}>
       <IntlProvider locale="en" messages={ en }>
         <App>
           <MembersPage

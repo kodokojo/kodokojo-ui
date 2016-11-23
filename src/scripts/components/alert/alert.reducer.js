@@ -62,7 +62,6 @@ export default function alerts(state = initialState, action) {
     const alertIndex = findIndex( alerts, { 'id': action.payload.alertId })
     alerts.splice(alertIndex, 1)
 
-    console.log('remove', alertIndex)
     return {
       ...state,
       list: alerts
@@ -93,7 +92,6 @@ export default function alerts(state = initialState, action) {
 
   if (action.type === ALERT_ACTIVE_REPLACE) {
     const alertIndex = findIndex(state.list, { 'id': action.payload.alertId })
-    console.log('replace', alertIndex)
 
     return {
       display: state.list[alertIndex],
