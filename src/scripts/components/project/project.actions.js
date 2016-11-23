@@ -22,6 +22,7 @@ import Promise from 'bluebird'
 import api from '../../commons/config'
 import { getHeaders } from '../../services/io.service'
 import { mapProject } from '../../services/mapping.service'
+import { newAlert } from '../alert/alert.actions'
 import {
   PROJECT_REQUEST,
   PROJECT_SUCCESS,
@@ -102,6 +103,16 @@ export function createProject(projectConfigId) {
   return dispatch => dispatch(requestNewProject(projectConfigId))
     .then(data => {
       if (!data.error) {
+        // TODO update UT
+        const alert = {
+          icon: 'question_answer',
+          label: 'id',
+          labelId: 'alert-stack-starting-text',
+          timeout: 2000,
+          variant: 'warning'
+        }
+        dispatch(newAlert(alert))
+
         return dispatch(getProject(data.payload.project.id))
       }
       throw new Error(data.payload.status)
