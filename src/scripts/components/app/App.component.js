@@ -132,11 +132,12 @@ class App extends React.Component {
             action={ alert.action }
             active={ this.state.alertActive }
             icon={ alert.icon }
+            labelId={ alert.labelId }
             label={ alert.label }
             onClick={ () => this.handleCloseAlert(alert.id) }
             onTimeout={ () => this.handleCloseAlert(alert.id) }
             timeout={ alert.timeout }
-            toasterVariant={ alert.toasterVariant }
+            variant={ alert.variant }
             type={ alert.type }
           />
         }

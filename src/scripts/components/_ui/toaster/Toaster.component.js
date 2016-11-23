@@ -17,6 +17,8 @@
  */
 
 import React from 'react'
+import { intlShape, injectIntl } from 'react-intl'
+import isEmpty from 'lodash/isEmpty'
 
 // UI library component
 import { Overlay as ToolboxOverlay } from 'react-toolbox/lib/overlay'
@@ -41,18 +43,23 @@ export class Toaster extends React.Component {
   static propTypes = {
     action: React.PropTypes.string,
     icon: React.PropTypes.string,
+    intl: intlShape.isRequired,
     label: React.PropTypes.string,
+    labelId: React.PropTypes.string,
     onClick: React.PropTypes.func,
-    toasterVariant: React.PropTypes.oneOf(['accept', 'warning', 'info'])
+    variant: React.PropTypes.oneOf(['accept', 'warning', 'info'])
   }
   
   render() {
-    const { action, icon, label, onClick, toasterVariant } = this.props
+    const { formatMessage } = this.props.intl
+    const { action, icon, label, labelId, onClick, variant } = this.props
     const rest = { ...this.props }
-    delete rest.toasterVariant
+    delete rest.labelId
+    delete rest.variant
+    delete rest.intl
 
     let theme
-    switch (toasterVariant) {
+    switch (variant) {
       case 'accept':
         theme = toasterAcceptTheme
         break
@@ -76,7 +83,12 @@ export class Toaster extends React.Component {
               value={ icon }
             />
             <div className={ theme['message-text']} >
-              { label }
+              { !isEmpty(label) && isEmpty(labelId) &&
+                label
+              }
+              { label === 'id' && !isEmpty(labelId) &&
+                formatMessage({ id: labelId })
+              }
             </div>
             { !action &&
               <IconButton
@@ -93,4 +105,4 @@ export class Toaster extends React.Component {
   }
 }
 
-export default Toaster
+export default injectIntl(Toaster)
