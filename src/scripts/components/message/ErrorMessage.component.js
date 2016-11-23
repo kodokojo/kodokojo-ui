@@ -28,7 +28,7 @@ import '../../../styles/_commons.less'
 import errorTheme from './message.scss'
 
 /**
- * UI: Input component
+ * UI: Error Message component
  *
  */
 class ErrorMessage extends React.Component {
