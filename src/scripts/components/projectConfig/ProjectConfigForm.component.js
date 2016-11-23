@@ -73,6 +73,7 @@ export class ProjectConfigForm extends React.Component {
         brickType.forEach((brick, brickIndex) => {
           defaultBricks[`brick${brickTypeIndex}-${brickIndex}`] = {
             value: brick,
+            // check the first brick for a given type (SCM / CI / Repository)
             checked: brickIndex === 0
           }
         })

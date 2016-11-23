@@ -11,10 +11,11 @@ exports.controller = function(req, res, next) {
 
   if (userEmail === '428@error.io') {
     res.contentType = 'application/json'
+    console.log('return code 428')
     res.send(428)
     next()
   } else if (userEmail === 'sass-sandbox@new.io') {
-    console.log('202')
+    console.log('return code 202')
     res.contentType = 'application/json'
     res.send(202)
     next()
