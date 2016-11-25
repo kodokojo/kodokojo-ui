@@ -131,7 +131,7 @@ export function logout(reason) {
                 labelId: reason,
                 label: 'id',
                 timeout: 2000,
-                variant: 'warning'
+                variant: 'info'
               }
               dispatch(newAlert(alert))
             }

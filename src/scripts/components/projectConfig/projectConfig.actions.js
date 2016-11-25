@@ -216,7 +216,7 @@ export function addUserToProjectConfig(projectConfigId, email) {
           labelId: 'alert-member-create-text',
           label: 'id',
           timeout: 2000,
-          variant: 'warning'
+          variant: 'info'
         }
         dispatch(newAlert(alert))
 
