@@ -33,7 +33,9 @@ module.exports = {
     filename: 'assets/scripts/[name].js',
     publicPath: '/'
   },
-  devtool: 'cheap-module-eval-source-map',
+  // FIXME due to a webpack bug, source map are broken with recommended devtool
+  // devtool: 'cheap-module-eval-source-map',
+  devtool: "#inline-source-map",
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
