@@ -33,5 +33,6 @@ webpack-assets.json
 
 # config
 config/shared/ui.version.json
+docker/delivery/config.template.tpl
 
 stats.json
