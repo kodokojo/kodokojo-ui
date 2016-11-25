@@ -16,8 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import Promise from 'bluebird'
-
 import {
   WEBSOCKET_REQUEST,
   WEBSOCKET_SUCCESS,
