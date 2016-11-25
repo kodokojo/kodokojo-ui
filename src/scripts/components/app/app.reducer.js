@@ -23,6 +23,9 @@ import {
   API_VERSION_REQUEST,
   API_VERSION_SUCCESS,
   API_VERSION_FAILURE,
+  UI_CONFIGURATION_REQUEST,
+  UI_CONFIGURATION_SUCCESS,
+  UI_CONFIGURATION_FAILURE,
   PREF_THEME_SET,
   PREF_LOCALE_SET,
   PREF_NAV_VISIBILITY_SET
@@ -72,5 +75,63 @@ export default function prefs(state = prefsDefault, action) {
     }
   }
 
+  if (action.type === UI_CONFIGURATION_REQUEST) {
+    return {
+      ...state,
+      iSFetching: true
+    }
+  }
+
+  if (action.type === UI_CONFIGURATION_SUCCESS) {
+    return {
+      ...state,
+      configuration: action.payload.configuration,
+      iSFetching: false
+    }
+  }
+
+  if (action.type === UI_CONFIGURATION_FAILURE) {
+    return {
+      ...state,
+      iSFetching: false
+    }
+  }
+
   return state
+}
+
+export const getReCaptchaKey = (state) => {
+  if (
+    state.configuration &&
+    state.configuration.ui &&
+    state.configuration.ui.RECAPTCHA &&
+    state.configuration.ui.RECAPTCHA !== ''
+  ) {
+    return state.configuration.ui.RECAPTCHA
+  }
+  return null
+}
+
+export const getTosUri = (state) => {
+  if (
+    state.configuration &&
+    state.configuration.ui &&
+    state.configuration.ui.TOS &&
+    state.configuration.ui.TOS !== ''
+  ) {
+    return state.configuration.ui.TOS
+  }
+  return null
+}
+
+export const getWaitingList = (state) => {
+  if (
+    state.configuration &&
+    state.configuration.ui &&
+    state.configuration.ui.WAITING_LIST &&
+    state.configuration.ui.WAITING_LIST !== ''
+  ) {
+    return !!state.configuration.ui.WAITING_LIST
+  }
+  return false
 }

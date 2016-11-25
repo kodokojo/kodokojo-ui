@@ -30,6 +30,7 @@ import CardContent from '../components/_ui/card/CardContent.component'
 import CardContainer from '../components/_ui/card/CardContainer.component'
 import Button from '../components/_ui/button/Button.component'
 import Login from '../components/login/Login.component'
+import { getWaitingList } from '../commons/reducers'
 import { setNavVisibility } from '../components/app/app.actions'
 import { login } from '../components/login/login.actions'
 
@@ -40,7 +41,8 @@ class LoginPage extends React.Component {
     isAuthenticated: React.PropTypes.bool,
     location: React.PropTypes.object.isRequired,
     login: React.PropTypes.func,
-    setNavVisibility: React.PropTypes.func.isRequired
+    setNavVisibility: React.PropTypes.func.isRequired,
+    waitingList: React.PropTypes.bool
   }
 
   componentWillMount = () => {
@@ -63,12 +65,13 @@ class LoginPage extends React.Component {
 
   render() {
     const { formatMessage } = this.props.intl
+    const { waitingList } = this.props
 
     return (
       <CardContainer>
         <Card
           merged
-          style={{ width: '400px', height: '370px', overflow: 'hidden' }}
+          style={{ width: '400px' }}
           title={ formatMessage({ id: 'signup-title-label' }) }
         >
           <CardContent>
@@ -85,9 +88,9 @@ class LoginPage extends React.Component {
               />
               */}
               <Button
-                label={ formatMessage({ id: 'register-label' }) }
+                label={ waitingList ? formatMessage({ id: 'register-label' }) : formatMessage({ id: 'signup-label' }) }
                 onClick={ () => browserHistory.push('/') }
-                title={ formatMessage({ id: 'register-label' }) }
+                title={ waitingList ? formatMessage({ id: 'register-label' }) : formatMessage({ id: 'signup-label' }) }
               />
             </div>
           </CardContent>
@@ -95,7 +98,7 @@ class LoginPage extends React.Component {
         <Card
           merged
           primary
-          style={{ width: '400px', height: '370px', overflow: 'hidden' }}
+          style={{ width: '400px' }}
           title={ formatMessage({ id: 'login-title-label' }) }
         >
           <CardContent>
@@ -111,7 +114,8 @@ class LoginPage extends React.Component {
 const mapStateProps = (state, ownProps) => (
   {
     isAuthenticated: state.auth.isAuthenticated,
-    location: ownProps.location
+    location: ownProps.location,
+    waitingList: getWaitingList(state)
   }
 )
 

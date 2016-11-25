@@ -73,16 +73,24 @@ export function requestNewUserId(email) {
 }
 
 // TODO update UT
-export function requestNewUser(email, userId, captcha) {
+export function requestNewUser(email, userId, captcha, prefs) {
   return {
     [CALL_API]: {
       method: 'POST',
       endpoint:
         `${window.location.protocol || 'http:'}//` +
         `${window.location.host || 'localhost'}${api.user}/${userId}`,
-      headers: getHeaders({
-        'g-recaptcha-response': captcha
-      }),
+      headers: () => {
+        const headers = {}
+
+        // TODO UT
+        // optional feature
+        if (prefs && prefs.configuration && prefs.configuration.ui && prefs.configuration.ui.RECAPTCHA) {
+          headers['g-recaptcha-response'] = captcha
+        }
+
+        return getHeaders(headers)
+      },
       body: JSON.stringify({
         email
       }),
@@ -116,11 +124,12 @@ export function requestNewUser(email, userId, captcha) {
 }
 
 export function createUser(email, captcha) {
-  return dispatch => dispatch(requestNewUserId(email))
+  return (dispatch, getState) => dispatch(requestNewUserId(email))
     .then(data => {
       if (!data.error && data.payload.account && data.payload.account.id) {
         const userId = data.payload.account.id
-        return dispatch(requestNewUser(email, userId, captcha))
+        const { prefs } = getState()
+        return dispatch(requestNewUser(email, userId, captcha, prefs))
       }
       throw new Error(data.payload.status)
     })

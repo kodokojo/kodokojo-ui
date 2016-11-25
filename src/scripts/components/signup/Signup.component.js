@@ -22,7 +22,6 @@ import { connect } from 'react-redux'
 import { Field, reduxForm, SubmissionError, propTypes, reset } from 'redux-form'
 import { combineValidators } from 'revalidate'
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
-import { Link } from 'react-router'
 import Promise from 'bluebird'
 
 // Component
@@ -36,9 +35,9 @@ import Captcha from '../../components/captcha/Captcha.component'
 import ErrorMessage from '../../components/message/ErrorMessage.component'
 import { createAccount } from './signup.actions'
 import { initCaptcha, resetCaptcha, updateCaptcha } from '../auth/auth.actions'
+import { getReCaptchaKey, getTosUri, getWaitingList } from '../../commons/reducers'
 import { captchaValidator, emailValidator } from '../../services/validator.service'
 import { returnErrorKey } from '../../services/error.service'
-import { getRecaptchaSitekey } from '../../services/param.service'
 
 // validate function
 const validate = (values, props) => combineValidators({
@@ -65,20 +64,22 @@ export class Signup extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      TOSAgreement : false,
-      isDialogActive: false
+      isDialogActive: false,
+      TOSAgreement: false
     }
   }
 
   handleSubmitSignup = (values) => {
-    const { createAccount, resetCaptcha } = this.props // eslint-disable-line no-shadow
+    const { createAccount, resetCaptcha, reCaptchaKey } = this.props // eslint-disable-line no-shadow
     
     const nextEmail = values.email
-    const nexCaptcha = values.captcha
+
+    // optional feature
+    const nexCaptcha = reCaptchaKey ? values.captcha : undefined
 
     return createAccount(nextEmail.trim(), nexCaptcha)
       .then(data => {
-        if (data.status) {
+        if (data && data.status) {
           this.handleAccountAccepted()
         }
         return Promise.resolve()
@@ -95,22 +96,40 @@ export class Signup extends React.Component {
 
         // if error code is any 400 or 500, recaptcha must be reset
         if (err.message && err.message.match(/^(4|5)\d{2}$/)) {
-          return resetCaptcha()
-                  .then(() => Promise.reject(error))
+          // optional feature
+          if (reCaptchaKey) {
+            return resetCaptcha()
+              .then(() => Promise.reject(error))
+          } else {
+            return Promise.reject(error)
+          }
         }
         return Promise.reject(error)
       })
   }
 
   handleAccountAccepted = () => {
-    const { resetCaptcha, reset } = this.props
+    const { resetCaptcha, reset, reCaptchaKey, tosUri, waitingList } = this.props
 
+    // optional feature
+    if (reCaptchaKey) {
+      resetCaptcha()
+    }
     reset('signupForm')
-    resetCaptcha()
-    this.setState({
-      isDialogActive: true,
-      TOSAgreement: false
-    })
+
+    const nextState = {}
+
+    // optional feature
+    if (waitingList) {
+      nextState['isDialogActive'] = true
+    }
+
+    // optional feature
+    if (tosUri) {
+      nextState['TOSAgreement'] = false
+    }
+
+    this.setState(nextState)
   }
 
   handleCaptchaInit = () => {
@@ -138,7 +157,7 @@ export class Signup extends React.Component {
   }
 
   render() {
-    const { captchaReset, handleSubmit, submitting, locale } = this.props // eslint-disable-line no-shadow
+    const { captchaReset, handleSubmit, submitting, locale, reCaptchaKey, tosUri, waitingList } = this.props // eslint-disable-line no-shadow
     const { formatMessage } = this.props.intl
 
     return (
@@ -165,68 +184,68 @@ export class Signup extends React.Component {
           name="entity"
           type="text"
         /> */}
-        {/* TODO add a loader when recaptcha is not loaded, disable it on load callback */}
-        <div style={{ height: '112px' }}>
-          <Captcha
-            locale={ locale }
-            onExpiredCallback={ () => { console.log('captcha has expired') } }
-            onLoadCallback={ () => console.log('captcha has loaded') }
-            onResetCallback={ this.handleCaptchaInit }
-            onVerifyCallback={ this.handleCaptchaUpdate }
-            reset={ captchaReset }
-            sitekey={ getRecaptchaSitekey() }
-            theme="light"
-          />
-          <Field
-            component={ ErrorMessage }
-            name="captcha"
-          />
-        </div>
-        <div className={ signupTheme['terms-container'] }>
-          <Checkbox
-            checked={ !!this.state.TOSAgreement }
-            label={
-              <FormattedMessage
-                id="terms-of-service-text"
-                style={{ color: '#FFF' }}
-                values={{
-                  termsLinkComponent: (
-                    <a className={ signupTheme['terms-link'] } href="https://kodokojo.io/terms-of-service.html" target="_blank" ><FormattedMessage id="terms-of-service-label"/></a>
-                  )
-                }}
-              />
-            }
-            onChange={ () => this.handleTOSAgreementChange() }
-          />
-        </div>
-        {/*
-         // TODO add configuration to toggle button
-         */}
-        {/*<Button
-            disabled={ submitting || !this.state.TOSAgreement }
-            label={ formatMessage({ id: 'signup-label' }) }
-            primary
-            title={ formatMessage({ id: 'signup-label' }) }
-            type="submit"
-        />*/}
+        { reCaptchaKey &&
+          // optional feature
+          // TODO add a loader when recaptcha is not loaded, disable it on load callback
+          <div style={{ height: '112px' }}>
+            <Captcha
+              locale={ locale }
+              onExpiredCallback={ () => { console.log('captcha has expired') } }
+              onLoadCallback={ () => console.log('captcha has loaded') }
+              onResetCallback={ this.handleCaptchaInit }
+              onVerifyCallback={ this.handleCaptchaUpdate }
+              reset={ captchaReset }
+              sitekey={ reCaptchaKey }
+              theme="light"
+            />
+            <Field
+              component={ ErrorMessage }
+              name="captcha"
+            />
+          </div>
+        }
+        { tosUri &&
+          // optional feature
+          <div className={ signupTheme['terms-container'] }>
+            <Checkbox
+              checked={ !!this.state.TOSAgreement }
+              label={
+                <FormattedMessage
+                  id="terms-of-service-text"
+                  style={{ color: '#FFF' }}
+                  values={{
+                    termsLinkComponent: (
+                      <a className={ signupTheme['terms-link'] } href={ tosUri } target="_blank" ><FormattedMessage id="terms-of-service-label"/></a>
+                    )
+                  }}
+                />
+              }
+              onChange={ () => this.handleTOSAgreementChange() }
+            />
+          </div>
+        }
         <Button
-            disabled={ submitting || !this.state.TOSAgreement }
-            label={ formatMessage({ id: 'register-label' }) }
+            disabled={
+              submitting || (tosUri && !this.state.TOSAgreement)
+            }
+            label={ waitingList ? formatMessage({ id: 'register-label' }) : formatMessage({ id: 'signup-label' }) }
             primary
-            title={ formatMessage({ id: 'register-label' }) }
+            title={ waitingList ? formatMessage({ id: 'register-label' }) : formatMessage({ id: 'signup-label' }) }
             type="submit"
         />
-        <Dialog
-          actions={[
-            { label: formatMessage({ id: 'close-label' }), onClick: this.handleDialogClose }
-          ]}
-          active={ this.state.isDialogActive }
-          onEscKeyDown={ this.handleDialogClose }
-          onOverlayClick={ this.handleDialogClose }
-          // title={ formatMessage({ id: 'account-label' }) }
-        >
-          <FormattedMessage id="account-accepted-text"/>
-        </Dialog>
+        { waitingList &&
+          <Dialog
+            actions={[
+              { label: formatMessage({ id: 'close-label' }), onClick: this.handleDialogClose }
+            ]}
+            active={ this.state.isDialogActive }
+            onEscKeyDown={ this.handleDialogClose }
+            onOverlayClick={ this.handleDialogClose }
+            // title={ formatMessage({ id: 'account-label' }) }
+          >
+            <FormattedMessage id="account-accepted-text"/>
+          </Dialog>
+        }
       </form>
     )
   }
@@ -238,7 +257,10 @@ const mapStateProps = (state) => (
     account: state.auth.account,
     captcha: state.auth.captcha.value,
     captchaReset: state.auth.captcha.reset,
-    locale: state.prefs.locale
+    locale: state.prefs.locale,
+    reCaptchaKey: getReCaptchaKey(state),
+    tosUri: getTosUri(state),
+    waitingList: getWaitingList(state)
   }
 )
 

@@ -30,6 +30,7 @@ import CardContent from '../components/_ui/card/CardContent.component'
 import CardContainer from '../components/_ui/card/CardContainer.component'
 import Button from '../components/_ui/button/Button.component'
 import Signup from '../components/signup/Signup.component'
+import { getWaitingList } from '../commons/reducers'
 import { setNavVisibility } from '../components/app/app.actions'
 
 class SignupPage extends React.Component {
@@ -40,7 +41,8 @@ class SignupPage extends React.Component {
     location: React.PropTypes.object.isRequired,
     projectConfigId: React.PropTypes.string,
     projectId: React.PropTypes.string,
-    setNavVisibility: React.PropTypes.func.isRequired
+    setNavVisibility: React.PropTypes.func.isRequired,
+    waitingList: React.PropTypes.bool
   }
 
   componentWillMount = () => {
@@ -67,37 +69,35 @@ class SignupPage extends React.Component {
 
   render() {
     const { formatMessage } = this.props.intl
+    const { waitingList } = this.props
 
     return (
       <CardContainer>
         <Card
           merged
           primary
-          // style={{ width: '400px', height: '420px', overflow: 'hidden' }}
-          style={{ width: '400px', height: '590px', overflow: 'hidden' }}
+          style={{ width: '400px' }}
           title={ formatMessage({ id: 'signup-title-label' }) }
         >
           <CardContent>
-            {/*
-              // TODO add configuration to toggle message
-            */}
-            <p className={ themeCardContent['card-paragraph--warning'] }>
-              <FormattedMessage
-                id="signup-wait-list-text"
-                values={{
-                  registerWaitingList: (
-                    <strong><FormattedMessage id="register-waiting-list-label"/></strong>
-                  )
-                }}
-              />
-            </p>
+            { waitingList &&
+              <p className={ themeCardContent['card-paragraph--warning'] }>
+                <FormattedMessage
+                  id="signup-wait-list-text"
+                  values={{
+                    registerWaitingList: (
+                      <strong><FormattedMessage id="register-waiting-list-label"/></strong>
+                    )
+                  }}
+                />
+              </p>
+            }
             <Signup />
           </CardContent>
         </Card>
         <Card
           merged
-          // style={{ width: '400px', height: '420px', overflow: 'hidden' }}
-          style={{ width: '400px', height: '590px', overflow: 'hidden' }}
+          style={{ width: '400px' }}
           title={ formatMessage({ id: 'login-title-label' }) }
         >
           <CardContent>
@@ -124,7 +124,8 @@ const mapStateProps = (state, ownProps) => (
     isAuthenticated: state.auth.isAuthenticated,
     location: ownProps.location,
     projectConfigId: state.projectConfig ? state.projectConfig.id : '',
-    projectId: state.projectConfig && state.projectConfig.project ? state.projectConfig.project.id : ''
+    projectId: state.projectConfig && state.projectConfig.project ? state.projectConfig.project.id : '',
+    waitingList: getWaitingList(state)
   }
 )
 

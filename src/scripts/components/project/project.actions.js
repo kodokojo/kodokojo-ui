@@ -109,7 +109,7 @@ export function createProject(projectConfigId) {
           label: 'id',
           labelId: 'alert-stack-starting-text',
           timeout: 2000,
-          variant: 'warning'
+          variant: 'info'
         }
         dispatch(newAlert(alert))
 

@@ -24,7 +24,7 @@ import alerts from '../components/alert/alert.reducer'
 import auth from '../components/auth/auth.reducer'
 import bricks from '../components/brick/brick.reducer'
 import menu from '../components/menu/menu.reducer'
-import prefs from '../components/app/app.reducer'
+import prefs, * as fromPrefs from '../components/app/app.reducer'
 import projectConfig, * as fromProjectConfig from '../components/projectConfig/projectConfig.reducer'
 import socket from '../components/_utils/websocket/websocket.reducer'
 import users, * as fromUser from '../components/user/user.reducer'
@@ -47,7 +47,16 @@ const rootReducer = combineReducers({
 export default rootReducer
 
 
+// TODO UT
 // selectors
+//users
 export const getUser = (userId, state) => fromUser.getUser(userId, state.users)
 
+// projectConfig
 export const getAggregatedStackStatus = (state) => fromProjectConfig.getAggregatedStackStatus(state.projectConfig)
+
+// prefs
+export const getReCaptchaKey = (state) => fromPrefs.getReCaptchaKey(state.prefs)
+export const getTosUri = (state) => fromPrefs.getTosUri(state.prefs)
+export const getWaitingList = (state) => fromPrefs.getWaitingList(state.prefs)
+

@@ -286,7 +286,7 @@ describe('project config actions', () => {
         labelId: 'alert-member-create-text',
         label: 'id',
         timeout: 2000,
-        variant: 'warning'
+        variant: 'info'
       }
       const expectedActions = [
         {
