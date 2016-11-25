@@ -73,8 +73,7 @@ class SignupPage extends React.Component {
         <Card
           merged
           primary
-          // style={{ width: '400px', height: '420px', overflow: 'hidden' }}
-          style={{ width: '400px', height: '590px', overflow: 'hidden' }}
+          style={{ width: '400px' }}
           title={ formatMessage({ id: 'signup-title-label' }) }
         >
           <CardContent>
@@ -96,8 +95,7 @@ class SignupPage extends React.Component {
         </Card>
         <Card
           merged
-          // style={{ width: '400px', height: '420px', overflow: 'hidden' }}
-          style={{ width: '400px', height: '590px', overflow: 'hidden' }}
+          style={{ width: '400px' }}
           title={ formatMessage({ id: 'login-title-label' }) }
         >
           <CardContent>

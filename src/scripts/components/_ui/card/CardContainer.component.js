@@ -43,7 +43,7 @@ export class CardContainer extends React.Component {
   }
 
   render() {
-    const { className, children, theme } = this.props // eslint-disable-line no-shadow
+    const { children, theme } = this.props // eslint-disable-line no-shadow
 
     return (
       <div
