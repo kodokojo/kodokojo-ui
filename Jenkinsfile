@@ -21,6 +21,7 @@ node() {
 
         def c = builder.inside(" -e \"KODOKOJO_UI_VERSION=${version}\" ") {
             sh "rm -rf mkdir -p ${pwd()}/static/ || true"
+            sh "cp ${pwd()}/config/config.template.tpl ${pwd()}/docker/delivery/config.template.tpl"
             built = sh returnStatus: true, script: "/test.sh"
             sh "cp -r ${pwd()}/static ${pwd()}/docker/delivery/ && chmod -R 777 ${pwd()}/static/ "
             sh "ls -l ${pwd()}/docker/delivery/static"
