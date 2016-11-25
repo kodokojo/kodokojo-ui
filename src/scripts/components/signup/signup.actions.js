@@ -69,10 +69,10 @@ export function createAccount(email, captcha) {
       throw new Error(data.payload.status)
     })
     .then(data => {
-      if (!data.error && data.payload.status === 202) {
+      if (!data.error && data.payload && data.payload.status === 202) {
         return Promise.resolve(data.payload)
       }
-      if (!data.error && data.payload.status === 201) {
+      if (!data.error && data.payload && data.payload.status === 201) {
         // we set auth
         setAuth(data.payload.account.userName, data.payload.account.password)
         putAuth(data.payload.account.id, data.payload.account.userName)

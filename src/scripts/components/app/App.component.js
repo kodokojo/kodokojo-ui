@@ -38,6 +38,7 @@ import { nextAlert } from '../alert/alert.actions'
 import { requestWebsocket } from '../_utils/websocket/websocket.actions'
 import {
   getApiVersion,
+  getUiConfiguration,
   setTheme,
   setLocale,
   setNavVisibility
@@ -49,6 +50,7 @@ class App extends React.Component {
     alert: React.PropTypes.object,
     children: React.PropTypes.element.isRequired,
     getApiVersion: React.PropTypes.func.isRequired,
+    getUiConfiguration: React.PropTypes.func.isRequired,
     isAuthenticated: React.PropTypes.bool.isRequired,
     locale: React.PropTypes.string.isRequired,
     logout: React.PropTypes.func.isRequired,
@@ -62,6 +64,10 @@ class App extends React.Component {
     version: React.PropTypes.object
   }
 
+  static defaultProps = {
+    navigation: false
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -70,13 +76,14 @@ class App extends React.Component {
   }
 
   componentWillMount = () => {
-    const { isAuthenticated, requestWebsocket, getApiVersion } = this.props // eslint-disable-line no-shadow
+    const { isAuthenticated, requestWebsocket, getApiVersion, getUiConfiguration } = this.props // eslint-disable-line no-shadow
 
     if (isAuthenticated) {
       requestWebsocket()
     }
 
     getApiVersion()
+    getUiConfiguration()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -132,13 +139,13 @@ class App extends React.Component {
             action={ alert.action }
             active={ this.state.alertActive }
             icon={ alert.icon }
-            labelId={ alert.labelId }
             label={ alert.label }
+            labelId={ alert.labelId }
             onClick={ () => this.handleCloseAlert(alert.id) }
             onTimeout={ () => this.handleCloseAlert(alert.id) }
             timeout={ alert.timeout }
-            variant={ alert.variant }
             type={ alert.type }
+            variant={ alert.variant }
           />
         }
       </Layout>
@@ -162,6 +169,7 @@ export default themr(APP)(connect(
   mapStateProps,
   {
     getApiVersion,
+    getUiConfiguration,
     logout,
     nextAlert,
     requestWebsocket,

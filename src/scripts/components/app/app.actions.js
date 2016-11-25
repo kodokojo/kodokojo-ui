@@ -24,12 +24,16 @@ import {
   API_VERSION_REQUEST,
   API_VERSION_SUCCESS,
   API_VERSION_FAILURE,
+  UI_CONFIGURATION_REQUEST,
+  UI_CONFIGURATION_SUCCESS,
+  UI_CONFIGURATION_FAILURE,
   PREF_THEME_SET,
   PREF_LOCALE_SET,
   PREF_NAV_VISIBILITY_SET
 } from '../../commons/constants'
-import versionUi from '../../../../config/shared/ui.version.json'
+import uiVersion from '../../../../config/shared/ui.version.json'
 
+// TODO UT
 export function fetchApiVersion() {
   return {
     [CALL_API]: {
@@ -42,11 +46,11 @@ export function fetchApiVersion() {
         {
           type: API_VERSION_SUCCESS,
           payload: (action, state, res) => res.json()
-            .then(versionApi => (
+            .then(apiVersion => (
               {
                 version: {
-                  api: versionApi,
-                  ui: versionUi
+                  api: apiVersion,
+                  ui: uiVersion
                 }
               }
             ))
@@ -59,6 +63,45 @@ export function fetchApiVersion() {
 
 export function getApiVersion() {
   return dispatch =>  dispatch(fetchApiVersion())
+    .then(data => {
+      if (!data.error) {
+        return Promise.resolve()
+      }
+      throw new Error(data.payload.status)
+    })
+    .catch(error => {
+      throw new Error(error.message || error)
+    })
+}
+
+export function fetchUiConfiguration() {
+  return {
+    [CALL_API]: {
+      method: 'GET',
+      endpoint:
+      `${window.location.protocol || 'http:'}//` +
+      `${window.location.host || 'localhost'}/assets/json/ui.configuration.json`,
+      types: [
+        UI_CONFIGURATION_REQUEST,
+        {
+          type: UI_CONFIGURATION_SUCCESS,
+          payload: (action, state, res) => res.json()
+            .then(uiConfiguration => (
+              {
+                configuration: {
+                  ui: uiConfiguration
+                }
+              }
+            ))
+        },
+        UI_CONFIGURATION_FAILURE
+      ]
+    }
+  }
+}
+
+export function getUiConfiguration() {
+  return dispatch =>  dispatch(fetchUiConfiguration())
     .then(data => {
       if (!data.error) {
         return Promise.resolve()
