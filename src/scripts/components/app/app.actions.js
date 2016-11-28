@@ -65,7 +65,7 @@ export function getApiVersion() {
   return dispatch =>  dispatch(fetchApiVersion())
     .then(data => {
       if (!data.error) {
-        return Promise.resolve()
+        return Promise.resolve(data)
       }
       throw new Error(data.payload.status)
     })
@@ -104,7 +104,7 @@ export function getUiConfiguration() {
   return dispatch =>  dispatch(fetchUiConfiguration())
     .then(data => {
       if (!data.error) {
-        return Promise.resolve()
+        return Promise.resolve(data)
       }
       throw new Error(data.payload.status)
     })

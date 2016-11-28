@@ -110,15 +110,15 @@ userRepository.getUserAccount = (request) => {
   return requestWithLog({
     method: 'GET',
     uri: `${config.api.protocol}${config.api.host}${config.api.routes.user}`,
-    json: true,
     headers,
-    rejectUnauthorized: false,
+    json: true,
+    rejectUnauthorized: true,
     requestCert: true
   })
 }
 
 userRepository.getUser = (request) => {
-  logger.debug('getUserAccount')
+  logger.debug('getUser')
 
   const { headers, userId } = {
     headers: request.headers,

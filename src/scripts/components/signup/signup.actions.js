@@ -27,6 +27,7 @@ import {
   ACCOUNT_NEW_ACCEPTED,
   ACCOUNT_NEW_FAILURE
 } from '../../commons/constants'
+import crispService from '../../services/crisp.service'
 
 export function requestAccountRequest() {
   return {
@@ -56,7 +57,7 @@ export function requestAccountFailure(data) {
 }
 
 export function createAccount(email, captcha) {
-  return dispatch => dispatch(requestAccountRequest())
+  return (dispatch, getState) => dispatch(requestAccountRequest())
     .then(data => dispatch(createUser(email, captcha)))
     .then(data => {
       if (!data.error && data.payload && data.payload.status === 202) {
@@ -73,9 +74,19 @@ export function createAccount(email, captcha) {
         return Promise.resolve(data.payload)
       }
       if (!data.error && data.payload && data.payload.status === 201) {
-        // we set auth
+        const { prefs } = getState()
+
+        // set auth
         setAuth(data.payload.account.userName, data.payload.account.password)
         putAuth(data.payload.account.id, data.payload.account.userName)
+
+        // TODO UT
+        // optional feature
+        if (prefs && prefs.configuration && prefs.configuration.ui && prefs.configuration.ui.CRISP) {
+          // put user in scrip
+          crispService.putUser(data.payload.account)
+        }
+
         // init websocket and go to first project
         return dispatch(requestWebsocket())
           .then(() => Promise.resolve(browserHistory.push('/firstProject')))

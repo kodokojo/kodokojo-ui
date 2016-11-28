@@ -43,12 +43,14 @@ import {
   setLocale,
   setNavVisibility
 } from './app.actions'
+import crispService from '../../services/crisp.service'
 
 class App extends React.Component {
 
   static propTypes = {
     alert: React.PropTypes.object,
     children: React.PropTypes.element.isRequired,
+    crispKey: React.PropTypes.string,
     getApiVersion: React.PropTypes.func.isRequired,
     getUiConfiguration: React.PropTypes.func.isRequired,
     isAuthenticated: React.PropTypes.bool.isRequired,
@@ -84,6 +86,15 @@ class App extends React.Component {
 
     getApiVersion()
     getUiConfiguration()
+      .then(data => {
+        const configuration =  data && data.payload && data.payload.configuration ? data.payload.configuration : undefined 
+        // optional feature
+        if (configuration && configuration.ui && configuration.ui.CRISP) {
+          // inject crisp script
+          window.CRISP_WEBSITE_ID = configuration.ui.CRISP
+          crispService.inject()
+        }
+      })
   }
 
   componentWillReceiveProps(nextProps) {

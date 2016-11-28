@@ -26,10 +26,10 @@ import authService from '../../services/auth.service'
 import storageService from '../../services/storage.service'
 import ioService from '../../services/io.service'
 import { mapAccount } from '../../services/mapping.service'
-import { getProject } from '../project/project.actions'
 import { getProjectConfigAndProject } from '../projectConfig/projectConfig.actions'
 import { requestWebsocket, stopWebsocket } from '../_utils/websocket/websocket.actions'
 import { newAlert } from '../alert/alert.actions'
+import crispService from '../../services/crisp.service'
 
 import {
   AUTH_REQUEST,
@@ -71,9 +71,17 @@ export function login(username, password) {
   return (dispatch, getState) => dispatch(requestAuthentication())
     .then(data => {
       if (!data.error) {
+        const { prefs, routing } = getState()
+
+        // put auth
         authService.putAuth(data.payload.account.id, data.payload.account.userName)
 
-        const routing = getState().routing
+        // TODO UT
+        // optional feature
+        if (prefs && prefs.configuration && prefs.configuration.ui && prefs.configuration.ui.CRISP) {
+          // put user in scrip
+          crispService.putUser(data.payload.account)
+        }
 
         // if route exist before accessing login, reroute to it
         if (

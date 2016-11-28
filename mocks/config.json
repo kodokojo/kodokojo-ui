@@ -23,6 +23,12 @@
       "serve": "data/user.post.js"
     },
     {
+      "path": "/user/",
+      "method": "GET",
+      "mockType": "func",
+      "serve": "data/user.get.js"
+    },
+    {
       "path": "/user/:id",
       "method": "GET",
       "mockType": "file",
