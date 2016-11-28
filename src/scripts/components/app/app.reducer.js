@@ -135,3 +135,15 @@ export const getWaitingList = (state) => {
   }
   return false
 }
+
+export const getCrispKey = (state) => {
+  if (
+    state.configuration &&
+    state.configuration.ui &&
+    state.configuration.ui.CRISP &&
+    state.configuration.ui.CRISP !== ''
+  ) {
+    return state.configuration.ui.CRISP
+  }
+  return null
+}
