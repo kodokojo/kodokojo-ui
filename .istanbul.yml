@@ -2,6 +2,8 @@ instrumentation:
     root: src/
     preserve-comments: true
     default-excludes: true
+    excludes:
+      - '*.spec.js'
     include-all-sources: true
 reporting:
     print: summary
