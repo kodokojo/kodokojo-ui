@@ -21,6 +21,8 @@
 /* eslint-disable import/no-duplicates */
 
 import React from 'react'
+import Promise from 'bluebird'
+import { reduxForm, reducer as formReducer, getFormValues } from 'redux-form'
 import chai, { expect } from 'chai'
 import chaiEnzyme from 'chai-enzyme'
 import { mount, render, shallow } from 'enzyme'
@@ -32,26 +34,45 @@ chai.use(sinonChai)
 import merge from '../../../../node_modules/lodash/merge'
 
 // contexte
+import { Provider } from 'react-redux'
+import { createStore, combineReducers } from 'redux'
 import { IntlProvider } from 'react-intl'
 
 // component
 import { Signup, __RewireAPI__ as SignupRewire } from './Signup.component'
+import signupValidator from './signup.validator'
 
-// TODO fix tests with mounted component and redux-form
-describe.skip('<Signup> component', () => {
+// TODO add test for recaptcha, tos and waiting list
+describe('<Signup> component', () => {
   let props
   let messages
   let intlProvider
   let captchaMock
 
   beforeEach(() => {
-    // TODO find another way to mock IntlProvider
+    // TODO find another way to mock IntlProvider and redux-form
     const mockFormatFct = options => options.id
     props = {
-      fields: {
-        email: ''
-      },
-      handleSubmit: fct => fct,
+      // redux-form
+      asyncValidating: false,
+      dirty: false,
+      invalid: false,
+      initialized: false,
+      pristine: true,
+      submitFailed: false,
+      submitSucceeded: false,
+      valid: false,
+      // asyncValidate: () => Promise.resolve(),
+      blur: () => {},
+      change: () => {},
+      destroy: () => {},
+      dispatch: () => {},
+      initialize: () => {},
+      reset: () => {},
+      touch: () => {},
+      untouch: () => {},
+      // handleSubmit: fct => fct,
+      // intl
       intl: {
         formatMessage: mockFormatFct,
         formatDate: mockFormatFct,
@@ -68,10 +89,8 @@ describe.skip('<Signup> component', () => {
       updateCaptcha: () => {},
       resetCaptcha: () => {},
       locale: 'fr',
-      captcha: {
-        value: '',
-        reset: false
-      }
+      captcha: '',
+      captchaReset: false
     }
     messages = {
       'email-label': 'email-label',
@@ -81,7 +100,7 @@ describe.skip('<Signup> component', () => {
       'signup-label': 'signup-button-label'
     }
     intlProvider = new IntlProvider({ locale: 'en' }, {})
-    captchaMock = class componentCaptchaMock extends React.Component {
+    class captchaMock extends React.Component {
       render() {
         return <div id="captcha"/>
       }
@@ -95,7 +114,13 @@ describe.skip('<Signup> component', () => {
 
   it('should render a form', () => {
     // Given
-    const nextProps = merge(props)
+    const nextProps = merge(
+      props,
+      {
+        asyncValidate: () => Promise.resolve(),
+        handleSubmit: fct => fct
+      }
+    )
     const { context } = intlProvider.getChildContext()
 
     // When
@@ -106,7 +131,6 @@ describe.skip('<Signup> component', () => {
 
     // Then
     expect(component).to.have.descendants('form')
-    // TODO test presence of captcha (need mount ?)
   })
 
   it('should render i18n ids', () => {
@@ -114,6 +138,8 @@ describe.skip('<Signup> component', () => {
     const nextProps = merge(
       props,
       {
+        asyncValidate: () => Promise.resolve(),
+        handleSubmit: fct => fct,
         intl: {
           formatMessage: sinon.stub(props.intl, 'formatMessage', (options) => options.id)
         }
@@ -136,115 +162,45 @@ describe.skip('<Signup> component', () => {
     // expect(nextProps.intl.formatMessage).to.have.been.calledWith({ id: 'company-hint-label' })
   })
 
-  it('should set props properly', () => {
-    // Given
-    const nextProps = merge(
-      props,
-      {
-        fields: {
-          email: {
-            value: 'email@test.com'
-          }
-        }
-      }
-    )
-
-    // When
-    // TODO find another way to mock IntlProvider
-    const component = mount(
-      <IntlProvider locale="en" messages={messages}>
-        <Signup {...nextProps}/>
-      </IntlProvider>
-    )
-
-    // Then
-    expect(component.find(Signup).props().fields.email.value).to.equal('email@test.com')
-    expect(component.find(Signup).props().createAccount).to.be.instanceof(Function)
-  })
-
   describe('handle submit', () => {
+    let store
+    let DecoratedSignup
+
+    beforeEach(() => {
+      store = createStore(combineReducers({
+        form: formReducer
+      }))
+      DecoratedSignup = reduxForm({ form: 'signupForm', signupValidator })(Signup)
+    })
+
     it('should trigger creatAccount if email input and captcha are not empty', () => {
       // Given
       const nextProps = merge(
         props,
         {
-          fields: {
-            email: {
-              value: 'email@test.com'
-            }
-          },
-          captcha: {
-            value: 'captcha'
-          },
+          reCaptchaKey: null,
+          tosUri: null,
+          waitingList: null,
           createAccount: sinon.stub()
         }
       )
       nextProps.createAccount.resolves()
       const component = mount(
-        <IntlProvider locale="en" messages={messages}>
-          <Signup {...nextProps}/>
-        </IntlProvider>
+        <Provider store={store}>
+          <IntlProvider locale="en" messages={messages}>
+            <DecoratedSignup {...nextProps}/>
+          </IntlProvider>
+        </Provider>
       )
 
       // When
+      const fieldEmail = component.find('input[type="email"]')
+      fieldEmail.simulate('change', { target: { value: 'email@test.com' } })
       component.find('form').simulate('submit', { preventDefault: () => {} })
 
       // Then
       expect(nextProps.createAccount).to.have.callCount(1)
       expect(nextProps.createAccount).to.have.been.calledWith('email@test.com')
-    })
-
-    it('should not creatAccount if email input is empty', () => {
-      // Given
-      const nextProps = merge(
-        props,
-        {
-          captcha: {
-            value: 'captcha'
-          },
-          createAccount: sinon.spy()
-        }
-      )
-      const component = mount(
-        <IntlProvider locale="en" messages={messages}>
-          <Signup {...nextProps}/>
-        </IntlProvider>
-      )
-
-      // When
-      component.find('form').simulate('submit', { preventDefault: () => {} })
-
-      // Then
-      expect(nextProps.createAccount).to.not.have.been.called
-    })
-
-    it('should not creatAccount if captcha input is empty', () => {
-      // Given
-      const nextProps = merge(
-        props,
-        {
-          captcha: {
-            value: ''
-          },
-          fields: {
-            email: {
-              value: 'email@test.com'
-            }
-          },
-          createAccount: sinon.spy()
-        }
-      )
-      const component = mount(
-        <IntlProvider locale="en" messages={messages}>
-          <Signup {...nextProps}/>
-        </IntlProvider>
-      )
-
-      // When
-      component.find('form').simulate('submit', { preventDefault: () => {} })
-
-      // Then
-      expect(nextProps.createAccount).to.not.have.been.called
     })
   })
 })

@@ -33,17 +33,14 @@ import Button from '../../components/_ui/button/Button.component'
 import Dialog from '../../components/_ui/dialog/Dialog.component'
 import Captcha from '../../components/captcha/Captcha.component'
 import ErrorMessage from '../../components/message/ErrorMessage.component'
+import signupValidator from './signup.validator'
 import { createAccount } from './signup.actions'
 import { initCaptcha, resetCaptcha, updateCaptcha } from '../auth/auth.actions'
 import { getReCaptchaKey, getTosUri, getWaitingList } from '../../commons/reducers'
-import { captchaValidator, emailValidator } from '../../services/validator.service'
 import { returnErrorKey } from '../../services/error.service'
 
 // validate function
-const validate = (values, props) => combineValidators({
-  email: emailValidator('email'),
-  captcha: captchaValidator('captcha')
-})(values)
+const validate = signupValidator
 
 // Signup component
 export class Signup extends React.Component {
@@ -72,12 +69,12 @@ export class Signup extends React.Component {
   handleSubmitSignup = (values) => {
     const { createAccount, resetCaptcha, reCaptchaKey } = this.props // eslint-disable-line no-shadow
     
-    const nextEmail = values.email
+    const nextEmail = values.email ? values.email.trim() : '' 
 
     // optional feature
     const nexCaptcha = reCaptchaKey ? values.captcha : undefined
 
-    return createAccount(nextEmail.trim(), nexCaptcha)
+    return createAccount(nextEmail, nexCaptcha)
       .then(data => {
         if (data && data.status) {
           this.handleAccountAccepted()

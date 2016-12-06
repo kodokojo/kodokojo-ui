@@ -22,8 +22,6 @@ import groupBy from 'lodash/groupBy'
 
 const mappingService = {}
 
-// TODO IT
-
 /**
  * mapping for account
  *

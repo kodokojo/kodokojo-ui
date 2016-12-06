@@ -21,6 +21,8 @@
 /* eslint-disable import/no-duplicates */
 
 import React from 'react'
+import Promise from 'bluebird'
+import { reduxForm, reducer as formReducer } from 'redux-form'
 import chai, { expect } from 'chai'
 import chaiEnzyme from 'chai-enzyme'
 import { mount, render, shallow } from 'enzyme'
@@ -31,10 +33,13 @@ chai.use(sinonChai)
 import merge from '../../../../node_modules/lodash/merge'
 
 // contexte
+import { Provider } from 'react-redux'
+import { createStore, combineReducers } from 'redux'
 import { IntlProvider } from 'react-intl'
 
 // component
 import { Login } from './Login.component'
+import loginValidator from './login.validator'
 
 // TODO test error message when login
 describe('<Login> component', () => {
@@ -43,14 +48,29 @@ describe('<Login> component', () => {
   let intlProvider
 
   beforeEach(() => {
-    // TODO find another way to mock IntlProvider
+    // TODO find another way to mock IntlProvider and redux-form
     const mockFormatFct = options => options.id
     props = {
-      fields: {
-        username: '',
-        psw: ''
-      },
-      handleSubmit: fct => fct,
+      // redux-form
+      asyncValidating: false,
+      dirty: false,
+      invalid: false,
+      initialized: false,
+      pristine: true,
+      submitFailed: false,
+      submitSucceeded: false,
+      valid: false,
+      // asyncValidate: () => Promise.resolve(),
+      blur: () => {},
+      change: () => {},
+      destroy: () => {},
+      dispatch: () => {},
+      initialize: () => {},
+      reset: () => {},
+      touch: () => {},
+      untouch: () => {},
+      // handleSubmit: fct => fct,
+      // intl
       intl: {
         formatMessage: mockFormatFct,
         formatDate: mockFormatFct,
@@ -62,8 +82,10 @@ describe('<Login> component', () => {
         now: mockFormatFct
       },
       submitting: false,
-      login: () => {},
-      logout: () => {}
+      login: () => {
+      },
+      logout: () => {
+      }
     }
     messages = {
       'username-hint-label': 'username-hint-label',
@@ -78,7 +100,11 @@ describe('<Login> component', () => {
     // Given
     const nextProps = merge(
       props,
-      { isAuthenticated: false }
+      {
+        asyncValidate: () => Promise.resolve(),
+        handleSubmit: fct => fct,
+        isAuthenticated: false
+      }
     )
     const { context } = intlProvider.getChildContext()
 
@@ -96,7 +122,11 @@ describe('<Login> component', () => {
     // Given
     const nextProps = merge(
       props,
-      { isAuthenticated: true }
+      {
+        asyncValidate: () => Promise.resolve(),
+        handleSubmit: fct => fct,
+        isAuthenticated: true
+      }
     )
     // const { context } = intlProvider.getChildContext()
 
@@ -110,137 +140,113 @@ describe('<Login> component', () => {
     expect(component.text()).to.contains('You are authenticated')
   })
 
-  it('should set props properly', () => {
-    // Given
-    const nextProps = merge(
-      props,
-      {
-        username: 'username',
-        psw: 'password'
-      }
-    )
+  describe('handle submit', () => {
+    let store
+    let DecoratedLogin
 
-    // When
-    const component = shallow(
-      <IntlProvider locale="en" messages={messages}>
-        <Login {...nextProps}/>
-      </IntlProvider>
-    )
+    beforeEach(() => {
+      store = createStore(combineReducers({
+        form: formReducer
+      }))
+      DecoratedLogin = reduxForm({ form: 'loginForm', loginValidator })(Login)
+    })
 
-    // Then
-    expect(component.find(Login).props().username).to.equal('username')
-    expect(component.find(Login).props().psw).to.equal('password')
-    expect(component.find(Login).props().login).to.be.instanceof(Function)
-    expect(component.find(Login).props().logout).to.be.instanceof(Function)
-  })
-
-  // TODO fix tests with mounted component and redux-form
-  describe.skip('handle submit', () => {
-    it('should trigger login if username & password inputs are not empty', () => {
+    // FIXME remove or improve... don't test a lot
+    it('should set props properly', () => {
       // Given
       const nextProps = merge(
         props,
         {
-          fields: {
-            username: {
-              value: 'username'
-            },
-            psw: {
-              value: 'password'
-            }
-          },
-          login: sinon.stub()
+          asyncValidate: () => Promise.resolve(),
+          handleSubmit: fct => fct,
+          username: 'username',
+          psw: 'password'
         }
       )
-      nextProps.login.resolves()
-      const component = mount(
-        <IntlProvider locale="en">
+
+      // When
+      const component = shallow(
+        <IntlProvider locale="en" messages={messages}>
           <Login {...nextProps}/>
         </IntlProvider>
       )
 
-      // When
-      component.find('form').simulate('submit', { preventDefault: () => {} })
-
       // Then
-      expect(nextProps.login).to.have.callCount(1)
-      expect(nextProps.login).to.have.been.calledWith('username', 'password')
+      expect(component.find(Login).props().username).to.equal('username')
+      expect(component.find(Login).props().psw).to.equal('password')
+      expect(component.find(Login).props().login).to.be.instanceof(Function)
+      expect(component.find(Login).props().logout).to.be.instanceof(Function)
     })
 
-    it('should not login if username input is empty', () => {
-      // Given
-      const nextProps = merge(
-        props,
-        {
-          fields: {
-            username: {},
-            psw: {
-              value: 'password'
-            }
-          },
-          login: sinon.spy()
-        }
-      )
-      const component = mount(
-        <IntlProvider locale="en">
+    describe('handle submit', () => {
+      let store
+      let DecoratedLogin
+
+      beforeEach(() => {
+        store = createStore(combineReducers({
+          form: formReducer
+        }))
+        DecoratedLogin = reduxForm({ form: 'loginForm', loginValidator })(Login)
+      })
+
+      it('should trigger login if username & password inputs are not empty', () => {
+        // Given
+        const nextProps = merge(
+          props,
+          {
+            login: sinon.stub()
+          }
+        )
+        nextProps.login.resolves()
+        const component = mount(
+          <Provider store={store}>
+            <IntlProvider locale="en">
+              <DecoratedLogin {...nextProps}/>
+            </IntlProvider>
+          </Provider>
+        )
+
+        // When
+        const fieldUsername = component.find('input#username')
+        const fieldPassword = component.find('input#password')
+        fieldUsername.simulate('change', { target: { value: 'username' } })
+        fieldPassword.simulate('change', { target: { value: 'password' } })
+        component.find('form').simulate('submit', {
+          preventDefault: () => {
+          }
+        })
+
+        // Then
+        expect(nextProps.login).to.have.callCount(1)
+        expect(nextProps.login).to.have.been.calledWith('username', 'password')
+      })
+    })
+
+    describe('handle logout', () => {
+      it('should logout', () => {
+        // Given
+        const nextProps = merge(
+          props,
+          {
+            asyncValidate: () => Promise.resolve(),
+            handleSubmit: fct => fct,
+            isAuthenticated: true,
+            logout: sinon.spy()
+          }
+        )
+        const component = mount(
           <Login {...nextProps}/>
-        </IntlProvider>
-      )
+        )
 
-      // When
-      component.find('form').simulate('submit', { preventDefault: () => {} })
+        // When
+        component.find('button').simulate('click', {
+          preventDefault: () => {
+          }
+        })
 
-      // Then
-      expect(nextProps.login).to.not.have.been.called
-    })
-
-    it('should not login if password input is empty', () => {
-      // Given
-      const nextProps = merge(
-        props,
-        {
-          fields: {
-            username: {
-              value: 'username'
-            },
-            psw: {}
-          },
-          login: sinon.spy()
-        }
-      )
-      const component = mount(
-        <IntlProvider locale="en">
-          <Login {...nextProps}/>
-        </IntlProvider>
-      )
-
-      // When
-      component.find('form').simulate('submit', { preventDefault: () => {} })
-
-      // Then
-      expect(nextProps.login).to.not.have.been.called
-    })
-  })
-
-  describe('handle logout', () => {
-    it('should logout', () => {
-      // Given
-      const nextProps = merge(
-        props,
-        {
-          isAuthenticated: true,
-          logout: sinon.spy()
-        }
-      )
-      const component = mount(
-        <Login {...nextProps}/>
-      )
-
-      // When
-      component.find('button').simulate('click', { preventDefault: () => {} })
-
-      // Then
-      expect(nextProps.logout).to.not.have.callCount(1)
+        // Then
+        expect(nextProps.logout).to.not.have.callCount(1)
+      })
     })
   })
 })

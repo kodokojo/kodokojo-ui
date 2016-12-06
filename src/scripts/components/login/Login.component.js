@@ -20,7 +20,6 @@ import React from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Field, reduxForm, SubmissionError, propTypes } from 'redux-form'
-import { combineValidators, isRequired } from 'revalidate'
 import { intlShape, injectIntl } from 'react-intl'
 import Promise from 'bluebird'
 
@@ -28,14 +27,12 @@ import Promise from 'bluebird'
 import '../../../styles/_commons.less'
 import Input from '../../components/_ui/input/Input.component'
 import Button from '../../components/_ui/button/Button.component'
+import loginValidator from './login.validator'
 import { login, logout } from './login.actions'
 import { returnErrorKey } from '../../services/error.service'
 
 // validate function
-const validate = (values, props) => combineValidators({
-  username: isRequired({ message: 'general-input-error-required' }),
-  password: isRequired({ message: 'general-input-error-required' })
-})(values)
+const validate = loginValidator
 
 // TODO if user already logged in, fetch user id from storage and fetch user from api to store
 // Login component
@@ -46,16 +43,17 @@ export class Login extends React.Component {
     isAuthenticated: React.PropTypes.bool,
     login: React.PropTypes.func.isRequired,
     logout: React.PropTypes.func.isRequired,
+    values: React.PropTypes.object,
     ...propTypes
   }
 
   handleSubmitLogin = (values) => {
     const { login } = this.props // eslint-disable-line no-shadow
     
-    const nexUserName = values.username
-    const nexPassword = values.password
+    const nexUserName = values.username ? values.username.trim() : ''
+    const nexPassword = values.password ? values.password.trim() : ''
 
-    return login(nexUserName.trim(), nexPassword.trim())
+    return login(nexUserName, nexPassword)
       .then(Promise.resolve())
       .catch(err => Promise.reject(
         new SubmissionError(
