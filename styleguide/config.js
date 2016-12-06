@@ -20,6 +20,7 @@ function loadStories() {
   require('../src/scripts/components/_ui/typography/typography.story')
   // components
   require('../src/scripts/components/app/App.component.story')
+  require('../src/scripts/components/app/AppHeader.component.story')
   require('../src/scripts/components/user/User.component.story')
   require('../src/scripts/components/brick/Brick.component.story')
   require('../src/scripts/pages/FirstProject.page.story')

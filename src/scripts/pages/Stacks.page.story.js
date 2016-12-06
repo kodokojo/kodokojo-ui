@@ -32,7 +32,7 @@ import StacksPage from './Stacks.page'
 
 const initialState = {
   auth: {
-    isAuthenticated: false
+    isAuthenticated: true
   },
   prefs: {
     navigation: false,
@@ -41,12 +41,12 @@ const initialState = {
     version: {
       api: {
         version: '1.1.0',
-        branch: 'dev',
+        branch: 'styleguide',
         commit: '26e77589fed6eb62f146dc9332c80614a0f49f40'
       },
       ui: {
         version: '1.1.0',
-        branch: 'dev',
+        branch: 'styleguide',
         commit: '26e77589fed6eb62f146dc9332c80614a0f49f40'
       }
     }

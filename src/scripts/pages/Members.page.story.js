@@ -31,6 +31,26 @@ import App from '../components/app/App.component'
 import MembersPage from './Members.page'
 
 const initialState = {
+  auth: {
+    account: {
+      id: 'user-1'
+    },
+    isAuthenticated: true
+  },
+  prefs: {
+    version: {
+      api: {
+        version: '1.1.0',
+        branch: 'styleguide',
+        commit: '26e77589fed6eb62f146dc9332c80614a0f49f40'
+      },
+      ui: {
+        version: '1.1.0',
+        branch: 'styleguide',
+        commit: '26e77589fed6eb62f146dc9332c80614a0f49f40'
+      }
+    }
+  },
   projectConfig: {
     id: '1',
     users: [
@@ -123,7 +143,7 @@ const storeWithForm = configureStore(merge(
 ))
 
 storiesOf('MembersPage', module)
-  .add('with 3 users', () => (
+  .add('with 3 users - disabled', () => (
     <Provider store={storeInitial}>
       <IntlProvider locale="en" messages={ en }>
         <App>
@@ -134,7 +154,7 @@ storiesOf('MembersPage', module)
       </IntlProvider>
     </Provider>
   ))
-  .add('with form not disabled', () => (
+  .add('with forms', () => (
     <Provider store={storeWithForm}>
       <IntlProvider locale="en" messages={ en }>
         <App>

@@ -42,3 +42,11 @@
     justify-content: space-around;
   }
 }
+
+.header-version {
+  position: absolute;
+  top: 48px;
+  left: 68px;
+  font-size: $font-size-small;
+  color: $color-font-3;
+}

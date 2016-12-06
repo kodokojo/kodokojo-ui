@@ -22,7 +22,9 @@ import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
 
 // Component
 import '../../../styles/_commons.less'
+import themeAppHeader from './appHeader.scss'
 import AppBar from '../_ui/appBar/AppBar.component'
+import IconButton from '../_ui/button/IconButton.component'
 
 // AppHeader
 export class AppHeader extends React.Component {
@@ -46,7 +48,24 @@ export class AppHeader extends React.Component {
         isAuthenticated={ isAuthenticated }
         onLogout={ () => onLogout() }
         version={ version }
-      />
+      >
+        { version &&
+          <div className={ themeAppHeader['header-version'] }>
+            {
+              `${version.api ? `api ${version.api.version}`: ''} - ` +
+              `${version.ui ? `ui ${version.ui.version}`: ''}`
+            }
+          </div>
+        }
+        { isAuthenticated &&
+          <IconButton
+            icon="power_settings_new"
+            onClick={ () => onLogout() }
+            style={{ display: 'flex', selfAlign: 'flex-end' }}
+            title={ formatMessage({ id: 'logout-label' }) }
+          />
+        }
+      </AppBar>
       // FIXME this is for testing purpose, delete when tabs are implemented
       // <Navigation type="horizontal">
       //   <Link to="/">
@@ -72,7 +91,6 @@ export class AppHeader extends React.Component {
       //             value="fr"
       //   />
       // </DropDownMenu>
-
     )
   }
 }

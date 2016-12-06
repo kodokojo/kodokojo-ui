@@ -28,7 +28,6 @@ import { APP_BAR } from '../../../commons/identifiers'
 import '../../../../styles/_commons.less'
 import appBarTheme from './appBar.scss'
 import logoKodoKojo from '../../../../images/logo-white-kodokojo.svg'
-import IconButton from '../../_ui/button/IconButton.component'
 
 /**
  * UI: AppBar component
@@ -64,19 +63,13 @@ export class AppBar extends React.Component {
           className={ theme['logo-kodokojo'] }
           src={ logoKodoKojo }
           title={
+            version ?
             `${version.api ? `api\nv${version.api.version}\nbranch: ${version.api.branch}\ncommit: ${version.api.commit.substring(0, 7)}\n\n`: ''}` +
-            `${version.ui ? `ui\nv${version.ui.version}\nbranch: ${version.ui.branch}\ncommit: ${version.ui.commit.substring(0, 7)}`: ''}`
+            `${version.ui ? `ui\nv${version.ui.version}\nbranch: ${version.ui.branch}\ncommit: ${version.ui.commit.substring(0, 7)}`: ''}` :
+            ''
           }
         />
         { children }
-        { isAuthenticated &&
-          <IconButton
-            icon="power_settings_new"
-            onClick={ () => onLogout() }
-            style={{ display: 'flex', selfAlign: 'flex-end' }}
-            title={ formatMessage({ id: 'logout-label' }) }
-          />
-        }
       </ToolboxAppBar>
     )
   }
