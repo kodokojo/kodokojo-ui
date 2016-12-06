@@ -57,11 +57,32 @@ export class AppHeader extends React.Component {
             }
           </div>
         }
+        <div className={ themeAppHeader['menu-personal'] }>
+          {/* uncomment for future use          
+          <IconButton
+            icon="person"
+            onClick={ () => onLogout() }
+            title={ formatMessage({ id: 'help-label' }) }
+          />
+          <IconButton
+            className={ themeAppHeader['menu-personal__item--small'] }
+            icon="chat_bubble"
+            onClick={ () => onLogout() }
+            title={ formatMessage({ id: 'help-label' }) }
+          />
+          */}
+          <IconButton
+            className={ themeAppHeader['menu-personal__item--small'] }
+            icon="help"
+            onClick={ () => window.location.href = 'mailto:test@coucou.com' }
+            title={ formatMessage({ id: 'help-label' }) }
+          />
+        </div>
         { isAuthenticated &&
           <IconButton
+            className={ themeAppHeader['header-logout'] }
             icon="power_settings_new"
             onClick={ () => onLogout() }
-            style={{ display: 'flex', selfAlign: 'flex-end' }}
             title={ formatMessage({ id: 'logout-label' }) }
           />
         }

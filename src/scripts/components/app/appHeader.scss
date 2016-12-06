@@ -50,3 +50,35 @@
   font-size: $font-size-small;
   color: $color-font-3;
 }
+
+.header-logout {
+  display: flex;
+  flex: 0 0 auto;
+  justify-content: flex-end;
+}
+
+.menu-personal {
+  display: flex;
+  flex: 1 1 auto;
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  align-items: flex-end;
+  button,
+  span {
+    font-size: $font-size-medium !important;
+  }
+  span {
+    line-height: initial !important;
+  }
+  button {
+    color: $color-font-4;
+    width: $font-size-medium + .5rem;
+    height: $font-size-medium + .5rem;
+  }
+}
+
+.menu-personal__item--small {
+  span {
+    font-size: 1.1rem !important;
+  }
+}
