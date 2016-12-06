@@ -100,6 +100,30 @@ export default function prefs(state = prefsDefault, action) {
   return state
 }
 
+export const getCrispKey = (state) => {
+  if (
+    state.configuration &&
+    state.configuration.ui &&
+    state.configuration.ui.CRISP &&
+    state.configuration.ui.CRISP !== ''
+  ) {
+    return state.configuration.ui.CRISP
+  }
+  return null
+}
+
+export const getHelpEmail = (state) => {
+  if (
+    state.configuration &&
+    state.configuration.ui &&
+    state.configuration.ui.HELP_EMAIL &&
+    state.configuration.ui.HELP_EMAIL !== ''
+  ) {
+    return state.configuration.ui.HELP_EMAIL
+  }
+  return null
+}
+
 export const getReCaptchaKey = (state) => {
   if (
     state.configuration &&
@@ -134,16 +158,4 @@ export const getWaitingList = (state) => {
     return !!state.configuration.ui.WAITING_LIST
   }
   return false
-}
-
-export const getCrispKey = (state) => {
-  if (
-    state.configuration &&
-    state.configuration.ui &&
-    state.configuration.ui.CRISP &&
-    state.configuration.ui.CRISP !== ''
-  ) {
-    return state.configuration.ui.CRISP
-  }
-  return null
 }

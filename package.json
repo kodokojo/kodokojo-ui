@@ -43,7 +43,7 @@
     "test:watch": "npm test -- --watch",
     "test:spec:watch": "npm run test:spec -- --watch",
     "coverage": "BABEL_ENV=test babel-node ./node_modules/.bin/babel-istanbul cover _mocha --include-all-sources --root src/ --default-excludes -- -R spec --recursive './src/**/*.spec.js' --reporter mochawesome --reporter-options reportDir=reports/test,reportName=index,reportTitle=reportTest --recursive --require test/utils.js --require ignore-styles --require intl && ./node_modules/istanbul/lib/cli.js report clover",
-    "configuration": "mkdir -p ./static/assets/json/ && cat ./config/config.template.tpl | sed -e \"s#@@RECAPTCHA@@#$RECAPTCHA_ENV#g\" -e \"s#@@TOS@@#$TOS_ENV#g\" -e \"s#@@WAITING_LIST@@#$WAITING_LIST_ENV#g\" -e \"s#@@CRISP@@#$CRISP_ENV#g\" > ./static/assets/json/ui.configuration.json",
+    "configuration": "mkdir -p ./static/assets/json/ && cat ./config/config.template.tpl | sed -e \"s#@@CRISP@@#$CRISP_ENV#g\" -e \"s#@@HELP_EMAIL@@#$HELP_EMAIL_ENV#g\" -e \"s#@@RECAPTCHA@@#$RECAPTCHA_ENV#g\" -e \"s#@@TOS@@#$TOS_ENV#g\" -e \"s#@@WAITING_LIST@@#$WAITING_LIST_ENV#g\" > ./static/assets/json/ui.configuration.json",
     "version": "node ./config/config.extract.version.js && mkdir -p ./static/assets/json/ && cp ./config/shared/ui.version.json ./static/assets/json/"
   },
   "pre-commit": [

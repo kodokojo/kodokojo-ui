@@ -60,6 +60,7 @@ export default {
   'general-input-error-required': '{fieldName} is required',
   'general-input-error-alphabetic': '{fieldName} must be alphabetic',
   'group-label': 'Group',
+  'help-label': 'Need help?',
   'lastname-input-label': 'Last name',
   'login-error-401': 'Account not found. Check your email or / and your password',
   'login-error-404': 'Account not found. Check your email or / and your password',

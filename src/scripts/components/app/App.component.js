@@ -33,6 +33,7 @@ import Content from '../_ui/content/Content.component'
 import AppHeader from './AppHeader.component'
 import Menu from '../menu/Menu.component'
 import Toaster from '../_ui/toaster/Toaster.component'
+import { getHelpEmail } from '../../commons/reducers'
 import { logout } from '../login/login.actions'
 import { nextAlert } from '../alert/alert.actions'
 import { requestWebsocket } from '../_utils/websocket/websocket.actions'
@@ -50,9 +51,9 @@ class App extends React.Component {
   static propTypes = {
     alert: React.PropTypes.object,
     children: React.PropTypes.element.isRequired,
-    crispKey: React.PropTypes.string,
     getApiVersion: React.PropTypes.func.isRequired,
     getUiConfiguration: React.PropTypes.func.isRequired,
+    help: React.PropTypes.string,
     isAuthenticated: React.PropTypes.bool.isRequired,
     locale: React.PropTypes.string.isRequired,
     logout: React.PropTypes.func.isRequired,
@@ -87,7 +88,7 @@ class App extends React.Component {
     getApiVersion()
     getUiConfiguration()
       .then(data => {
-        const configuration =  data && data.payload && data.payload.configuration ? data.payload.configuration : undefined 
+        const configuration =  data && data.payload && data.payload.configuration ? data.payload.configuration : undefined
         // optional feature
         if (configuration && configuration.ui && configuration.ui.CRISP) {
           // inject crisp script
@@ -122,11 +123,12 @@ class App extends React.Component {
   }
 
   render() {
-    const { alert, children, isAuthenticated, locale, logout, menu, navigation, setLocale, theme, version } = this.props // eslint-disable-line no-shadow
+    const { alert, children, help, isAuthenticated, locale, logout, menu, navigation, setLocale, theme, version } = this.props // eslint-disable-line no-shadow
 
     return (
       <Layout>
         <AppHeader
+          help={ help }
           isAuthenticated={ isAuthenticated || false }
           languageSelected={ locale }
           onLanguageChange={ (value) => setLocale(value) }
@@ -166,13 +168,14 @@ class App extends React.Component {
 
 const mapStateProps = (state, ownProps) => (
   {
+    alert: state.alerts.display,
     locale: state.prefs.locale,
     theme: state.prefs.theme,
     menu: state.menu,
     navigation: state.prefs.navigation,
     isAuthenticated: state.auth.isAuthenticated,
-    version: state.prefs.version,
-    alert: state.alerts.display
+    help: getHelpEmail(state),
+    version: state.prefs.version
   }
 )
 

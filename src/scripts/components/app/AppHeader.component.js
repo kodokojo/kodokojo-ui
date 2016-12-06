@@ -30,6 +30,7 @@ import IconButton from '../_ui/button/IconButton.component'
 export class AppHeader extends React.Component {
 
   static propTypes = {
+    help: React.PropTypes.string,
     intl: intlShape.isRequired,
     isAuthenticated: React.PropTypes.bool.isRequired,
     languageSelected: React.PropTypes.string.isRequired,
@@ -39,7 +40,7 @@ export class AppHeader extends React.Component {
   }
 
   render() {
-    const { languageSelected, onLanguageChange, onLogout, isAuthenticated, version } = this.props // eslint-disable-line no-shadow
+    const { help, languageSelected, onLanguageChange, onLogout, isAuthenticated, version } = this.props // eslint-disable-line no-shadow
     const { formatMessage } = this.props.intl
 
     return (
@@ -57,27 +58,29 @@ export class AppHeader extends React.Component {
             }
           </div>
         }
-        <div className={ themeAppHeader['menu-personal'] }>
-          {/* uncomment for future use          
-          <IconButton
-            icon="person"
-            onClick={ () => onLogout() }
-            title={ formatMessage({ id: 'help-label' }) }
-          />
-          <IconButton
-            className={ themeAppHeader['menu-personal__item--small'] }
-            icon="chat_bubble"
-            onClick={ () => onLogout() }
-            title={ formatMessage({ id: 'help-label' }) }
-          />
-          */}
-          <IconButton
-            className={ themeAppHeader['menu-personal__item--small'] }
-            icon="help"
-            onClick={ () => window.location.href = 'mailto:test@coucou.com' }
-            title={ formatMessage({ id: 'help-label' }) }
-          />
-        </div>
+        { isAuthenticated &&
+          <div className={ themeAppHeader['menu-personal'] }>
+            {/* uncomment for future use
+             <IconButton
+             icon="person"
+             onClick={ () => onLogout() }
+             title={ formatMessage({ id: 'help-label' }) }
+             />
+             <IconButton
+             className={ themeAppHeader['menu-personal__item--small'] }
+             icon="chat_bubble"
+             onClick={ () => onLogout() }
+             title={ formatMessage({ id: 'help-label' }) }
+             />
+             */}
+            <IconButton
+              className={ themeAppHeader['menu-personal__item--small'] }
+              icon="help"
+              onClick={ () => window.location.href = `mailto:${help}` }
+              title={ formatMessage({ id: 'help-label' }) }
+            />
+          </div>
+        }
         { isAuthenticated &&
           <IconButton
             className={ themeAppHeader['header-logout'] }
