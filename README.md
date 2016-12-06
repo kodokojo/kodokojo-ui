@@ -70,6 +70,10 @@ You can set environment variables for toggle features.
 
     WAITING_LIST_ENV=true
 
+##### Enable crisp
+
+    CRISP_ENV=<site key>
+
 ##### Export configuration for dev environment
 
 Set variables locally, and run:
