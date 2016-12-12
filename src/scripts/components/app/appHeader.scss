@@ -51,12 +51,6 @@
   color: $color-font-3;
 }
 
-.header-logout {
-  display: flex;
-  flex: 0 0 auto;
-  justify-content: flex-end;
-}
-
 .menu-personal {
   display: flex;
   flex: 1 1 auto;
@@ -65,20 +59,26 @@
   align-items: flex-end;
   button,
   span {
-    font-size: $font-size-medium !important;
+    font-size: $font-size-xlarge !important;
   }
   span {
     line-height: initial !important;
   }
   button {
     color: $color-font-4;
-    width: $font-size-medium + .5rem;
-    height: $font-size-medium + .5rem;
+    width: $font-size-xlarge + .5rem;
+    height: $font-size-xlarge + .5rem;
+  }
+}
+
+.menu-personal__item--smaller {
+  span {
+    font-size: $font-size-xlarge - .4rem !important;
   }
 }
 
 .menu-personal__item--small {
   span {
-    font-size: 1.1rem !important;
+    font-size: $font-size-xlarge - .2rem !important;
   }
 }

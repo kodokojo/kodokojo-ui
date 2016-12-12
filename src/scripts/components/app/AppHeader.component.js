@@ -67,27 +67,24 @@ export class AppHeader extends React.Component {
              title={ formatMessage({ id: 'help-label' }) }
              />
              <IconButton
-             className={ themeAppHeader['menu-personal__item--small'] }
+             className={ themeAppHeader['menu-personal__item--smaller'] }
              icon="chat_bubble"
              onClick={ () => onLogout() }
              title={ formatMessage({ id: 'help-label' }) }
              />
-             */}
+           */}
             <IconButton
               className={ themeAppHeader['menu-personal__item--small'] }
               icon="help"
               onClick={ () => window.location.href = `mailto:${help}` }
               title={ formatMessage({ id: 'help-label' }) }
             />
+            <IconButton
+              icon="power_settings_new"
+              onClick={ () => onLogout() }
+              title={ formatMessage({ id: 'logout-label' }) }
+            />
           </div>
-        }
-        { isAuthenticated &&
-          <IconButton
-            className={ themeAppHeader['header-logout'] }
-            icon="power_settings_new"
-            onClick={ () => onLogout() }
-            title={ formatMessage({ id: 'logout-label' }) }
-          />
         }
       </AppBar>
       // FIXME this is for testing purpose, delete when tabs are implemented
