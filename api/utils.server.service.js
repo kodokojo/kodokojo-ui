@@ -16,9 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import logger from '../config/logger'
-
 import requestPromise from 'request-promise'
+
+import logger from '../config/logger'
 
 export const requestWithLog = (options) => {
   logger.info('request utils options', options)

@@ -18,9 +18,11 @@
 
 import winston from 'winston'
 
+const logLevel = process.env.LOG_LEVEL_ENV || 'debug'
+
 const loggerTransports = [new winston.transports.Console({
   handleExceptions: true,
-  level: 'debug',
+  level: logLevel,
   timestamp: () => new Date().toISOString(),
   colorize: true
 })]

@@ -1,3 +1,4 @@
+
 # Kodo Kojo UI
 
 This is the UI for Kodo Kojo project 
@@ -56,7 +57,7 @@ For Windows users, you may do something like (not sure of the command, please PR
 
 #### Set toggle features configuration
 
-You can set environment variables for toggle features.
+You can set environment variables for toggle features (optional).
 
 ##### Enable reCaptcha (v2)
 
@@ -84,6 +85,23 @@ Set variables locally, and run:
 
     $ docker run -p 8080:80 -d -e BACK_HOST="0.0.0.0" -e BACK_PORT="1234" -e <VARIABLE_ENV>=<value> kodokojo/kodokojo-ui:<version>
 
+#### Customization
+
+Some feature are customizable from environment variables.
+
+##### Log level
+
+By default it set to 'debug'. You can change it by setting:
+
+    LOG_LEVEL_ENV=<level>    
+
+Level can be one of the following:
+
+- silly: no logs
+- debug: all logs
+- info: info and above
+- warn: warn and above
+- error: just error logs
 
 ## Installation
 
