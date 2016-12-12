@@ -16,6 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+// FIXME false positive with functional component
 /* eslint-disable react/prop-types */
 
 import React from 'react'
