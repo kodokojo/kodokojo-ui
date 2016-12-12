@@ -54,10 +54,9 @@ class Input extends React.Component {
         {...input}
         error={ 
           meta && meta.touched && meta.error ?
-          formatMessage({ id: meta.error }, {
-            fieldName: errorKey ? formatMessage({ id: errorKey }) : ''
-          }) :
-          ''
+            formatMessage({ id: meta.error }, {
+              fieldName: errorKey ? formatMessage({ id: errorKey }) : ''
+            }) : ''
         }
         theme={ inputTheme }
       />

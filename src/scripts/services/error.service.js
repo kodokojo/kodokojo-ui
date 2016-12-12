@@ -25,13 +25,29 @@ const errorService = {}
  * @param {string} param.component
  * @param {string} param.action
  * @param {string} param.code
- * @returns {string} error i18n string
+ * @returns {string} error i18n key
  */
 errorService.returnErrorKey = ({ component, action, code }) => `${component ? `${component}-` : ''}` +
-    `${action ? `${action}-` : ''}error` +
-    `${code ? `-${code}` : ''}`
+  `${action ? `${action}-` : ''}error` +
+  `${code ? `-${code}` : ''}`
+
+/**
+ * @param {object} param
+ * @param {string} param.component
+ * @param {string} param.action
+ * @param {string} param.message
+ * @returns {string} error i18n key or message
+ */
+errorService.returnErrorKeyOrMessage = ({ component, action, message }) => {
+  if (message && message.match(/^((?:4|5){1}\d{2})$/)) {
+    return errorService.returnErrorKey({ component, action, code: message })
+  } else {
+    return message
+  }
+}
 
 // public API
 export const returnErrorKey = errorService.returnErrorKey
+export const returnErrorKeyOrMessage = errorService.returnErrorKeyOrMessage
 
 export default errorService

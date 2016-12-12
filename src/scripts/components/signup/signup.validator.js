@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import { combineValidators, isRequired } from 'revalidate'
+import { combineValidators } from 'revalidate'
 import { captchaValidator, emailValidator } from '../../services/validator.service'
 
 export default (values, props) => combineValidators({

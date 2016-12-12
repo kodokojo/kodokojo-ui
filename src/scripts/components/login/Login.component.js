@@ -29,7 +29,7 @@ import Input from '../../components/_ui/input/Input.component'
 import Button from '../../components/_ui/button/Button.component'
 import loginValidator from './login.validator'
 import { login, logout } from './login.actions'
-import { returnErrorKey } from '../../services/error.service'
+import { returnErrorKeyOrMessage } from '../../services/error.service'
 
 // validate function
 const validate = loginValidator
@@ -57,10 +57,10 @@ export class Login extends React.Component {
       .then(Promise.resolve())
       .catch(err => Promise.reject(
         new SubmissionError(
-          { password: returnErrorKey(
+          { password: returnErrorKeyOrMessage(
             {
               component: 'login',
-              code: err.message
+              message: err.message
             })
           }
         )

@@ -20,7 +20,6 @@ import React from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Field, reduxForm, SubmissionError, propTypes, reset } from 'redux-form'
-import { combineValidators } from 'revalidate'
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
 import Promise from 'bluebird'
 
@@ -37,7 +36,7 @@ import signupValidator from './signup.validator'
 import { createAccount } from './signup.actions'
 import { initCaptcha, resetCaptcha, updateCaptcha } from '../auth/auth.actions'
 import { getReCaptchaKey, getTosUri, getWaitingList } from '../../commons/reducers'
-import { returnErrorKey } from '../../services/error.service'
+import { returnErrorKeyOrMessage } from '../../services/error.service'
 
 // validate function
 const validate = signupValidator
@@ -83,10 +82,10 @@ export class Signup extends React.Component {
       })
       .catch(err => {
         const error = new SubmissionError(
-          { email: returnErrorKey(
+          { email: returnErrorKeyOrMessage(
             {
               component: 'account',
-              code: err.message
+              message: err.message
             })
           }
         )

@@ -39,7 +39,7 @@ import Button from '../_ui/button/Button.component'
 import FontIcon from '../_ui/fontIcon/FontIcon.component'
 import { createProjectConfig } from './projectConfig.actions'
 import { projectNameValidator } from '../../services/validator.service'
-import { returnErrorKey } from '../../services/error.service'
+import { returnErrorKeyOrMessage } from '../../services/error.service'
 import { getBrickLogo } from '../../services/param.service'
 
 // validation function
@@ -115,7 +115,7 @@ export class ProjectConfigForm extends React.Component {
       .then(Promise.resolve())
       .catch(err => Promise.reject(
         new SubmissionError(
-          { projectName: returnErrorKey(
+          { projectName: returnErrorKeyOrMessage(
             {
               component: 'project',
               code: err.message
