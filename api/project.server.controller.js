@@ -21,43 +21,43 @@ import * as projectRepository from './project.server.repository'
 export const postProjectConfig = (request, response) => {
   projectRepository
     .postProjectConfig(request)
-    .then(({res, data}) => response.status(201).send(data))
-    .catch((err, resp) => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
+    .then(res => response.status(201).send(res.body))
+    .catch(err => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
 }
 
 export const getProjectConfig = (request, response) => {
   projectRepository
     .getProjectConfig(request)
-    .then(({res, data}) => response.status(201).send(data))
-    .catch((err, resp) => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
+    .then(res => response.status(201).send(res.body))
+    .catch(err => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
 }
 
 export const putUserToProjectConfig = (request, response) => {
   projectRepository
     .putUserToProjectConfig(request)
-    .then(({res, data}) => response.status(200).send(data))
-    .catch((err, resp) => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
+    .then(res => response.status(200).send(res.body))
+    .catch(err => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
 }
 
 export const deleteUserFromProjectConfig = (request, response) => {
   projectRepository
     .deleteUserFromProjectConfig(request)
-    .then(({res, data}) => response.status(200).send(data))
-    .catch((err, resp) => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
+    .then(res => response.status(200).send(res.body))
+    .catch(err => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
 }
 
 export const postProject = (request, response) => {
   projectRepository
     .postProject(request)
-    .then(({res, data}) => response.status(201).send(data))
-    .catch((err, resp) => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
+    .then(res => response.status(201).send(res.body))
+    .catch(err => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
 }
 
 
 export const getProject = (request, response) => {
   projectRepository
     .getProject(request)
-      .then(({res, data}) => response.status(200).send(data))
-      .catch((err, resp) => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
+      .then(res => response.status(200).send(res.body))
+      .catch(err => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
 }
 

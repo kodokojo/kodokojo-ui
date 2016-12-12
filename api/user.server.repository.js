@@ -54,8 +54,8 @@ userRepository.updateUser = (request) => {
     headers: request.headers
   }
   headers.host = config.api.host
-  delete headers.referer
-  delete headers.origin
+  // delete headers.referer
+  // delete headers.origin
 
   return requestWithLog({
     method: 'PATCH',

@@ -16,13 +16,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import request from 'request'
-import Promise from 'bluebird'
 import logger from '../config/logger'
 
-const requestPromise = Promise.promisify(request, { multiArgs: true })
+import requestPromise from 'request-promise'
 
 export const requestWithLog = (options) => {
+  logger.info('request utils options', options)
+
   let startMessage = `${options.method} request on uri ${options.uri}`
   if (options.headers) {
     startMessage += `\n Headers : ${JSON.stringify(options.headers, null, 2)}`
@@ -31,19 +31,19 @@ export const requestWithLog = (options) => {
     startMessage += `\n Body : ${JSON.stringify(options.body, null, 2)}`
   }
 
+  options.encoding = 'utf-8'
+  options.resolveWithFullResponse = true
+
   return requestPromise(options)
-    .spread((res, data) => {
+    .then(res => {
       logger.debug(startMessage)
       logger.debug(JSON.stringify(res, null, 2))
-      return {
-        res,
-        data
-      }
+      return res
     })
-    .catch((error, response, body) => {
+    .catch(err => {
       logger.error(startMessage)
-      logger.error(JSON.stringify(error, null, 2))
-      throw error
+      logger.error(JSON.stringify(err, null, 2))
+      throw err
     })
 }
 

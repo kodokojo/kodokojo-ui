@@ -21,6 +21,6 @@ import * as brickRepository from './brick.server.repository'
 export const getBricks = (request, response) => {
   brickRepository
     .getBricks(request)
-    .then(({res, data}) => response.status(201).send(data))
-    .catch((err, resp) => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
+    .then(res => response.status(201).send(res.body))
+    .catch(err => response.status(err.response && err.response.statusCode ? err.response.statusCode : 500).send(err))
 }
