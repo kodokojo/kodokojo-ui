@@ -4,7 +4,7 @@
 var callCount = 0
 
 exports.controller = function(req, res, next) {
-  console.log('call count to user POST', callCount++, req.params, req.body)
+  console.log('call count to user POST', callCount++)
 
   var userEmail = req.body.email
   var userId
@@ -13,6 +13,21 @@ exports.controller = function(req, res, next) {
     res.contentType = 'application/json'
     console.log('return code 428')
     res.send(428)
+    next()
+  } else if (userEmail === '409@error.io') {
+    res.contentType = 'application/json'
+    console.log('return code 409')
+    res.send(409)
+    next()
+  } else if (userEmail === '412@error.io') {
+    res.contentType = 'application/json'
+    console.log('return code 412')
+    res.send(412)
+    next()
+  } else if (userEmail === '401@error.io') {
+    res.contentType = 'application/json'
+    console.log('return code 401')
+    res.send(401)
     next()
   } else if (userEmail === 'sass-sandbox@new.io') {
     console.log('return code 202')

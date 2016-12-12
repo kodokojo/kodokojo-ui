@@ -4,11 +4,10 @@
 var uuid  = require('uuid')
 
 exports.controller = function(req, res, next) {
-  console.log('user GET authorization')
+  console.log(`user GET authorization`)
 
   var userId = uuid.v4()
   var userCredentials = req.headers ? req.headers.authorization : undefined
-
 
   var user = {
     "identifier": `${userId}`,
@@ -35,9 +34,8 @@ exports.controller = function(req, res, next) {
       res.send(200, user)
       next()
     } else {
-      // FIXME fail case doesn't work
-      console.log('401 Unauthorized')
       res.contentType = 'application/json'
+      console.log('401 Unauthorized')
       res.send(401)
       next()
     }

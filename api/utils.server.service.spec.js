@@ -1,5 +1,4 @@
 import { expect } from 'chai'
-import request from 'request'
 import nock from 'nock'
 
 import { requestWithLog }from './utils.server.service'
