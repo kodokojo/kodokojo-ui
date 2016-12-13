@@ -45,6 +45,8 @@ storiesOf('User', module)
   .add('default', () => (
     <IntlProvider locale="en" messages={ en }>
       <User
+        onUserEdit={ () => {} }
+        onUserSelect={ () => {} }
         store={store}
         userId={ '1' }
       />
