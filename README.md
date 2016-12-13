@@ -9,7 +9,7 @@ This is the UI for Kodo Kojo project
 [![](https://img.shields.io/badge/license-GPLv3-blue.svg?style=flat)](http://www.gnu.org/licenses/gpl-3.0.en.html)     
 
 [![](https://img.shields.io/badge/version-1.1.0-orange.svg?style=flat&maxAge=2592000)](https://github.com/kodokojo/kodokojo-ui#kodo-kojo-ui)
-[![node](https://img.shields.io/badge/node-5.x.x-yellow.svg?style=flat&maxAge=2592000)](https://github.com/kodokojo/kodokojo-ui#kodo-kojo-ui) 
+[![node](https://img.shields.io/badge/node-6.x.x-yellow.svg?style=flat&maxAge=2592000)](https://github.com/kodokojo/kodokojo-ui#kodo-kojo-ui) 
 [![npm](https://img.shields.io/badge/npm-3.x.x-blue.svg?style=flat&maxAge=2592000)](https://github.com/kodokojo/kodokojo-ui#kodo-kojo-ui)  
 
 [![Dependency Status](https://dependencyci.com/github/kodokojo/kodokojo-ui/badge)](https://dependencyci.com/github/kodokojo/kodokojo-ui)
