@@ -12,6 +12,7 @@
     "dependencies:check": "npm-check",
     "dependencies:update": "npm-check -u -E",
     "clean": "test -d ./node_modules/ && rm -rf ./node_modules || echo \"no node_modules/ folder, continue\"",
+    "clean:delivery": "test -d ./docker/delivery/static/ && rm -rf ./docker/delivery/static/ || echo \"no delivery/static folder, continue\"",
     "clean:static": "test -d ./static/ && rm -rf ./static || echo \"no static/ folder, continue\"",
     "styleguide": "start-storybook -p 9001 -c ./styleguide",
     "license": "gulp license",
