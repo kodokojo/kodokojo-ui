@@ -35,8 +35,8 @@ export class AppHeader extends React.Component {
     help: React.PropTypes.string,
     intl: intlShape.isRequired,
     isAuthenticated: React.PropTypes.bool.isRequired,
-    languageSelected: React.PropTypes.string.isRequired,
-    onLanguageChange: React.PropTypes.func.isRequired,
+    languageSelected: React.PropTypes.string,
+    onLanguageChange: React.PropTypes.func,
     onLogout: React.PropTypes.func.isRequired,
     version: React.PropTypes.object
   }

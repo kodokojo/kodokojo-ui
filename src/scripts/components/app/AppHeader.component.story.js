@@ -54,11 +54,13 @@ storiesOf('AppHeader', module)
   .add('authenticated', () => (
     <AppHeader
       isAuthenticated
+      onLogout={() => {}}
     />
   ))
   .add('authenticated and version', () => (
     <AppHeader
       isAuthenticated
+      onLogout={() => {}}
       version={version}
     />
   ))
