@@ -1,4 +1,4 @@
-FROM node:5.12.0
+FROM node:6.9.2
 
 ENV NODE_ENV production
 ENV BABEL_ENV production
