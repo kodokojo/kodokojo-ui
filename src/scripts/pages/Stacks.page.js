@@ -22,12 +22,14 @@ import { compose } from 'redux'
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
 import classNames from 'classnames'
 
+// Component commons
+import 'kodokojo-ui-commons/src/styles/_commons.less'
+import utilsTheme from 'kodokojo-ui-commons/src/styles/_utils.scss'
+import Page from 'kodokojo-ui-commons/src/scripts/components/page/Page.component'
+import Paragraph from 'kodokojo-ui-commons/src/scripts/components/page/Paragraph.component'
+
 // Component
-import '../../styles/_commons.less'
-import utilsTheme from '../../styles/_utils.scss'
 import brickTheme from '../components/brick/brick.scss'
-import Page from '../components/_ui/page/Page.component'
-import Paragraph from '../components/_ui/page/Paragraph.component'
 import Brick from '../components/brick/Brick.component'
 import { setNavVisibility } from '../components/app/app.actions'
 // import { updateProject } from '../components/project/project.actions'

@@ -23,14 +23,16 @@ import { themr } from 'react-css-themr'
 import { intlShape, injectIntl } from 'react-intl'
 import classNames from 'classnames'
 
+// Component commons
+import 'kodokojo-ui-commons/src/styles/_commons.less'
+import Avatar from 'kodokojo-ui-commons/src/scripts/components/avatar/Avatar.component'
+import Checkbox from 'kodokojo-ui-commons/src/scripts/components/checkbox/Checkbox.component'
+import IconButton from 'kodokojo-ui-commons/src/scripts/components/button/IconButton.component'
+import EditIcon from 'kodokojo-ui-commons/src/scripts/components/icons/EditIcon.component'
+
 // Component
 import { USER } from '../../commons/identifiers'
-import '../../../styles/_commons.less'
 import userTheme from './user.scss'
-import Avatar from '../_ui/avatar/Avatar.component'
-import Checkbox from '../_ui/checkbox/Checkbox.component'
-import IconButton from '../_ui/button/IconButton.component'
-import EditIcon from '../_ui/icons/EditIcon.component'
 import { getUser } from '../../commons/reducers'
 
 // TODO UT

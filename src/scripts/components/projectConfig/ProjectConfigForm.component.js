@@ -27,16 +27,18 @@ import filter from 'lodash/filter'
 import size from 'lodash/size'
 import isEmpty from 'lodash/isEmpty'
 
-// component
-import '../../../styles/_commons.less'
-import utilsTheme from '../../../styles/_utils.scss'
-import Card from '../_ui/card/Card.component'
-import CardContent from '../_ui/card/CardContent.component'
-import CardContainer from '../_ui/card/CardContainer.component'
-import Input from '../_ui/input/Input.component'
-import Checkbox from '../_ui/checkbox/Checkbox.component'
-import Button from '../_ui/button/Button.component'
-import FontIcon from '../_ui/fontIcon/FontIcon.component'
+// component commons
+import 'kodokojo-ui-commons/src/styles/_commons.less'
+import utilsTheme from 'kodokojo-ui-commons/src/styles/_utils.scss'
+import Card from 'kodokojo-ui-commons/src/scripts/components/card/Card.component'
+import CardContent from 'kodokojo-ui-commons/src/scripts/components/card/CardContent.component'
+import CardContainer from 'kodokojo-ui-commons/src/scripts/components/card/CardContainer.component'
+import Input from 'kodokojo-ui-commons/src/scripts/components/input/Input.component'
+import Checkbox from 'kodokojo-ui-commons/src/scripts/components/checkbox/Checkbox.component'
+import Button from 'kodokojo-ui-commons/src/scripts/components/button/Button.component'
+import FontIcon from 'kodokojo-ui-commons/src/scripts/components/fontIcon/FontIcon.component'
+
+// Component
 import { createProjectConfig } from './projectConfig.actions'
 import { projectNameValidator } from '../../services/validator.service'
 import { returnErrorKeyOrMessage } from '../../services/error.service'

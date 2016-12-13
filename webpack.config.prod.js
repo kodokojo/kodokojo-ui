@@ -45,11 +45,12 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        exclude: /node_modules(?!\/kodokojo-ui-commons)/,
         loaders: ['babel'],
         include: [
           path.join(__dirname, 'src'),
-          path.join(__dirname, 'config/shared')
+          path.join(__dirname, 'config/shared'),
+          path.join(__dirname, 'node_modules/kodokojo-ui-commons')
         ]
       },
       {

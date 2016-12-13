@@ -19,8 +19,10 @@
 import React from 'react'
 import sortBy from 'lodash/sortBy'
 
+// Component commons
+import 'kodokojo-ui-commons/src/styles/_commons.less'
+
 // Component
-import '../../../styles/_commons.less'
 import MenuItem from './MenuItem.component'
 
 // TODO UT

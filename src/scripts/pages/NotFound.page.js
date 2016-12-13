@@ -20,10 +20,10 @@ import React from 'react'
 import { connect } from 'react-redux'
 // import DocumentMeta from 'react-document-meta'
 
-// Component
-import Card from '../components/_ui/card/Card.component'
-import CardContent from '../components/_ui/card/CardContent.component'
-import CardContainer from '../components/_ui/card/CardContainer.component'
+// Component commons
+import Card from 'kodokojo-ui-commons/src/scripts/components/card/Card.component'
+import CardContent from 'kodokojo-ui-commons/src/scripts/components/card/CardContent.component'
+import CardContainer from 'kodokojo-ui-commons/src/scripts/components/card/CardContainer.component'
 
 // const metaData = {
 //  title: '404 Page Not Found',

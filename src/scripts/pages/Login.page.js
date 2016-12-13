@@ -23,12 +23,14 @@ import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
 import Promise from 'bluebird'
 import { browserHistory } from 'react-router'
 
+// Component commons
+import 'kodokojo-ui-commons/src/styles/_commons.less'
+import Card from 'kodokojo-ui-commons/src/scripts/components/card/Card.component'
+import CardContent from 'kodokojo-ui-commons/src/scripts/components/card/CardContent.component'
+import CardContainer from 'kodokojo-ui-commons/src/scripts/components/card/CardContainer.component'
+import Button from 'kodokojo-ui-commons/src/scripts/components/button/Button.component'
+
 // Component
-import '../../styles/_commons.less'
-import Card from '../components/_ui/card/Card.component'
-import CardContent from '../components/_ui/card/CardContent.component'
-import CardContainer from '../components/_ui/card/CardContainer.component'
-import Button from '../components/_ui/button/Button.component'
 import Login from '../components/login/Login.component'
 import { getWaitingList } from '../commons/reducers'
 import { setNavVisibility } from '../components/app/app.actions'

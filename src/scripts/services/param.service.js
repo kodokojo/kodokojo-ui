@@ -19,16 +19,16 @@
 import find from 'lodash/find'
 
 // status
-import statusDefault from '../../images/status-default-small.svg'
-import statusStarting from '../../images/status-starting-small.gif'
-import statusRunning from '../../images/status-running-small.svg'
-import statusFailure from '../../images/status-failure-small.svg'
+// import statusDefault from 'kodokojo-ui-commons/src/images/status-default-small.svg'
+import statusStarting from 'kodokojo-ui-commons/src/images/status-starting-small.gif'
+import statusRunning from 'kodokojo-ui-commons/src/images/status-running-small.svg'
+import statusFailure from 'kodokojo-ui-commons/src/images/status-failure-small.svg'
 
 // bricks
-import brickGitlab from '../../images/brick-gitlab.svg'
-import brickJenkins from '../../images/brick-jenkins.svg'
-import brickNexus from '../../images/brick-nexus.svg'
-import brickDockerRegistry from '../../images/brick-docker-registry.svg'
+import brickGitlab from 'kodokojo-ui-commons/src/images/brick-gitlab.svg'
+import brickJenkins from 'kodokojo-ui-commons/src/images/brick-jenkins.svg'
+import brickNexus from 'kodokojo-ui-commons/src/images/brick-nexus.svg'
+import brickDockerRegistry from 'kodokojo-ui-commons/src/images/brick-docker-registry.svg'
 
 export const enumStatus = {
   FAILURE: {

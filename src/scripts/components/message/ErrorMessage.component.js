@@ -23,8 +23,10 @@ import { intlShape, injectIntl } from 'react-intl'
 // see https://github.com/Hacker0x01/react-datepicker/issues/517#issuecomment-230119718
 /* eslint-disable react/prop-types */
 
-// component
-import '../../../styles/_commons.less'
+// Component commons
+import 'kodokojo-ui-commons/src/styles/_commons.less'
+
+// Component
 import errorTheme from './message.scss'
 
 /**

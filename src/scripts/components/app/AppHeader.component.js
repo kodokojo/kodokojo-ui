@@ -20,11 +20,13 @@ import React from 'react'
 import { Link } from 'react-router'
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
 
+// Component commons
+import 'kodokojo-ui-commons/src/styles/_commons.less'
+import AppBar from 'kodokojo-ui-commons/src/scripts/components/appBar/AppBar.component'
+import IconButton from 'kodokojo-ui-commons/src/scripts/components/button/IconButton.component'
+
 // Component
-import '../../../styles/_commons.less'
 import themeAppHeader from './appHeader.scss'
-import AppBar from '../_ui/appBar/AppBar.component'
-import IconButton from '../_ui/button/IconButton.component'
 
 // AppHeader
 export class AppHeader extends React.Component {

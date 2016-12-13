@@ -21,8 +21,8 @@
 
 import React from 'react'
 
-// Component
-import Button from '../_ui/button/Button.component'
+// Component commons
+import Button from 'kodokojo-ui-commons/src/scripts/components/button/Button.component'
 
 const UserAddButton = ({
   disabled,

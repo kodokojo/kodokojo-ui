@@ -19,8 +19,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-// Account component
-import utilsTheme from '../../../styles/_utils.scss'
+// Component commons
+import utilsTheme from 'kodokojo-ui-commons/src/styles/_utils.scss'
 
 // TODO UT
 // TODO implement i18n

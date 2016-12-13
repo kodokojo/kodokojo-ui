@@ -21,9 +21,11 @@ import { themr } from 'react-css-themr'
 import { intlShape, injectIntl } from 'react-intl'
 import classNames from 'classnames'
 
+// Component commons
+import 'kodokojo-ui-commons/src/styles/_commons.less'
+
 // Component
 import { BRICK } from '../../commons/identifiers'
-import '../../../styles/_commons.less'
 import brickTheme from './brick.scss'
 import Status from '../status/Status.component'
 import { enumStatus, getStatusByState } from '../../services/param.service'

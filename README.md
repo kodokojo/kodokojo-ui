@@ -79,7 +79,7 @@ You can set environment variables for toggle features (optional).
 
 Set variables locally, and run:
 
-    $ npm run configuration
+    $ npm run build:configuration
 
 ##### Run Docker image with variables
 
