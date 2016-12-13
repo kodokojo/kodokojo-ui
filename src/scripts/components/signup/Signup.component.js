@@ -23,13 +23,15 @@ import { Field, reduxForm, SubmissionError, propTypes, reset } from 'redux-form'
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
 import Promise from 'bluebird'
 
+// Component commons
+import 'kodokojo-ui-commons/src/styles/_commons.less'
+import Input from 'kodokojo-ui-commons/src/scripts/components/input/Input.component'
+import Checkbox from 'kodokojo-ui-commons/src/scripts/components/checkbox/Checkbox.component'
+import Button from 'kodokojo-ui-commons/src/scripts/components/button/Button.component'
+import Dialog from 'kodokojo-ui-commons/src/scripts/components/dialog/Dialog.component'
+
 // Component
-import '../../../styles/_commons.less'
 import signupTheme from './signup.scss'
-import Input from '../../components/_ui/input/Input.component'
-import Checkbox from '../../components/_ui/checkbox/Checkbox.component'
-import Button from '../../components/_ui/button/Button.component'
-import Dialog from '../../components/_ui/dialog/Dialog.component'
 import Captcha from '../../components/captcha/Captcha.component'
 import ErrorMessage from '../../components/message/ErrorMessage.component'
 import signupValidator from './signup.validator'

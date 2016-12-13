@@ -22,9 +22,11 @@ import { Link } from 'react-router'
 import { themr } from 'react-css-themr'
 import classNames from 'classnames'
 
-// component
+// Component commons
+import 'kodokojo-ui-commons/src/styles/_commons.less'
+
+// Component
 import { MENU_ITEM } from '../../commons/identifiers'
-import '../../../styles/_commons.less'
 import menuItemTheme from './menuItem.scss'
 
 /**

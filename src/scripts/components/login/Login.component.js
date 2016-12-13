@@ -23,10 +23,12 @@ import { Field, reduxForm, SubmissionError, propTypes } from 'redux-form'
 import { intlShape, injectIntl } from 'react-intl'
 import Promise from 'bluebird'
 
+// Component commons
+import 'kodokojo-ui-commons/src/styles/_commons.less'
+import Input from 'kodokojo-ui-commons/src/scripts/components/input/Input.component'
+import Button from 'kodokojo-ui-commons/src/scripts/components/button/Button.component'
+
 // Component
-import '../../../styles/_commons.less'
-import Input from '../../components/_ui/input/Input.component'
-import Button from '../../components/_ui/button/Button.component'
 import loginValidator from './login.validator'
 import { login, logout } from './login.actions'
 import { returnErrorKeyOrMessage } from '../../services/error.service'

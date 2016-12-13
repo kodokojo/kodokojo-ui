@@ -24,14 +24,16 @@ import { combineValidators, matchesField } from 'revalidate'
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
 import classNames from 'classnames'
 
+// Component commons
+import 'kodokojo-ui-commons/src/styles/_commons.less'
+import Avatar from 'kodokojo-ui-commons/src/scripts/components/avatar/Avatar.component'
+import Button from 'kodokojo-ui-commons/src/scripts/components/button/Button.component'
+import Input from 'kodokojo-ui-commons/src/scripts/components/input/Input.component'
+import IconButton from 'kodokojo-ui-commons/src/scripts/components/button/IconButton.component'
+import CloseIcon from 'kodokojo-ui-commons/src/scripts/components/icons/CloseIcon.component'
+
 // Component
-import '../../../styles/_commons.less'
 import userTheme from '../user/user.scss'
-import Avatar from '../_ui/avatar/Avatar.component'
-import Button from '../_ui/button/Button.component'
-import Input from '../_ui/input/Input.component'
-import IconButton from '../_ui/button/IconButton.component'
-import CloseIcon from '../_ui/icons/CloseIcon.component'
 import {
   alphabeticExtendedRequiredValidator,
   emailValidator,

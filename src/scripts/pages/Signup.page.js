@@ -22,13 +22,15 @@ import { compose } from 'redux'
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
 import { browserHistory } from 'react-router'
 
+// Component commons
+import 'kodokojo-ui-commons/src/styles/_commons.less'
+import themeCardContent from 'kodokojo-ui-commons/src/scripts/components/card/cardContent.scss'
+import Card from 'kodokojo-ui-commons/src/scripts/components/card/Card.component'
+import CardContent from 'kodokojo-ui-commons/src/scripts/components/card/CardContent.component'
+import CardContainer from 'kodokojo-ui-commons/src/scripts/components/card/CardContainer.component'
+import Button from 'kodokojo-ui-commons/src/scripts/components/button/Button.component'
+
 // Component
-import '../../styles/_commons.less'
-import themeCardContent from '../components/_ui/card/cardContent.scss'
-import Card from '../components/_ui/card/Card.component'
-import CardContent from '../components/_ui/card/CardContent.component'
-import CardContainer from '../components/_ui/card/CardContainer.component'
-import Button from '../components/_ui/button/Button.component'
 import Signup from '../components/signup/Signup.component'
 import { getWaitingList } from '../commons/reducers'
 import { setNavVisibility } from '../components/app/app.actions'
