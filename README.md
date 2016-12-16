@@ -8,7 +8,7 @@ This is the UI for Kodo Kojo project
 [![Open Source Love](https://badges.frapsoft.com/os/v2/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badge/) 
 [![](https://img.shields.io/badge/license-GPLv3-blue.svg?style=flat)](http://www.gnu.org/licenses/gpl-3.0.en.html)     
 
-[![](https://img.shields.io/badge/version-1.1.0-orange.svg?style=flat&maxAge=2592000)](https://github.com/kodokojo/kodokojo-ui#kodo-kojo-ui)
+[![Kodo Kojo UI version](https://img.shields.io/badge/version-1.1.0-orange.svg?style=flat&maxAge=2592000)](https://github.com/kodokojo/kodokojo-ui#kodo-kojo-ui)
 [![node](https://img.shields.io/badge/node-6.x.x-yellow.svg?style=flat&maxAge=2592000)](https://github.com/kodokojo/kodokojo-ui#kodo-kojo-ui) 
 [![npm](https://img.shields.io/badge/npm-3.x.x-blue.svg?style=flat&maxAge=2592000)](https://github.com/kodokojo/kodokojo-ui#kodo-kojo-ui)  
 
@@ -16,6 +16,7 @@ This is the UI for Kodo Kojo project
 
 
 ## License
+
 
 `kodokojo-ui` is a licensed under [GNU General Public License v3](http://www.gnu.org/licenses/gpl-3.0.en.html).
 
@@ -217,7 +218,6 @@ Then open your browser.
 
     $ npm run license
 
-
 ## Tests
 
 Run tests.
@@ -232,5 +232,19 @@ Run coverage.
 
     $ npm run coverage
     $ open ./coverage/lcov-report/index.html 
+
+## Release version
+
+Patch  
+
+    $ npm run release:patch
+
+Minor  
+
+    $ npm run release:minor
+
+Major  
+
+    $ npm run release:major 
 
 :heart: Thanks to all Open source projects which made such project possible!
