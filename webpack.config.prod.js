@@ -55,7 +55,7 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        exclude: /node_modules/,
+        exclude: /node_modules(?!\/kodokojo-ui-commons)/,
         loader: ExtractTextPlugin.extract('css!less')
       },
       {
