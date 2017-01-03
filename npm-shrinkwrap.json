@@ -372,8 +372,8 @@
     },
     "kodokojo-ui-commons": {
       "version": "1.0.0",
-      "from": "git://github.com/kodokojo/kodokojo-ui-commons.git#v1.0.0",
-      "resolved": "git://github.com/kodokojo/kodokojo-ui-commons.git#fa26ddf928c0b8b1ff735c934bfa9c2051233f8d"
+      "from": "git+https://git@github.com/kodokojo/kodokojo-ui-commons.git#v1.0.0",
+      "resolved": "git+https://git@github.com/kodokojo/kodokojo-ui-commons.git#fa26ddf928c0b8b1ff735c934bfa9c2051233f8d"
     },
     "lodash": {
       "version": "4.17.2",
