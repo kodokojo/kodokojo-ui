@@ -48,6 +48,7 @@ import FirstProjectPage from './pages/FirstProject.page'
 import StacksPage from './pages/Stacks.page'
 import MembersPage from './pages/Members.page'
 import NotFoundPage from './pages/NotFound.page'
+import DbPage from './pages/Db.page'
 
 import authService from './services/auth.service'
 import { handleHistoryChange } from './services/history.service'
@@ -75,6 +76,7 @@ const initApp = () => {
             component={App}
             path="/"
           >
+            {/* Public routes */}
             <IndexRoute
               component={SignupPage}
             />
@@ -82,26 +84,33 @@ const initApp = () => {
               component={LoginPage}
               path="login"
             />
+            {/* User routes */}
             <Route
               component={FirstProjectPage}
+              // TODO change method to checkRightsUser when groups are implemented
               onEnter={authService.checkAuth}
               path="firstProject"
             />
             <Route
               component={StacksPage}
+              // TODO change method to checkRightsUser when groups are implemented
               onEnter={authService.checkAuth}
               path="stacks"
             />
             <Route
               component={MembersPage}
+              // TODO change method to checkRightsUser when groups are implemented
               onEnter={authService.checkAuth}
               path="members"
             />
+            {/* Super admin routes */}
             <Route
-              component={UsersPage}
+              component={DbPage}
+              // onEnter={authService.checkRightsSuperAdmin}
               onEnter={authService.checkAuth}
-              path="users"
+              path="db"
             />
+            {/* Generic routes */}
             <Route
               component={NotFoundPage}
               contentFromRoute="--"

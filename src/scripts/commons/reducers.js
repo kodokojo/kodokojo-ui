@@ -24,6 +24,7 @@ import alerts from '../components/alert/alert.reducer'
 import auth from '../components/auth/auth.reducer'
 import bricks from '../components/brick/brick.reducer'
 import menu from '../components/menu/menu.reducer'
+import db from '../components/db/db.reducer'
 import prefs, * as fromPrefs from '../components/app/app.reducer'
 import projectConfig, * as fromProjectConfig from '../components/projectConfig/projectConfig.reducer'
 import socket from '../components/_utils/websocket/websocket.reducer'
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
   alerts,
   auth,
   bricks,
+  db,
   menu,
   prefs,
   projectConfig,
