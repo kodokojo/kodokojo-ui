@@ -1,9 +1,9 @@
-var fs = require('fs')
-var gulp = require('gulp')
-var changed = require('gulp-changed')
-var license = require('gulp-header-license')
+const fs = require('fs')
+const gulp = require('gulp')
+const changed = require('gulp-changed')
+const license = require('gulp-header-license')
 
-var files = [
+const files = [
   './webpack*.js',
   './server*.js',
   './src/**/*.js',
@@ -13,9 +13,9 @@ var files = [
   './api/**/*.js'
 ]
 
-var year = (new Date()).getFullYear()
+const year = (new Date()).getFullYear()
 
-gulp.task('license', function () {
+gulp.task('license', () => {
   return gulp.src(files, { base: './' })
     .pipe(changed('./**/*'))
     .pipe(license(fs.readFileSync('LICENSE-HEADER', 'utf8'), { year }))

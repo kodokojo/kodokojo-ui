@@ -20,12 +20,11 @@
 
 const fs = require('fs')
 const path = require('path')
-const spawn = require('child_process').spawn
 const Promise = require('bluebird')
 
 const getVersion = require('./config.utils').getVersion
-const releaseType = process.argv[2] || 'error'
 
+// update README badge version
 const readmeFilePath = path.join(__dirname, '../', 'README.md')
 
 function writeReadme(nextVersion) {

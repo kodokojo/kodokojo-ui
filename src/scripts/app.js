@@ -47,7 +47,6 @@ import LoginPage from './pages/Login.page'
 import FirstProjectPage from './pages/FirstProject.page'
 import StacksPage from './pages/Stacks.page'
 import MembersPage from './pages/Members.page'
-import UsersPage from './pages/Users.page'
 import NotFoundPage from './pages/NotFound.page'
 
 import authService from './services/auth.service'

@@ -51,6 +51,7 @@ export class StacksPage extends React.Component {
     const { getProjectConfig, getProjectConfigAndProject, projectConfigId, projectId } = this.props // eslint-disable-line no-shadow
 
     this.initNav()
+
     if (projectConfigId && !projectId) {
       getProjectConfig(projectConfigId)
     } else if (projectConfigId && projectId) {

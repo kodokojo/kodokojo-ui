@@ -30,7 +30,6 @@ import { getProjectConfigAndProject } from '../projectConfig/projectConfig.actio
 import { requestWebsocket, stopWebsocket } from '../_utils/websocket/websocket.actions'
 import { newAlert } from '../alert/alert.actions'
 import crispService from '../../services/crisp.service'
-
 import {
   AUTH_REQUEST,
   AUTH_SUCCESS,
