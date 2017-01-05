@@ -30,6 +30,7 @@ import brickJenkins from 'kodokojo-ui-commons/src/images/brick-jenkins.svg'
 import brickNexus from 'kodokojo-ui-commons/src/images/brick-nexus.svg'
 import brickDockerRegistry from 'kodokojo-ui-commons/src/images/brick-docker-registry.svg'
 
+// status params
 export const enumStatus = {
   FAILURE: {
     order: 0,
@@ -67,14 +68,15 @@ export const enumStatus = {
   // }
 }
 
-export const getStatusByState = (state) => (
-  find(enumStatus, { label: state }) || enumStatus.UNKNOWN
+export const getStatusByState = (label) => (
+  find(enumStatus, { label }) || enumStatus.UNKNOWN
 )
 
 export const getStatusByOrder = (order) => (
   find(enumStatus, { order }) || enumStatus.UNKNOWN
 )
 
+// bricks params
 export const enumBrickLogos = {
   GITLAB: {
     name: 'gitlab',
@@ -94,10 +96,11 @@ export const enumBrickLogos = {
   }
 }
 
-export const getBrickLogo = (state) => (
-  find(enumBrickLogos, { name: state.name }) || undefined
+export const getBrickLogo = (name) => (
+  find(enumBrickLogos, { name }) || undefined
 )
 
+// menu params
 export const getMenu = () => (
   {
     0: {

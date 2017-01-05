@@ -261,11 +261,11 @@ export class ProjectConfigForm extends React.Component {
                                     disabled={ isEmpty(this.state.brickList) }
                                     label={
                                       <span style={{ display: 'flex', flex: '1 1 auto', flexFlow: 'row', alignItems: 'center' }}>
-                                        { getBrickLogo(brick).image &&
-                                          <img src={ getBrickLogo(brick).image } style={{ width: '70px', height: '70px' }} />
+                                        { getBrickLogo(brick.name).image &&
+                                          <img src={ getBrickLogo(brick.name).image } style={{ width: '70px', height: '70px' }} />
                                         }
                                         <span className={ utilsTheme['text-capitalize'] }>
-                                          <FormattedMessage id={ `brick-${getBrickLogo(brick).name}-label` } />
+                                          <FormattedMessage id={ `brick-${getBrickLogo(brick.name).name}-label` } />
                                           <span className={ utilsTheme['text-normal']}>{ ` ${brick.version}` }</span>
                                         </span>
                                       </span>
