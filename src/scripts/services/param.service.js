@@ -136,3 +136,28 @@ export const getMenu = () => (
     }
   }
 )
+
+// TODO TU
+// groups params
+export const enumGroups = {
+  USER: {
+    id: 0,
+    label: 'USER'
+  },
+  ADMIN_SUPER: {
+    id: 1,
+    label: 'ADMIN_SUPER'
+  },
+  ADMIN: {
+    id: 2,
+    label: 'ADMIN'
+  }
+}
+
+export const getGroupById = (id) => (
+  find(enumGroups, { id }) || undefined
+)
+
+export const getGroupByLabel = (label) => (
+  find(enumGroups, { label }) || undefined
+)

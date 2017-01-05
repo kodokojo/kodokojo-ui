@@ -17,8 +17,45 @@
  */
 
 import storageService from './storage.service'
+import { getGroupByLabel } from './param.service'
 
 const authService = {}
+
+/**
+ * Check if user belongs to user group
+ *
+ * @param nextState
+ * @param replaceState
+ * @returns {boolean}
+ */
+authService.checkRightsUser = (nextState, replaceState) => {
+  checkAuth(nextState, replaceState)
+  if (!authService.hasUserRights()) {
+    // use react router onEnter callback argument to replace router state
+    replaceState({
+      pathname: '/login',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+}
+
+/**
+ * Check if user belongs to super admin group
+ *
+ * @param nextState
+ * @param replaceState
+ * @returns {boolean}
+ */
+authService.checkRightsSuperAdmin = (nextState, replaceState) => {
+  checkAuth(nextState, replaceState)
+  if (!authService.hasSuperAdminRights()) {
+    // use react router onEnter callback argument to replace router state
+    replaceState({
+      pathname: '/login',
+      state: { nextPathname: nextState.location.pathname }
+    })
+  }
+}
 
 /**
  * Check auth & redirect to login page
@@ -30,7 +67,7 @@ const authService = {}
 authService.checkAuth = (nextState, replaceState) => {
   const isAuthenticated = authService.isAuth()
 
-  // TODO return the targeted url to pass it to login, in order to reroute to it after login
+  // redirect to login if not authenticated
   if (!isAuthenticated) {
     storageService.clean()
 
@@ -40,6 +77,7 @@ authService.checkAuth = (nextState, replaceState) => {
       state: { nextPathname: nextState.location.pathname }
     })
   }
+
   return isAuthenticated
 }
 
@@ -109,6 +147,27 @@ authService.getAccount = () => (
 )
 
 /**
+ * Return user group id
+ *
+ * @returns {number} group id
+ */
+authService.getGroupId = () => storageService.get('groupId', 'session') || ''
+
+/**
+ * Return if user has user rights
+ *
+ * @returns {boolean}
+ */
+authService.hasUserRights = () => getGroupByLabel('USER') === authService.getGroupId()
+
+/**
+ * Return if user has super admin rights
+ *
+ * @returns {boolean}
+ */
+authService.hasSuperAdminRights = () => getGroupByLabel('ADMIN_SUPER') === authService.getGroupId()
+
+/**
  * Return encrypted basic auth string
  *
  * @param auth {string}
@@ -125,6 +184,7 @@ authService.encryptBasicAuth = (auth) => btoa(auth)
 authService.decryptBasicAuth = (auth) => atob(auth)
 
 // public API
+export const checkRightsUser = authService.checkRightsUser
 export const checkAuth = authService.checkAuth
 export const setAuth = authService.setAuth
 export const putAuth = authService.putAuth
@@ -132,6 +192,9 @@ export const resetAuth = authService.resetAuth
 export const isAuth = authService.isAuth
 export const getToken = authService.getToken
 export const getAccount = authService.getAccount
+export const getGroupId = authService.getGroupId
+export const hasUserRights = authService.hasUserRights
+export const hasSuperAdminRights = authService.hasSuperAdminRights
 
 // service
 export default authService
