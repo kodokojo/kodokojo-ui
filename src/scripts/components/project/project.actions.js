@@ -108,7 +108,7 @@ export function createProject(projectConfigId) {
           icon: 'question_answer',
           label: 'id',
           labelId: 'alert-stack-starting-text',
-          timeout: 2000,
+          timeout: 5000,
           variant: 'info'
         }
         dispatch(newAlert(alert))

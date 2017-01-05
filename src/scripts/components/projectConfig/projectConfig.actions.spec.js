@@ -285,7 +285,7 @@ describe('project config actions', () => {
         icon: 'question_answer',
         labelId: 'alert-member-create-text',
         label: 'id',
-        timeout: 2000,
+        timeout: 5000,
         variant: 'info'
       }
       const expectedActions = [
