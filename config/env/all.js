@@ -40,6 +40,7 @@ const all = {
     host: localApiHost,
     routes: {
       brick: `${api.brick}`,
+      db: `${api.db}`,
       event: `${api.event}`,
       projectConfig: `${api.projectConfig}`,
       project: `${api.project}`,

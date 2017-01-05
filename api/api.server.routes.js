@@ -25,6 +25,7 @@ import * as user from './user.server.controller'
 import * as project from './project.server.controller'
 import * as brick from './brick.server.controller'
 import * as application from './application.server.controller'
+import * as db from './db.server.controller'
 
 router.post(config.api.routes.user, user.initUser)
 
@@ -51,6 +52,10 @@ router.get(`${config.api.routes.project}/:projectId`, project.getProject)
 router.get(`${config.api.routes.brick}`, brick.getBricks)
 
 router.get(`${config.api.routes.version}`, application.getVersion)
+
+router.get(`${config.api.routes.db}`, db.getEntries)
+
+router.get(`${config.api.routes.db}/:entryId`, db.getEntry)
 
 export default (app) => {
   app.use(router)

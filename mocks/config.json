@@ -77,6 +77,18 @@
       "method": "GET",
       "mockType": "func",
       "serve": "data/project.get.js"
+    },
+    {
+      "path": "/db",
+      "method": "GET",
+      "mockType": "file",
+      "serve": "data/db.get.json"
+    },
+    {
+      "path": "/db/:id",
+      "method": "GET",
+      "mockType": "file",
+      "serve": "data/db.get.id.json"
     }
   ]
 }

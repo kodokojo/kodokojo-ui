@@ -20,6 +20,7 @@ import api from './api.versions'
 
 export default {
   brick: `${api.v1}/brick`,
+  db: `${api.v1}/db`,
   event: `${api.v1}/event`,
   project: `${api.v1}/project`,
   projectConfig: `${api.v1}/projectconfig`,
