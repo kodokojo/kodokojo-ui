@@ -30,8 +30,10 @@ import brickJenkins from 'kodokojo-ui-commons/src/images/brick-jenkins.svg'
 import brickNexus from 'kodokojo-ui-commons/src/images/brick-nexus.svg'
 import brickDockerRegistry from 'kodokojo-ui-commons/src/images/brick-docker-registry.svg'
 
+const paramService = {}
+
 // status params
-export const enumStatus = {
+paramService.enumStatus = {
   FAILURE: {
     order: 0,
     label: 'ONFAILURE',
@@ -68,16 +70,16 @@ export const enumStatus = {
   // }
 }
 
-export const getStatusByState = (label) => (
-  find(enumStatus, { label }) || enumStatus.UNKNOWN
+paramService.getStatusByState = (label) => (
+  find(paramService.enumStatus, { label }) || paramService.enumStatus.UNKNOWN
 )
 
-export const getStatusByOrder = (order) => (
-  find(enumStatus, { order }) || enumStatus.UNKNOWN
+paramService.getStatusByOrder = (order) => (
+  find(paramService.enumStatus, { order }) || paramService.enumStatus.UNKNOWN
 )
 
 // bricks params
-export const enumBrickLogos = {
+paramService.enumBrickLogos = {
   GITLAB: {
     name: 'gitlab',
     image: brickGitlab
@@ -96,12 +98,12 @@ export const enumBrickLogos = {
   }
 }
 
-export const getBrickLogo = (name) => (
-  find(enumBrickLogos, { name }) || undefined
+paramService.getBrickLogo = (name) => (
+  find(paramService.enumBrickLogos, { name }) || undefined
 )
 
 // menu params
-export const getMenu = () => (
+paramService.getMenu = () => (
   {
     0: {
       disabled: true,
@@ -137,9 +139,8 @@ export const getMenu = () => (
   }
 )
 
-// TODO TU
 // groups params
-export const enumGroups = {
+paramService.enumGroups = {
   USER: {
     id: 0,
     label: 'USER'
@@ -154,10 +155,23 @@ export const enumGroups = {
   }
 }
 
-export const getGroupById = (id) => (
-  find(enumGroups, { id }) || undefined
+paramService.getGroupById = (id) => (
+  find(paramService.enumGroups, { id }) || undefined
 )
 
-export const getGroupByLabel = (label) => (
-  find(enumGroups, { label }) || undefined
+paramService.getGroupByLabel = (label) => (
+  find(paramService.enumGroups, { label }) || undefined
 )
+
+// public API
+export const enumStatus = paramService.enumStatus
+export const getStatusByState = paramService.getStatusByState
+export const getStatusByOrder = paramService.getStatusByOrder
+export const enumBrickLogos = paramService.enumBrickLogos
+export const getBrickLogo = paramService.getBrickLogo
+export const getMenu = paramService.getMenu
+export const enumGroups = paramService.enumGroups
+export const getGroupById = paramService.getGroupById
+export const getGroupByLabel = paramService.getGroupByLabel
+
+export default paramService
