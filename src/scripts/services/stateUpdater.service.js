@@ -23,15 +23,16 @@ import map from 'lodash/map'
 
 import { getStatusByState, getStatusByOrder } from './param.service'
 
-// TODO UT
+const stateUpdaterService = {}
+
 /**
  * Update bricks, merge previous state with partial state
  *
  * @param prevBricks
  * @param bricks
- * @returns {Array} bricks updated
+ * @returns {array} bricks updated
  */
-export const updateBricks = (prevBricks, bricks) => {
+stateUpdaterService.updateBricks = (prevBricks, bricks) => {
   const nextBricks = cloneDeep(prevBricks)
   if (bricks.length > []) {
     bricks.forEach(brick => {
@@ -44,17 +45,16 @@ export const updateBricks = (prevBricks, bricks) => {
   return nextBricks
 }
 
-// TODO UT
 /**
  * Aggregate brick states for a given stack
  *
  * @param bricks
- * @returns {Object} status
+ * @returns {object} status
  */
-export const computeAggregatedStackStatus = (bricks) => {
+stateUpdaterService.computeAggregatedStackStatus = (bricks) => {
   if (bricks.length > 1) {
     const stateOrder = bricks.reduce((previous, brick) => {
-      const previousStateOrder = previous.state ? getStatusByState(previous.state).order : previous
+      const previousStateOrder = previous.state ? getStatusByState(previous.state).order : Infinity
       const currentStateOrder = getStatusByState(brick.state).order
       return Math.min(previousStateOrder, currentStateOrder)
     })
@@ -65,15 +65,14 @@ export const computeAggregatedStackStatus = (bricks) => {
   return getStatusByState('DEFAULT')
 }
 
-// TODO UT
 /**
  * Return new array without users to delete
  *
- * @param {Array} prevUsers
- * @param {Array} usersToDelete
- * @returns {Array} users
+ * @param {array} prevUsers
+ * @param {array} usersToDelete
+ * @returns {array} users
  */
-export const removeUsers = (prevUsers, usersToDelete) => {
+stateUpdaterService.removeUsers = (prevUsers, usersToDelete) => {
   if (usersToDelete.length > 0) {
     const nextUsers = cloneDeep(prevUsers)
     return difference(nextUsers, usersToDelete)
@@ -81,16 +80,23 @@ export const removeUsers = (prevUsers, usersToDelete) => {
   return prevUsers
 }
 
-// TODO UT
 /**
  * Filter checked members object, return array
  *
- * @param {Object} members
- * @returns {Array} checked members
+ * @param {object} members
+ * @returns {array} checked members
  */
-export const filterCheckedMembers = (members) => map(members, (user, key) => {
+stateUpdaterService.filterCheckedMembers = (members) => map(members, (user, key) => {
   if (user.checked) {
     return key
   }
   return null
 }).filter((item) => item !== null)
+
+// public API
+export const updateBricks = stateUpdaterService.updateBricks
+export const computeAggregatedStackStatus = stateUpdaterService.computeAggregatedStackStatus
+export const removeUsers = stateUpdaterService.removeUsers
+export const filterCheckedMembers = stateUpdaterService.filterCheckedMembers
+
+export default stateUpdaterService
