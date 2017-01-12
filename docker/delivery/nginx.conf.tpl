@@ -22,6 +22,11 @@ http {
 
     server {
         listen       80;
+
+        location ~* .(jpg|jpeg|png|gif|ico|css|js)$ {
+            expires 365d;
+        }
+
         location ~ ^/api.* {
             proxy_pass      http://@@BACK_HOST@@:@@BACK_PORT@@;
         }
