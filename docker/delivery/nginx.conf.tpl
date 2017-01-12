@@ -29,8 +29,8 @@ http {
         location / {
           root /var/www/;
           index index.html;
-
-            try_files $uri $uri/ /index.html;
+          gzip_static on;
+          try_files $uri $uri/ /index.html;
         }
       }
 }
