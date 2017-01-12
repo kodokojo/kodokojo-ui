@@ -14,6 +14,7 @@ Possible categories are:
 **[refactor]**: code refactoring   
 **[fix]**: bug fixing  
 **[doc]**: add / modify documentation  
+**[test]**: add tests  
 **[lint]**: correct linting errors and warnings  
 **[project]**: changed linked to build, modify dependencies, change version, etc.  
 **[i18n]**: text content modifications  
@@ -22,9 +23,9 @@ Possible categories are:
 **[ui]**: add or extend ui component  
 **[styleguide]**: modifications about styleguide  
 **[clean]**: clean formatting, blank lines, unused imports or else  
-**[mock]**: modification about mock server
-**[release]**: release new version of package
-**[merge]**: merge commit
+**[mock]**: modification about mock server  
+**[release]**: release new version of package  
+**[merge]**: merge commit  
 
 **\<component name or #feature-number>**: (optional) indicate which component is concerned or feature / fix reference.  
 ex. :  
