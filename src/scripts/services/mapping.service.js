@@ -26,7 +26,7 @@ const mappingService = {}
  * mapping for account
  *
  * @param data
- * @returns {{id: string, name: string, userName: string, email: string, password: string, sshKeyPublic: string, sshKeyPrivate: string}}
+ * @returns {object} account {id {string}, name {string}, userName {string}, email {string}, password {string}, sshKeyPublic {string}, sshKeyPrivate {string}}
  */
 mappingService.mapAccount = (data) => (
   {
@@ -47,7 +47,7 @@ mappingService.mapAccount = (data) => (
 /**
  * mapping for "project config id"
  * @param data
- * @returns {{projectConfigurationId: string, projectId: string}}
+ * @returns {object} {projectConfigurationId {string}, projectId {string}}
  */
 mappingService.mapProjectConfigId = (data) => (
   {
@@ -60,7 +60,7 @@ mappingService.mapProjectConfigId = (data) => (
  * mapping for user
  *
  * @param data
- * @returns {{id: string, firstName: string, lastName: string, name: string, userName: string, email: string}}
+ * @returns {object} user {id {string}, firstName {string}, lastName {string}, name {string}, userName {string}, email {string}}
  */
 mappingService.mapUser = (data) => (
   {
@@ -76,10 +76,10 @@ mappingService.mapUser = (data) => (
 
 /**
  * mapping for user to backend
+ * 
  * @param data
- * @returns {{identifier: string, firstName: string, lastName: string, name: string, userName: string, email: string}}
+ * @returns {object} user {identifier {string}, firstName {string}, lastName {string}, name {string}, userName {string}, email {string}}
  */
-// TODO UT
 mappingService.mapUserOutput = (data) => (
   {
     identifier: data.id,
@@ -96,7 +96,7 @@ mappingService.mapUserOutput = (data) => (
 /**
  * mapping for stack
  *
- * @returns {{type: string, name: string, bricks: array<brick>}}
+ * @returns {object} stack {type {string}, name {string}, bricks {array}<brick>}
  */
 mappingService.mapStack = (data) => {
   const bricks = data.brickConfigs || data.brickStates || data.brickStateEvents || undefined
@@ -112,7 +112,7 @@ mappingService.mapStack = (data) => {
 /**
  * mapping for brick
  *
- * @returns {{type: string, name: string, state: string, url: string}}
+ * @returns {object} brick {type {string}, name {string}, state {string}, url {string}}
  */
 mappingService.mapBrick = (data) => {
   if (data.type !== 'LOADBALANCER') {
@@ -131,7 +131,7 @@ mappingService.mapBrick = (data) => {
  * mapping for project config
  *
  * @param data
- * @returns {{id: string, name: string, admins: {user}, stacks: array<stack>, users: array<user>}}
+ * @returns {object} projectConfig {id {string}, name {string}, admins {user}, stacks: {array}<stack>, users: {array}<user>}
  */
 mappingService.mapProjectConfig = (data) => (
   {
@@ -153,14 +153,14 @@ mappingService.mapProjectConfig = (data) => (
  * mapping for project
  *
  * @param data
- * @returns {{id: string, projectConfigId: string, name: string, updateDate: string, stacks: array<stack>}}
+ * @returns {object} project {id {string}, projectConfigId {string}, name {string}, updateDate {string}, stacks: {array}<stack>}
  */
 mappingService.mapProject = (data) => (
   {
     id: data.identifier,
     projectConfigId: data.projectConfigurationIdentifier,
     name: data.name,
-    updateDate: data.snapshotDate, // TODO convert string to date?
+    updateDate: data.snapshotDate, // TODO convert {string} to date?
     stacks: data.stacks ? data.stacks.map(stack => mappingService.mapStack(stack)) : undefined
   }
 )
@@ -169,7 +169,7 @@ mappingService.mapProject = (data) => (
  * mapping for brick event from websocket
  *
  * @param data
- * @returns {{entity: string, action: string, data: {projectConfigurationId: string, brickType: string, brickName: string, brickState: (string|undefined), brickUrl: (string|undefined)}}}
+ * @returns {object} brick event {entity {string}, action {string}, data {projectConfigurationId {string}, brickType {string}, brickName {string}, brickState: (string|undefined), brickUrl: (string|undefined)}}
  */
 mappingService.mapBrickEvent = (data) => (
   {
@@ -182,10 +182,9 @@ mappingService.mapBrickEvent = (data) => (
 /**
  * mapping for brick list
  *
- * @param {Array} data
- * @returns {{bricks: array}} list of brick objects
+ * @param {array} data
+ * @returns {object} brick list {bricks {array}} list of brick object
  */
-// TODO UT
 mappingService.mapBricksDetails = (data) => (
   {
     bricks: data.length ? mappingService.reorderBricks(data) : []
@@ -196,9 +195,8 @@ mappingService.mapBricksDetails = (data) => (
  * reorder bricks
  *
  * @param data
- * @returns {Array} reordered array of bricks (SCM / CI / REPOSITORY)
+ * @returns {array} ordered array of bricks (SCM / CI / REPOSITORY)
  */
-// TODO UT
 mappingService.reorderBricks = (data) => {
   const groupedBricks = mappingService.groupBricks(data)
   return toArray({
@@ -212,9 +210,8 @@ mappingService.reorderBricks = (data) => {
  * group bricks by type
  *
  * @param data
- * @returns {Object} filtered bricks and grouped by type
+ * @returns {object} filtered bricks and grouped by type
  */
-// TODO UT
 mappingService.groupBricks = (data) => {
   const bricks = data.map(brick => mappingService.mapBrick(brick)).filter(brick => brick !== undefined)
   return groupBy(bricks, 'type')
