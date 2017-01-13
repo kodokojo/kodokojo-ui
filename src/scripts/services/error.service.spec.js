@@ -20,18 +20,22 @@
 /* eslint-disable no-duplicate-imports */
 /* eslint-disable import/no-duplicates */
 
-import { expect } from 'chai'
+import chai, { expect } from 'chai'
+import sinon from 'sinon'
+import sinonChai from 'sinon-chai'
+chai.use(sinonChai)
 
-import { returnErrorKey } from './error.service'
+
+import errorService from './error.service'
 
 describe('error service', () => {
-  describe('returnError key', () => {
+  describe('return error key', () => {
     it('should return default key', () => {
       // Given
       const errorObject = {}
 
       // When
-      const returns = returnErrorKey(errorObject)
+      const returns = errorService.returnErrorKey(errorObject)
 
       // Then
       expect(returns).to.equal('error')
@@ -44,7 +48,7 @@ describe('error service', () => {
       }
 
       // When
-      const returns = returnErrorKey(errorObject)
+      const returns = errorService.returnErrorKey(errorObject)
 
       // Then
       expect(returns).to.equal('component-error')
@@ -57,7 +61,7 @@ describe('error service', () => {
       }
 
       // When
-      const returns = returnErrorKey(errorObject)
+      const returns = errorService.returnErrorKey(errorObject)
 
       // Then
       expect(returns).to.equal('action-error')
@@ -70,7 +74,7 @@ describe('error service', () => {
       }
 
       // When
-      const returns = returnErrorKey(errorObject)
+      const returns = errorService.returnErrorKey(errorObject)
 
       // Then
       expect(returns).to.equal('error-404')
@@ -85,10 +89,118 @@ describe('error service', () => {
       }
 
       // When
-      const returns = returnErrorKey(errorObject)
+      const returns = errorService.returnErrorKey(errorObject)
 
       // Then
       expect(returns).to.equal('component-do-something-error-404')
+    })
+
+    describe('return error key or message', () => {
+      let returnErrorKeySpy
+
+      afterEach(() => {
+        errorService.returnErrorKey.restore()
+      })
+
+      it('should call return error key on 404', () => {
+        // Given
+        const errorObject = {
+          component: 'component',
+          action: 'do-something',
+          message: '404'
+        }
+        returnErrorKeySpy = sinon.stub(errorService, 'returnErrorKey')
+  
+        // When
+        errorService.returnErrorKeyOrMessage(errorObject)
+  
+        // Then
+        expect(returnErrorKeySpy).to.have.callCount(1)
+      })
+
+      it('should call return error key on 500', () => {
+        // Given
+        const errorObject = {
+          component: 'component',
+          action: 'do-something',
+          message: '500'
+        }
+        returnErrorKeySpy = sinon.stub(errorService, 'returnErrorKey')
+  
+        // When
+        errorService.returnErrorKeyOrMessage(errorObject)
+  
+        // Then
+        expect(returnErrorKeySpy).to.have.callCount(1)
+      })
+
+      it('should return message on none valid code 4044', () => {
+        // Given
+        const errorObject = {
+          component: 'component',
+          action: 'do-something',
+          message: '4044'
+        }
+        returnErrorKeySpy = sinon.stub(errorService, 'returnErrorKey')
+  
+        // When
+        const returns = errorService.returnErrorKeyOrMessage(errorObject)
+  
+        // Then
+        expect(returns).to.deep.equal(errorObject.message)
+        expect(returnErrorKeySpy).to.have.callCount(0)
+      })
+
+      it('should return message on none valid code 50', () => {
+        // Given
+        const errorObject = {
+          component: 'component',
+          action: 'do-something',
+          message: '50'
+        }
+        returnErrorKeySpy = sinon.stub(errorService, 'returnErrorKey')
+  
+        // When
+        const returns = errorService.returnErrorKeyOrMessage(errorObject)
+  
+        // Then
+        expect(returns).to.deep.equal(errorObject.message)
+        expect(returnErrorKeySpy).to.have.callCount(0)
+      })
+
+      it('should return message on code 300', () => {
+        // Given
+        const errorObject = {
+          component: 'component',
+          action: 'do-something',
+          message: '300'
+        }
+        returnErrorKeySpy = sinon.stub(errorService, 'returnErrorKey')
+  
+        // When
+        const returns = errorService.returnErrorKeyOrMessage(errorObject)
+  
+        // Then
+        expect(returns).to.deep.equal(errorObject.message)
+        expect(returnErrorKeySpy).to.have.callCount(0)
+      })
+
+      it('should return message on message string', () => {
+        // Given
+        const errorObject = {
+          component: 'component',
+          action: 'do-something',
+          message: 'This is an error message'
+        }
+        returnErrorKeySpy = sinon.stub(errorService, 'returnErrorKey')
+  
+        // When
+        const returns = errorService.returnErrorKeyOrMessage(errorObject)
+  
+        // Then
+        expect(returns).to.deep.equal(errorObject.message)
+        expect(returnErrorKeySpy).to.have.callCount(0)
+      })
     })
   })
 })
