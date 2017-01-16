@@ -72,7 +72,6 @@ validatorService.alphabeticRequiredValidator = composeValidators(
  * Return alphabetic extended pattern matching
  * @param value
  */
-// TODO UT
 validatorService.isAlphabeticExtended = (value) => !validatorService.isEmpty(value) &&
   /^[A-Za-z0-9\s'’-]+$/.test(value)
 
@@ -98,9 +97,8 @@ validatorService.alphabeticExtendedRequiredValidator = composeValidators(
  * @param value
  * @returns {boolean}
  */
-// TODO UT
 validatorService.isProjectNameValid = (value) => !validatorService.isEmpty(value) &&
-  /^[^\s]([a-zA-Z0-9\-_]{3,20})$/.test(value)
+  /^[^\s]([a-zA-Z0-9\-_]{3,19})$/.test(value)
 
 /**
  * Revalidate projectConfig name validator
@@ -124,7 +122,6 @@ validatorService.projectNameValidator = composeValidators(
  * @param value
  * @returns {boolean}
  */
-// TODO UT
 validatorService.isPasswordValid = (value) => /^(?:[^\s]{8,256}|\B)$/.test(value)
 
 /**
@@ -148,7 +145,6 @@ validatorService.passwordValidator = composeValidators(
  * @param value
  * @returns {boolean}
  */
-// TODO UT
 validatorService.isSSHKeyValid = (value) => validatorService.isEmpty(value) ||
   /^(?:ssh-.*|\B)$/.test(value)
 
