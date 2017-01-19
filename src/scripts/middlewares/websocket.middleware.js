@@ -100,7 +100,7 @@ const websocketMiddleware = store => next => action => {
         ws.socket.onmessage = (socketEvent) => {
           const socketEventData = JSON.parse(socketEvent.data)
 
-          if (socketEventData.entity === 'brick' && socketEventData.action === 'updateState') {
+          if (socketEventData.headers && socketEventData.headers.eventType === 'brick_state_update') {
             const mappedEvent = mapBrickEvent(socketEventData)
             console.log('wsMapEvent', mappedEvent) // eslint-disable-line no-console
             store.dispatch(updateProject(mappedEvent))

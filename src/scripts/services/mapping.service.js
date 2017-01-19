@@ -119,7 +119,7 @@ mappingService.mapBrick = (data) => {
     return {
       type: data.type || data.brickType,
       name: data.name || data.brickName,
-      state: data.state,
+      state: data.state || data.newState,
       version: data.version,
       url: data.url
     }
@@ -173,9 +173,8 @@ mappingService.mapProject = (data) => (
  */
 mappingService.mapBrickEvent = (data) => (
   {
-    entity: data.entity, // type event
-    action: data.action,
-    brick: mappingService.mapBrick(data.data)
+    eventType: data.headers.eventType,
+    brick: mappingService.mapBrick(data.payload)
   }
 )
 

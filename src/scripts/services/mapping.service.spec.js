@@ -347,7 +347,7 @@ describe('mapping service', () => {
       const brickFromApi = {
         brickType: 'type',
         brickName: 'name',
-        state: 'state',
+        newState: 'state',
         url: 'url',
         version: 'version'
       }
@@ -523,15 +523,15 @@ describe('mapping service', () => {
     it('should map brick event', () => {
       // Given
       const brickEventFromApi = {
-        entity: 'entity',
-        action: 'action',
-        data: {
+        headers: {
+          eventType: 'eventType'
+        },
+        payload: {
           projectConfiguration: 'projectConfigId',
-          brickType: 'type',
+          brickType: undefined,
           brickName: 'name',
-          state: 'state',
-          url: 'url',
-          version: 'version'
+          newState: 'newState',
+          url: 'url'
         }
       }
 
@@ -540,14 +540,13 @@ describe('mapping service', () => {
 
       // Then
       expect(returns).to.deep.equal({
-        entity: 'entity',
-        action: 'action',
+        eventType: 'eventType',
         brick: {
-          type: 'type',
           name: 'name',
-          state: 'state',
+          type: undefined,
+          state: 'newState',
           url: 'url',
-          version: 'version'
+          version: undefined
         }
       })
     })
