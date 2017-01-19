@@ -31,6 +31,7 @@ import sinonChai from 'sinon-chai'
 chai.use(chaiEnzyme())
 chai.use(sinonChai)
 import merge from '../../../../node_modules/lodash/merge'
+import { getIntlPropsMock, getReudxFormPropsMock } from '../../../../test/helpers'
 
 // contexte
 import { Provider } from 'react-redux'
@@ -48,45 +49,19 @@ describe('<Login> component', () => {
   let intlProvider
 
   beforeEach(() => {
-    // TODO find another way to mock IntlProvider and redux-form
-    const mockFormatFct = options => options.id
-    props = {
+    props = merge(
+      // component
+      {
+        login: () => {
+        },
+        logout: () => {
+        }
+      },
       // redux-form
-      asyncValidating: false,
-      dirty: false,
-      invalid: false,
-      initialized: false,
-      pristine: true,
-      submitFailed: false,
-      submitSucceeded: false,
-      valid: false,
-      // asyncValidate: () => Promise.resolve(),
-      blur: () => {},
-      change: () => {},
-      destroy: () => {},
-      dispatch: () => {},
-      initialize: () => {},
-      reset: () => {},
-      touch: () => {},
-      untouch: () => {},
-      // handleSubmit: fct => fct,
+      getReudxFormPropsMock(),
       // intl
-      intl: {
-        formatMessage: mockFormatFct,
-        formatDate: mockFormatFct,
-        formatPlural: mockFormatFct,
-        formatTime: mockFormatFct,
-        formatRelative: mockFormatFct,
-        formatNumber: mockFormatFct,
-        formatHTMLMessage: mockFormatFct,
-        now: mockFormatFct
-      },
-      submitting: false,
-      login: () => {
-      },
-      logout: () => {
-      }
-    }
+      getIntlPropsMock()
+    )
     messages = {
       'username-hint-label': 'username-hint-label',
       'username-label': 'username-label',

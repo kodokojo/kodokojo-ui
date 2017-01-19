@@ -32,6 +32,7 @@ import 'sinon-as-promised'
 chai.use(chaiEnzyme())
 chai.use(sinonChai)
 import merge from '../../../../node_modules/lodash/merge'
+import { getIntlPropsMock, getReudxFormPropsMock } from '../../../../test/helpers'
 
 // contexte
 import { Provider } from 'react-redux'
@@ -50,48 +51,21 @@ describe('<Signup> component', () => {
   let captchaMock
 
   beforeEach(() => {
-    // TODO find another way to mock IntlProvider and redux-form
-    const mockFormatFct = options => options.id
-    props = {
-      // redux-form
-      asyncValidating: false,
-      dirty: false,
-      invalid: false,
-      initialized: false,
-      pristine: true,
-      submitFailed: false,
-      submitSucceeded: false,
-      valid: false,
-      // asyncValidate: () => Promise.resolve(),
-      blur: () => {},
-      change: () => {},
-      destroy: () => {},
-      dispatch: () => {},
-      initialize: () => {},
-      reset: () => {},
-      touch: () => {},
-      untouch: () => {},
-      // handleSubmit: fct => fct,
-      // intl
-      intl: {
-        formatMessage: mockFormatFct,
-        formatDate: mockFormatFct,
-        formatPlural: mockFormatFct,
-        formatTime: mockFormatFct,
-        formatRelative: mockFormatFct,
-        formatNumber: mockFormatFct,
-        formatHTMLMessage: mockFormatFct,
-        now: mockFormatFct
+    props = merge(
+      // component
+      {
+        createAccount: () => {},
+        initCaptcha: () => {},
+        updateCaptcha: () => {},
+        resetCaptcha: () => {},
+        captcha: '',
+        captchaReset: false
       },
-      submitting: false,
-      createAccount: () => {},
-      initCaptcha: () => {},
-      updateCaptcha: () => {},
-      resetCaptcha: () => {},
-      locale: 'fr',
-      captcha: '',
-      captchaReset: false
-    }
+      // redux-form
+      getReudxFormPropsMock(),
+      // intl
+      getIntlPropsMock()
+    )
     messages = {
       'email-label': 'email-label',
       'email-hint-label': 'email-hint-label',
