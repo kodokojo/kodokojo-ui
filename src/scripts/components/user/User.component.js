@@ -35,7 +35,6 @@ import { USER } from '../../commons/identifiers'
 import userTheme from './user.scss'
 import { getUser } from '../../commons/reducers'
 
-// TODO UT
 // User component
 export class User extends React.Component {
 
