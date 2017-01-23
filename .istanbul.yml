@@ -4,6 +4,7 @@ instrumentation:
     default-excludes: true
     excludes:
       - '*.spec.js'
+      - '*.story.js'
     include-all-sources: true
 reporting:
     print: summary
