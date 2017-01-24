@@ -20,7 +20,6 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { Field, reduxForm, SubmissionError, propTypes } from 'redux-form'
-import { combineValidators, matchesField } from 'revalidate'
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
 import classNames from 'classnames'
 
@@ -33,35 +32,13 @@ import IconButton from 'kodokojo-ui-commons/src/scripts/components/button/IconBu
 import CloseIcon from 'kodokojo-ui-commons/src/scripts/components/icons/CloseIcon.component'
 
 // Component
+import userValidator from './user.validator'
 import userTheme from '../user/user.scss'
-import {
-  alphabeticExtendedRequiredValidator,
-  emailValidator,
-  passwordValidator,
-  sshkeyValidator
-} from '../../services/validator.service'
 import { returnErrorKey } from '../../services/error.service'
 import { getUser } from '../../commons/reducers'
 
 // validate function
-const validate = (values, props) => {
-  if (props.creation) {
-    return combineValidators({
-      email: emailValidator('email')
-    })(values)
-  }
-  if (props.edition) {
-    return combineValidators({
-      email: emailValidator('email'),
-      firstName: alphabeticExtendedRequiredValidator('firstName'),
-      lastName: alphabeticExtendedRequiredValidator('lastName'),
-      password: passwordValidator('password'),
-      passwordConfirm: matchesField('password')({ message: 'password-confirm-error' }),
-      sshKeyPublic: sshkeyValidator('sshKeyPublic')
-    })(values)
-  }
-  return {}
-}
+const validate = userValidator
 
 // TODO UT
 // UserForm component
