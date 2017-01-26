@@ -142,10 +142,10 @@ export class UserForm extends React.Component {
             <div className={ userTheme['user-name--form'] }>
               <Avatar>
                 <div className={ userTheme['user-initials'] }>
-                  { user &&
+                  { user && user.firstName &&
                     user.firstName.substr(0, 1).toUpperCase()
                   }
-                  { user &&
+                  { user && user.lastName &&
                     user.lastName.substr(0, 1).toUpperCase()
                   }
                 </div>
@@ -219,6 +219,7 @@ export class UserForm extends React.Component {
                 label={ formatMessage({ id: 'sshkey-public-label' }) }
                 multiline
                 name="sshKeyPublic"
+                rows={ 4 }
                 style={{ maxHeight: '104px' }}
               />
             </div>
@@ -281,6 +282,7 @@ const UserFormContainer = compose(
   injectIntl
 )(reduxForm(
   {
+    form: 'userForm',
     touchOnChange: true,
     validate
   }
