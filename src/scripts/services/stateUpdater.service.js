@@ -56,6 +56,7 @@ stateUpdaterService.updateBricks = (prevBricks, bricks) => {
 stateUpdaterService.computeAggregatedStackStatus = (bricks) => {
   if (bricks.length > 1) {
     const stateOrder = bricks.reduce((previous, brick) => {
+      // if there is no previous state, we use Infinity so current state order will became the reference for the next iteration
       const previousStateOrder = previous.state ? getStatusByState(previous.state).order : Infinity
       const currentStateOrder = getStatusByState(brick.state).order
       return Math.min(previousStateOrder, currentStateOrder)

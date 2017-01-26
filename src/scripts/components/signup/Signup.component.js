@@ -73,9 +73,9 @@ export class Signup extends React.Component {
     const nextEmail = values.email ? values.email.trim() : '' 
 
     // optional feature
-    const nexCaptcha = reCaptchaKey ? values.captcha : undefined
+    const nextCaptcha = reCaptchaKey ? values.captcha : undefined
 
-    return createAccount(nextEmail, nexCaptcha)
+    return createAccount(nextEmail, nextCaptcha)
       .then(data => {
         if (data && data.status) {
           this.handleAccountAccepted()

@@ -50,7 +50,7 @@ describe('io service', () => {
       expect(getTokenSpy).to.have.calledWith()
     })
 
-    it('should return headers with autorization set', () => {
+    it('should return headers with authorization set', () => {
       // Given
       const getTokenSpy = sinon.stub().returns('token')
       ioService.__Rewire__('getToken', getTokenSpy)
@@ -68,7 +68,7 @@ describe('io service', () => {
       expect(getTokenSpy).to.have.calledWith()
     })
 
-    it('should return headers merged wioth param', () => {
+    it('should return headers merged with param', () => {
       // Given
       const getTokenSpy = sinon.stub().returns('token')
       ioService.__Rewire__('getToken', getTokenSpy)

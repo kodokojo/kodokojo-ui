@@ -29,7 +29,6 @@ import { apiMiddleware } from 'redux-api-middleware'
 import configureMockStore from 'redux-mock-store'
 
 // dependencies to mock
-
 import api from '../../commons/config'
 import * as actions from './signup.actions'
 import { __RewireAPI__ as actionsRewireApi } from './signup.actions'

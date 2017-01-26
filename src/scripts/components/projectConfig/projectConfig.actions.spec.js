@@ -147,7 +147,7 @@ describe('project config actions', () => {
     })
   })
 
-  // TODO failure TU
+  // TODO failure UT
   describe('get project config', () => {
     let getUserSpy
     let updateMenuProjectSpy

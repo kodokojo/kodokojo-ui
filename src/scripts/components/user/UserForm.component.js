@@ -33,7 +33,7 @@ import CloseIcon from 'kodokojo-ui-commons/src/scripts/components/icons/CloseIco
 
 // Component
 import userValidator from './user.validator'
-import userTheme from '../user/user.scss'
+import userTheme from './user.scss'
 import { returnErrorKey } from '../../services/error.service'
 import { getUser } from '../../commons/reducers'
 
@@ -45,7 +45,6 @@ const validate = userValidator
 export class UserForm extends React.Component {
 
   static propTypes = {
-    addUserToProjectConfig: React.PropTypes.func,
     aggregatedStackStatus: React.PropTypes.object,
     checked: React.PropTypes.bool,
     creation: React.PropTypes.bool,
@@ -57,8 +56,6 @@ export class UserForm extends React.Component {
     onSubmitUserForm: React.PropTypes.func.isRequired,
     onSubmitUserSuccess: React.PropTypes.func.isRequired,
     onUserEditCancel: React.PropTypes.func.isRequired,
-    onUserSelect: React.PropTypes.func.isRequired,
-    projectConfigId: React.PropTypes.string,
     theme: React.PropTypes.object,
     user: React.PropTypes.object,
     userId: React.PropTypes.string,
@@ -76,20 +73,6 @@ export class UserForm extends React.Component {
       checked: this.props.checked || false,
       edited: true
     }
-  }
-
-  handleUserSelect = () => {
-    const { userId, onUserSelect } = this.props // eslint-disable-line no-shadow
-    this.setState({
-      ...this.state,
-      checked: !this.state.checked
-    })
-    onUserSelect({
-      [userId]: {
-        checked: !this.state.checked,
-        edited: true
-      }
-    })
   }
 
   handleUserEditCancel = () => {
@@ -113,7 +96,6 @@ export class UserForm extends React.Component {
     const {
       user, onSubmitUserForm, onSubmitUserSuccess, onSubmitUserFailure
     } = this.props // eslint-disable-line no-shadow
-    const { formatMessage } = this.props.intl // eslint-disable-line no-shadow
 
     const nextUser = {
       id: user ? user.id : '',
@@ -124,7 +106,6 @@ export class UserForm extends React.Component {
       sshKeyPublic: sshKeyPublic ? sshKeyPublic.trim() : '' 
     }
 
-    // TODO try to put this in parent component
     return onSubmitUserForm(nextUser)
       .then(() => {
         return Promise.resolve(onSubmitUserSuccess(nextUser))
