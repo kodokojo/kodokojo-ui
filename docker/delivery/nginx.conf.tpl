@@ -27,6 +27,13 @@ http {
             expires 365d;
         }
 
+        location ~ ^/api/v1/event.* {
+            proxy_pass http://@@BACK_HOST@@:@@BACK_PORT@@;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        }
+
         location ~ ^/api.* {
             proxy_pass      http://@@BACK_HOST@@:@@BACK_PORT@@;
         }
