@@ -61,6 +61,7 @@ export const getAggregatedStackStatus = (state) => fromProjectConfig.getAggregat
 export const getCrispKey = (state) => fromPrefs.getCrispKey(state.prefs)
 export const getHelpEmail = (state) => fromPrefs.getHelpEmail(state.prefs)
 export const getReCaptchaKey = (state) => fromPrefs.getReCaptchaKey(state.prefs)
+export const getSignup = (state) => fromPrefs.getSignup(state.prefs)
 export const getTosUri = (state) => fromPrefs.getTosUri(state.prefs)
 export const getWaitingList = (state) => fromPrefs.getWaitingList(state.prefs)
 

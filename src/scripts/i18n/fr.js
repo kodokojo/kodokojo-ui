@@ -65,6 +65,7 @@ export default {
   'login-error-401': 'Account not found. Check your email or / and your password',
   'login-error-404': 'Account not found. Check your email or / and your password',
   'login-title-label': 'Déjà inscrit ?',
+  'login-alternate-title-label': 'Accédez à vis usines',
   'login-label': 'S’identifier',
   'login-to-signup-text': 'Create an account and deploy full software factory for all your projects. Manage users and monitor your stacks.',
   'logout-label': 'Log out',

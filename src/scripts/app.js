@@ -78,11 +78,15 @@ const initApp = () => {
           >
             {/* Public routes */}
             <IndexRoute
-              component={SignupPage}
+              component={LoginPage}
             />
             <Route
               component={LoginPage}
               path="login"
+            />
+            <Route
+              component={SignupPage}
+              path="signup"
             />
             {/* User routes */}
             <Route

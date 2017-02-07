@@ -32,7 +32,7 @@ import Button from 'kodokojo-ui-commons/src/scripts/components/button/Button.com
 
 // Component
 import Login from '../components/login/Login.component'
-import { getWaitingList } from '../commons/reducers'
+import { getWaitingList, getSignup } from '../commons/reducers'
 import { setNavVisibility } from '../components/app/app.actions'
 import { login } from '../components/login/login.actions'
 
@@ -44,6 +44,7 @@ class LoginPage extends React.Component {
     location: React.PropTypes.object.isRequired,
     login: React.PropTypes.func,
     setNavVisibility: React.PropTypes.func.isRequired,
+    signup: React.PropTypes.bool,
     waitingList: React.PropTypes.bool
   }
 
@@ -67,41 +68,44 @@ class LoginPage extends React.Component {
 
   render() {
     const { formatMessage } = this.props.intl
-    const { waitingList } = this.props
+    const { signup, waitingList } = this.props
 
     return (
       <CardContainer>
+        {/* optional feature */}
+        { signup &&
+          <Card
+            merged
+            style={{ width: '400px' }}
+            title={ formatMessage({ id: 'signup-title-label' }) }
+          >
+            <CardContent>
+              <p>
+                <FormattedMessage id={'login-to-signup-text'}/>
+              </p>
+              <div>
+                {/*
+                 // TODO use toggle feature
+                 <Button
+                 label={ formatMessage({ id: 'signup-label' }) }
+                 onClick={ () => browserHistory.push('/') }
+                 title={ formatMessage({ id: 'signup-label' }) }
+                 />
+                 */}
+                <Button
+                  label={ waitingList ? formatMessage({ id: 'register-label' }) : formatMessage({ id: 'signup-label' }) }
+                  onClick={ () => browserHistory.push('/') }
+                  title={ waitingList ? formatMessage({ id: 'register-label' }) : formatMessage({ id: 'signup-label' }) }
+                />
+              </div>
+            </CardContent>
+          </Card>
+        }
         <Card
-          merged
-          style={{ width: '400px' }}
-          title={ formatMessage({ id: 'signup-title-label' }) }
-        >
-          <CardContent>
-            <p>
-              <FormattedMessage id={'login-to-signup-text'}/>
-            </p>
-            <div>
-              {/*
-              // TODO use toggle feature
-              <Button
-                label={ formatMessage({ id: 'signup-label' }) }
-                onClick={ () => browserHistory.push('/') }
-                title={ formatMessage({ id: 'signup-label' }) }
-              />
-              */}
-              <Button
-                label={ waitingList ? formatMessage({ id: 'register-label' }) : formatMessage({ id: 'signup-label' }) }
-                onClick={ () => browserHistory.push('/') }
-                title={ waitingList ? formatMessage({ id: 'register-label' }) : formatMessage({ id: 'signup-label' }) }
-              />
-            </div>
-          </CardContent>
-        </Card>
-        <Card
-          merged
+          merged={ signup }
           primary
           style={{ width: '400px' }}
-          title={ formatMessage({ id: 'login-title-label' }) }
+          title={ signup ? formatMessage({ id: 'login-title-label' }) : formatMessage({ id: 'login-alternate-title-label' }) }
         >
           <CardContent>
             <Login/>
@@ -117,6 +121,7 @@ const mapStateProps = (state, ownProps) => (
   {
     isAuthenticated: state.auth.isAuthenticated,
     location: ownProps.location,
+    signup: getSignup(state),
     waitingList: getWaitingList(state)
   }
 )

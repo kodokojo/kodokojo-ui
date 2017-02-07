@@ -32,7 +32,7 @@ import Button from 'kodokojo-ui-commons/src/scripts/components/button/Button.com
 
 // Component
 import Signup from '../components/signup/Signup.component'
-import { getWaitingList } from '../commons/reducers'
+import { getSignup, getWaitingList } from '../commons/reducers'
 import { setNavVisibility } from '../components/app/app.actions'
 
 class SignupPage extends React.Component {
@@ -44,14 +44,20 @@ class SignupPage extends React.Component {
     projectConfigId: React.PropTypes.string,
     projectId: React.PropTypes.string,
     setNavVisibility: React.PropTypes.func.isRequired,
+    signup: React.PropTypes.bool,
     waitingList: React.PropTypes.bool
   }
 
   componentWillMount = () => {
-    const { isAuthenticated, projectConfigId, projectId } = this.props // eslint-disable-line no-shadow
+    const { isAuthenticated, projectConfigId, projectId, signup } = this.props // eslint-disable-line no-shadow
+
+    // optional feature
+    if (!signup) {
+      browserHistory.push('/login')
+    }
 
     this.initNav()
-    
+
     if (isAuthenticated) {
       if (projectConfigId && !projectId) {
         browserHistory.push('/firstProject')
@@ -127,6 +133,7 @@ const mapStateProps = (state, ownProps) => (
     location: ownProps.location,
     projectConfigId: state.projectConfig ? state.projectConfig.id : '',
     projectId: state.projectConfig && state.projectConfig.project ? state.projectConfig.project.id : '',
+    signup: getSignup(state),
     waitingList: getWaitingList(state)
   }
 )

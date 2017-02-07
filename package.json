@@ -19,7 +19,7 @@
     "build": "npm run build:index && npm run build:configuration",
     "build:env": "node ./config/config.output.js | mustache - config/shared/api.env.mustache > config/shared/api.env.js && npm run build:version",
     "build:index": "mustache webpack-assets.json src/index.mustache > static/index.html",
-    "build:configuration": "mkdir -p ./static/assets/json/ && cat ./config/config.template.tpl | sed -e \"s#@@CRISP@@#$CRISP_ENV#g\" -e \"s#@@HELP_EMAIL@@#$HELP_EMAIL_ENV#g\" -e \"s#@@RECAPTCHA@@#$RECAPTCHA_ENV#g\" -e \"s#@@TOS@@#$TOS_ENV#g\" -e \"s#@@WAITING_LIST@@#$WAITING_LIST_ENV#g\" > ./static/assets/json/ui.configuration.json",
+    "build:configuration": "mkdir -p ./static/assets/json/ && cat ./config/config.template.tpl | sed -e \"s#@@CRISP@@#$CRISP_ENV#g\" -e \"s#@@HELP_EMAIL@@#$HELP_EMAIL_ENV#g\" -e \"s#@@RECAPTCHA@@#$RECAPTCHA_ENV#g\" -e \"s#@@TOS@@#$TOS_ENV#g\" -e \"s#@@WAITING_LIST@@#$WAITING_LIST_ENV#g\" -e \"s#@@SIGNUP@@#$SIGNUP_ENV#g\" > ./static/assets/json/ui.configuration.json",
     "build:version": "node ./config/config.extract.version.js && mkdir -p ./static/assets/json/ && cp ./config/shared/ui.version.json ./static/assets/json/",
     "build:styleguide": "build-storybook -c ./styleguide -o styleguide/dist",
     "prebuild:dev": "NODE_ENV=development BABEL_ENV=development npm run build:env",

@@ -136,6 +136,18 @@ export const getReCaptchaKey = (state) => {
   return null
 }
 
+export const getSignup = (state) => {
+  if (
+    state.configuration &&
+    state.configuration.ui &&
+    state.configuration.ui.SIGNUP &&
+    state.configuration.ui.SIGNUP !== ''
+  ) {
+    return state.configuration.ui.SIGNUP
+  }
+  return false
+}
+
 export const getTosUri = (state) => {
   if (
     state.configuration &&
