@@ -56,7 +56,7 @@ export default function prefs(state = prefsDefault, action) {
   if (action.type === API_VERSION_REQUEST) {
     return {
       ...state,
-      iSFetching: true
+      isFetching: true
     }
   }
 
@@ -64,21 +64,21 @@ export default function prefs(state = prefsDefault, action) {
     return {
       ...state,
       version: action.payload.version,
-      iSFetching: false
+      isFetching: false
     }
   }
 
   if (action.type === API_VERSION_FAILURE) {
     return {
       ...state,
-      iSFetching: false
+      isFetching: false
     }
   }
 
   if (action.type === UI_CONFIGURATION_REQUEST) {
     return {
       ...state,
-      iSFetching: true
+      isFetching: true
     }
   }
 
@@ -86,14 +86,14 @@ export default function prefs(state = prefsDefault, action) {
     return {
       ...state,
       configuration: action.payload.configuration,
-      iSFetching: false
+      isFetching: false
     }
   }
 
   if (action.type === UI_CONFIGURATION_FAILURE) {
     return {
       ...state,
-      iSFetching: false
+      isFetching: false
     }
   }
 
