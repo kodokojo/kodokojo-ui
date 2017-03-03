@@ -40,15 +40,15 @@ authService.checkRightsUser = (nextState, replaceState) => {
 }
 
 /**
- * Check if user belongs to super admin group
+ * Check if user belongs to root group
  *
  * @param nextState
  * @param replaceState
  * @returns {boolean}
  */
-authService.checkRightsSuperAdmin = (nextState, replaceState) => {
+authService.checkRightsRoot = (nextState, replaceState) => {
   checkAuth(nextState, replaceState)
-  if (!authService.hasSuperAdminRights()) {
+  if (!authService.hasRootRights()) {
     // use react router onEnter callback argument to replace router state
     replaceState({
       pathname: '/login',
@@ -163,11 +163,11 @@ authService.getGroupId = () => storageService.get('groupId', 'session') || ''
 authService.hasUserRights = () => getGroupByLabel('USER') === authService.getGroupId()
 
 /**
- * Return if user has super admin rights
+ * Return if user has root rights
  *
  * @returns {boolean}
  */
-authService.hasSuperAdminRights = () => getGroupByLabel('ADMIN_SUPER') === authService.getGroupId()
+authService.hasRootRights = () => getGroupByLabel('ROOT') === authService.getGroupId()
 
 /**
  * Return encrypted basic auth string
@@ -196,7 +196,7 @@ export const getToken = authService.getToken
 export const getAccount = authService.getAccount
 export const getGroupId = authService.getGroupId
 export const hasUserRights = authService.hasUserRights
-export const hasSuperAdminRights = authService.hasSuperAdminRights
+export const hasSuperAdminRights = authService.hasRootRights
 
 // service
 export default authService

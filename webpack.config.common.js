@@ -26,7 +26,7 @@ module.exports = {
     app: [
       './src/scripts/app.js'
     ],
-    vendors: [ 
+    vendors: [
       './src/scripts/vendors.js' 
     ]
   },

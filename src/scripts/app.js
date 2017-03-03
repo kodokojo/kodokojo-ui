@@ -107,7 +107,7 @@ const initApp = () => {
               onEnter={authService.checkAuth}
               path="members"
             />
-            {/* Super admin routes */}
+            {/* Root routes */}
             <Route
               component={DbPage}
               // onEnter={authService.checkRightsSuperAdmin}
