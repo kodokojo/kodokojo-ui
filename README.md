@@ -60,6 +60,10 @@ For Windows users, you may do something like (not sure of the command, please PR
 
 You can set environment variables for toggle features (optional).
 
+##### Enable sign up
+
+    SIGNUP_ENV=true
+
 ##### Enable reCaptcha (v2)
 
     RECAPTCHA_ENV=<site key>
