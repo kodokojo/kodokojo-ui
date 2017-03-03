@@ -78,7 +78,7 @@ export function createAccount(email, captcha) {
 
         // set auth
         setAuth(data.payload.account.userName, data.payload.account.password)
-        putAuth(data.payload.account.id, data.payload.account.userName)
+        putAuth(data.payload.account)
 
         // TODO UT
         // optional feature

@@ -183,3 +183,10 @@ export const getAggregatedStackStatus = (state) => {
   }
   return {}
 }
+
+export const getProjectConfigName = (state) => {
+  if (state && state.name) {
+    return state.name
+  }
+  return ''
+}

@@ -148,7 +148,7 @@ describe('login actions', () => {
         expect(setAuthSpy).to.have.callCount(1)
         expect(setAuthSpy).to.have.been.calledWith(username, password)
         expect(putAuthSpy).to.have.callCount(1)
-        expect(putAuthSpy).to.have.been.calledWith(account.id)
+        expect(putAuthSpy).to.have.been.calledWith(account)
         expect(getHeadersSpy).to.have.callCount(1)
         expect(getProjectConfigAndProjectSpy).to.have.callCount(1)
         expect(historyPushSpy).to.have.callCount(1)
@@ -197,7 +197,7 @@ describe('login actions', () => {
         expect(setAuthSpy).to.have.callCount(1)
         expect(setAuthSpy).to.have.been.calledWith(username, password)
         expect(putAuthSpy).to.have.callCount(1)
-        expect(putAuthSpy).to.have.been.calledWith(account.id)
+        expect(putAuthSpy).to.have.been.calledWith(account)
         expect(getHeadersSpy).to.have.not.been.called
         expect(requestAuthenticationSpy).to.have.callCount(1)
         expect(historyPushSpy).to.have.callCount(1)
@@ -254,7 +254,7 @@ describe('login actions', () => {
         expect(setAuthSpy).to.have.callCount(1)
         expect(setAuthSpy).to.have.been.calledWith(username, password)
         expect(putAuthSpy).to.have.callCount(1)
-        expect(putAuthSpy).to.have.been.calledWith(account.id)
+        expect(putAuthSpy).to.have.been.calledWith(account)
         expect(getHeadersSpy).to.have.not.been.called
         expect(requestAuthenticationSpy).to.have.callCount(1)
         expect(getProjectConfigAndProjectSpy).to.have.callCount(0)

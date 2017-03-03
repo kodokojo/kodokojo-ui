@@ -51,6 +51,14 @@
   color: $color-font-3;
 }
 
+.header-menu {
+  display: flex;
+  flex: 1 1 auto;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .menu-personal {
   display: flex;
   flex: 1 1 auto;

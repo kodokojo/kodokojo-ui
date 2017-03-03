@@ -17,6 +17,8 @@
  */
 
 import find from 'lodash/find'
+import filter from 'lodash/filter'
+import isEmpty from 'lodash/isEmpty'
 
 // status
 // import statusDefault from 'kodokojo-ui-commons/src/images/status-default-small.svg'
@@ -105,6 +107,7 @@ paramService.getBrickLogo = (name) => (
 // menu params
 paramService.getMenu = () => (
   {
+    // projects menu
     0: {
       disabled: true,
       index: 0,
@@ -114,12 +117,14 @@ paramService.getMenu = () => (
       route: '#projects',
       titleText: 'disabled because projects page does not exist'
     },
+    // current project name
     1: {
       index: 1,
       disabled: true,
       labelText: '',
       titleText: ''
     },
+    // current project stacks menu
     2: {
       active: false,
       index: 2,
@@ -128,6 +133,7 @@ paramService.getMenu = () => (
       route: '/stacks',
       titleKey: 'stacks-label'
     },
+    // current project members menu
     3: {
       active: false,
       index: 3,
@@ -138,6 +144,94 @@ paramService.getMenu = () => (
     }
   }
 )
+
+// breadcrumb params
+// FIXME duplicate code with menu... find a better way
+paramService.enumBreadcrumb = {
+  projects: {
+    labelKey: 'projects-label',
+    titleKey: 'projects-label',
+    // TODO change to real route when page is done
+    route: '#projects',
+    type: 'project',
+    disabled: true
+  },
+  stacks: {
+    active: 0,
+    labelKey: 'stacks-label',
+    titleKey: 'stacks-label',
+    route: '/stacks',
+    type: 'menu',
+    disabled: true
+  },
+  members: {
+    active: 1,
+    labelKey: 'members-label',
+    titleKey: 'members-label',
+    route: '/members',
+    type: 'menu',
+    disabled: true
+  }
+}
+
+// breadcrumb projects item (if no current project is selected)
+paramService.getBreadcrumbItemProjects = () => paramService.enumBreadcrumb['projects']
+
+paramService.getBreadcrumbItemFromPath = (path) => {
+  return find(paramService.enumBreadcrumb, { route: path})
+}
+
+/**
+ * Compute breadcrumb item from info and blue print
+ * 
+ * @param {string} labelText
+ * @param {string} route
+ * @param {string} type
+ * @returns {object} breadcrumbItem || null
+ */
+paramService.breadcrumbItemFactory = ({
+  labelText,
+  route = '',
+  type = 'menu'
+}) => {
+  if (!isEmpty(labelText)) {
+    return {
+      labelText,
+      titleText: labelText,
+      route,
+      type,
+    }
+  }
+}
+
+paramService.getBreadcrumb = ({
+  organisation,
+  project = paramService.getBreadcrumbItemProjects(),
+  menu
+}) => {
+  const breadcrumb = {
+    organisation: {
+      ...organisation,
+      disabled: false
+    },
+    project: {
+      ...project,
+      disabled: true
+    },
+    menu: {
+      ...menu,
+      disabled: true
+    }
+  }
+
+  return filter([
+    breadcrumb.organisation,
+    breadcrumb.project,
+    breadcrumb.menu
+  ], o => {
+    return !(isEmpty(o.labelKey) && isEmpty(o.labelText))
+  })
+}
 
 // groups params
 paramService.enumGroups = {
@@ -170,6 +264,10 @@ export const getStatusByOrder = paramService.getStatusByOrder
 export const enumBrickLogos = paramService.enumBrickLogos
 export const getBrickLogo = paramService.getBrickLogo
 export const getMenu = paramService.getMenu
+export const getBreadcrumb = paramService.getBreadcrumb
+export const getBreadcrumbItemProject = paramService.getBreadcrumbItemProjects
+export const getBreadcrumbItemFromPath = paramService.getBreadcrumbItemFromPath
+export const breadcrumbItemFactory = paramService.breadcrumbItemFactory
 export const enumGroups = paramService.enumGroups
 export const getGroupById = paramService.getGroupById
 export const getGroupByLabel = paramService.getGroupByLabel

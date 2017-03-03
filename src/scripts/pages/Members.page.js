@@ -160,7 +160,7 @@ export class MembersPage extends React.Component {
         })
       })
       .catch(error => {
-        // TODO ad ui toaster to prompt errors
+        // TODO add ui toaster to prompt errors
         console.log(error)
       })
   }

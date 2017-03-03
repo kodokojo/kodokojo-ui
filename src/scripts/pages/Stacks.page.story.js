@@ -153,7 +153,7 @@ const storeWithAlerts = configureStore({
           variant: 'info'
         },
         {
-          action:'I understand',
+          action: 'I understand',
           id: 3,
           active: false,
           icon: 'question_answer',

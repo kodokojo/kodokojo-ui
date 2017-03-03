@@ -100,13 +100,13 @@ authService.setAuth = (login, password) => {
 /**
  * Put authentication
  *
- * @param id {string} user identifier
- * @param userName {string} user name
+ * @param {object} account
  */
-authService.putAuth = (id, userName) => {
+authService.putAuth = (account) => {
   storageService.put('isAuthenticated', true, 'session')
-  storageService.put('userId', id, 'session')
-  storageService.put('userName', userName, 'session')
+  storageService.put('userId', account.id, 'session')
+  storageService.put('userName', account.userName, 'session')
+  storageService.put('entityId', account.entityId, 'session')
 }
 
 /**
@@ -117,6 +117,7 @@ authService.resetAuth = () => {
   storageService.remove('isAuthenticated', 'session')
   storageService.remove('userId', 'session')
   storageService.remove('userName', 'session')
+  storageService.remove('entityId', 'session')
 }
 
 /**
@@ -134,7 +135,7 @@ authService.isAuth = () => !!storageService.get('isAuthenticated', 'session')
 authService.getToken = () => storageService.get('token', 'session') || ''
 
 /**
- * Return user id and password
+ * Return user account
  *
  * @returns {object} account
  */
@@ -142,7 +143,8 @@ authService.getAccount = () => (
   {
     id: storageService.get('userId', 'session'),
     userName: storageService.get('userName', 'session'),
-    password: authService.getToken()
+    entityId: storageService.get('entityId', 'session'),
+    token: authService.getToken()
   }
 )
 

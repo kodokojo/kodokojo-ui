@@ -17,20 +17,21 @@
  */
 
 import isEmpty from 'lodash/isEmpty'
+import Promise from 'bluebird'
 
+import { updateNavigation } from '../components/navigation/navigation.actions'
 import { initMenu, updateMenuPath } from '../components/menu/menu.actions'
+import { initBreadcrumb, updateBreadcrumbPath } from '../components/breadcrumb/breadcrumb.actions'
 
 const historyService = {}
 
 // TODO could handle analytics in the future
-historyService.handleHistoryChange = (location) => (dispatch, getState) => {
+historyService.handleHistoryChange = (location, store) => (dispatch, getState) => {
   console.log('history service detect change: ', location) // eslint-disable-line no-console
 
-  const prevMenu = getState().menu
-  if (isEmpty(prevMenu)) {
-    return dispatch(initMenu(location))
-  }
-  return dispatch(updateMenuPath(location))
+  const state = getState()
+  return dispatch(updateNavigation(location, state))
+
 }
 
 // public API

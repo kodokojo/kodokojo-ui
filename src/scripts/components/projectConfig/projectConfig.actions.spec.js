@@ -132,7 +132,8 @@ describe('project config actions', () => {
       })
 
       // Then
-      return store.dispatch(actions.createProjectConfig(projectConfigName, projectConfigAdmins))
+      return store
+        .dispatch(actions.createProjectConfig(projectConfigName, projectConfigAdmins))
         .then(() => {
           expect(store.getActions()).to.deep.equal(expectedActions)
           expect(getHeadersSpy).to.have.callCount(1)
@@ -151,6 +152,7 @@ describe('project config actions', () => {
   describe('get project config', () => {
     let getUserSpy
     let updateMenuProjectSpy
+    let updateBreadcrumbProjectSpy
 
     beforeEach(() => {
       getUserSpy = sinon.stub().returns({
@@ -161,11 +163,16 @@ describe('project config actions', () => {
         type: 'MOCKED_ACTION_UPDATE_MENU_PROJECT'
       })
       actionsRewireApi.__Rewire__('updateMenuProject', updateMenuProjectSpy)
+      updateBreadcrumbProjectSpy = sinon.stub().returns({
+        type: 'MOCKED_ACTION_UPDATE_BREADCRUMB_PROJECT'
+      })
+      actionsRewireApi.__Rewire__('updateBreadcrumbProject', updateBreadcrumbProjectSpy)
     })
 
     afterEach(() => {
       actionsRewireApi.__ResetDependency__('getUser')
       actionsRewireApi.__ResetDependency__('updateMenuProject')
+      actionsRewireApi.__ResetDependency__('updateBreadcrumbProject')
     })
 
     it('should return project config', () => {
@@ -203,6 +210,9 @@ describe('project config actions', () => {
         },
         {
           type: 'MOCKED_ACTION_UPDATE_MENU_PROJECT'
+        },
+        {
+          type: 'MOCKED_ACTION_UPDATE_BREADCRUMB_PROJECT'
         }
       ]
       nock('http://localhost')

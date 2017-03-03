@@ -73,7 +73,7 @@ export function login(username, password) {
         const { prefs, routing } = getState()
 
         // put auth
-        authService.putAuth(data.payload.account.id, data.payload.account.userName)
+        authService.putAuth(data.payload.account)
 
         // TODO UT
         // optional feature

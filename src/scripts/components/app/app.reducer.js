@@ -143,7 +143,7 @@ export const getSignup = (state) => {
     state.configuration.ui.SIGNUP &&
     state.configuration.ui.SIGNUP !== ''
   ) {
-    return state.configuration.ui.SIGNUP
+    return true
   }
   return false
 }
@@ -167,7 +167,7 @@ export const getWaitingList = (state) => {
     state.configuration.ui.WAITING_LIST &&
     state.configuration.ui.WAITING_LIST !== ''
   ) {
-    return !!state.configuration.ui.WAITING_LIST
+    return true
   }
   return false
 }

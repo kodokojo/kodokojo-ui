@@ -21,7 +21,8 @@ import { routerReducer } from 'react-router-redux'
 import { reducer as formReducer } from 'redux-form'
 
 import alerts from '../components/alert/alert.reducer'
-import auth from '../components/auth/auth.reducer'
+import auth, * as fromAuth from '../components/auth/auth.reducer'
+import breadcrumb from '../components/breadcrumb/breadcrumb.reducer'
 import bricks from '../components/brick/brick.reducer'
 import menu from '../components/menu/menu.reducer'
 import db from '../components/db/db.reducer'
@@ -33,6 +34,7 @@ import users, * as fromUser from '../components/user/user.reducer'
 const rootReducer = combineReducers({
   alerts,
   auth,
+  breadcrumb,
   bricks,
   db,
   menu,
@@ -51,10 +53,14 @@ export default rootReducer
 
 // TODO UT
 // selectors
-//users
+// auth
+export const getOrganisation = (state) => fromAuth.getOrganisation(state.auth)
+
+// users
 export const getUser = (userId, state) => fromUser.getUser(userId, state.users)
 
 // projectConfig
+export const getProjectConfigName = (state) => fromProjectConfig.getProjectConfigName(state.projectConfig)
 export const getAggregatedStackStatus = (state) => fromProjectConfig.getAggregatedStackStatus(state.projectConfig)
 
 // prefs

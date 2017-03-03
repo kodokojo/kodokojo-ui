@@ -52,7 +52,14 @@ class App extends React.Component {
 
   static propTypes = {
     alert: React.PropTypes.object,
-    children: React.PropTypes.element.isRequired,
+    breadcrumb: React.PropTypes.array,
+    children: React.PropTypes.oneOfType([
+      React.PropTypes.arrayOf(React.PropTypes.element),
+      React.PropTypes.arrayOf(React.PropTypes.node),
+      React.PropTypes.element,
+      React.PropTypes.string,
+      React.PropTypes.node
+    ]),
     getApiVersion: React.PropTypes.func.isRequired,
     getUiConfiguration: React.PropTypes.func.isRequired,
     help: React.PropTypes.string,
@@ -125,11 +132,15 @@ class App extends React.Component {
   }
 
   render() {
-    const { alert, children, help, isAuthenticated, locale, logout, menu, navigation, setLocale, theme, version } = this.props // eslint-disable-line no-shadow
+    const {
+      alert, breadcrumb, children, help, isAuthenticated, locale, 
+      logout, menu, navigation, setLocale, theme, version
+    } = this.props // eslint-disable-line no-shadow
 
     return (
       <Layout>
         <AppHeader
+          breadcrumb={ breadcrumb }
           help={ help }
           isAuthenticated={ isAuthenticated || false }
           languageSelected={ locale }
@@ -171,6 +182,7 @@ class App extends React.Component {
 const mapStateProps = (state, ownProps) => (
   {
     alert: state.alerts.display,
+    breadcrumb: state.breadcrumb,
     locale: state.prefs.locale,
     theme: state.prefs.theme,
     menu: state.menu,

@@ -27,6 +27,7 @@ import { logout } from '../login/login.actions'
 import { createUser, getUser } from '../user/user.actions'
 import { createProject, getProject } from '../project/project.actions'
 import { updateMenuProject } from '../menu/menu.actions'
+import { updateBreadcrumbProject } from '../breadcrumb/breadcrumb.actions'
 import { newAlert } from '../alert/alert.actions'
 import {
   PROJECT_CONFIG_REQUEST,
@@ -91,7 +92,10 @@ export function getProjectConfig(projectConfigId) {
       if (!data.error) {
         const projectConfigState = getState().projectConfig
         if (projectConfigState && projectConfigState.name) {
-          return Promise.resolve(dispatch(updateMenuProject(projectConfigState.name)))
+          return Promise.all([
+            dispatch(updateMenuProject(projectConfigState.name)),
+            dispatch(updateBreadcrumbProject(projectConfigState.name))
+          ])
         }
         return Promise.resolve(data)
       }

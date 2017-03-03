@@ -134,7 +134,7 @@ describe('signup actions', () => {
           expect(setAuthSpy).to.have.callCount(1)
           expect(setAuthSpy).to.have.been.calledWith(account.userName, account.password)
           expect(putAuthSpy).to.have.callCount(1)
-          expect(putAuthSpy).to.have.been.calledWith(account.id)
+          expect(putAuthSpy).to.have.been.calledWith(account)
           expect(requestWebsocketSpy).to.have.callCount(1)
         })
     })

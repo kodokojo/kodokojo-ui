@@ -17,12 +17,12 @@
  */
 
 import React from 'react'
-import { Link } from 'react-router'
-import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
+import { intlShape, injectIntl } from 'react-intl'
 
 // Component commons
 import 'kodokojo-ui-commons/src/styles/_commons.less'
 import AppBar from 'kodokojo-ui-commons/src/scripts/components/appBar/AppBar.component'
+import Breadcrumb from 'kodokojo-ui-commons/src/scripts/components/breadcrumb/Breadcrumb.component'
 import IconButton from 'kodokojo-ui-commons/src/scripts/components/button/IconButton.component'
 
 // Component
@@ -32,6 +32,7 @@ import themeAppHeader from './appHeader.scss'
 export class AppHeader extends React.Component {
 
   static propTypes = {
+    breadcrumb: React.PropTypes.array,
     help: React.PropTypes.string,
     intl: intlShape.isRequired,
     isAuthenticated: React.PropTypes.bool.isRequired,
@@ -41,8 +42,15 @@ export class AppHeader extends React.Component {
     version: React.PropTypes.object
   }
 
+  handleBreadcrumbClick = (i) => {
+    // implement if you reaction to breadcrumb change is needed
+  }
+
   render() {
-    const { help, languageSelected, onLanguageChange, onLogout, isAuthenticated, version } = this.props // eslint-disable-line no-shadow
+    const {
+      breadcrumb, help, languageSelected, onLanguageChange, onLogout,
+      isAuthenticated, version
+    } = this.props // eslint-disable-line no-shadow
     const { formatMessage } = this.props.intl
 
     return (
@@ -60,46 +68,43 @@ export class AppHeader extends React.Component {
             }
           </div>
         }
-        { isAuthenticated &&
-          <div className={ themeAppHeader['menu-personal'] }>
-            {/* uncomment for future use
-             <IconButton
-             icon="person"
-             onClick={ () => onLogout() }
-             title={ formatMessage({ id: 'help-label' }) }
-             />
-             <IconButton
-             className={ themeAppHeader['menu-personal__item--smaller'] }
-             icon="chat_bubble"
-             onClick={ () => onLogout() }
-             title={ formatMessage({ id: 'help-label' }) }
-             />
-           */}
-            <IconButton
-              className={ themeAppHeader['menu-personal__item--small'] }
-              icon="help"
-              onClick={ () => window.location.href = `mailto:${help}` }
-              title={ formatMessage({ id: 'help-label' }) }
+        <div className={ themeAppHeader['header-menu'] }>
+          { breadcrumb && breadcrumb.length > 0 &&
+            <Breadcrumb
+              items={ breadcrumb }
+              onChange={ this.handleBreadcrumbClick }
             />
-            <IconButton
-              icon="power_settings_new"
-              onClick={ () => onLogout() }
-              title={ formatMessage({ id: 'logout-label' }) }
-            />
-          </div>
-        }
+          }
+          { isAuthenticated &&
+            <div className={ themeAppHeader['menu-personal'] }>
+              {/* uncomment for future use
+               <IconButton
+               icon="person"
+               onClick={ () => onLogout() }
+               title={ formatMessage({ id: 'help-label' }) }
+               />
+               <IconButton
+               className={ themeAppHeader['menu-personal__item--smaller'] }
+               icon="chat_bubble"
+               onClick={ () => onLogout() }
+               title={ formatMessage({ id: 'help-label' }) }
+               />
+             */}
+              <IconButton
+                className={ themeAppHeader['menu-personal__item--small'] }
+                icon="help"
+                onClick={ () => window.location.href = `mailto:${help}` }
+                title={ formatMessage({ id: 'help-label' }) }
+              />
+              <IconButton
+                icon="power_settings_new"
+                onClick={ () => onLogout() }
+                title={ formatMessage({ id: 'logout-label' }) }
+              />
+            </div>
+          }
+        </div>
       </AppBar>
-      // FIXME this is for testing purpose, delete when tabs are implemented
-      // <Navigation type="horizontal">
-      //   <Link to="/">
-      //   <FormattedMessage id={'app-menu-home-label'}/>
-      //   </Link>
-      //   {' | '}
-      //   <Link to="/users">
-      //     <FormattedMessage id={'app-menu-users-label'}/>
-      //   </Link>
-      // </Navigation>
-
       // TODO move this in app header, set param to show / hide language switch + automatically browser available languages
       // <DropDownMenu
       //   className={ 'locale-selector' }
