@@ -148,6 +148,18 @@ paramService.getMenu = () => (
 // breadcrumb params
 // FIXME duplicate code with menu... find a better way
 paramService.enumBreadcrumb = {
+  root: {
+    route: '/',
+    hidden: true
+  },
+  login: {
+    route: '/login',
+    hidden: true
+  },
+  signup: {
+    route: '/signup',
+    hidden: true
+  },
   projects: {
     labelKey: 'projects-label',
     titleKey: 'projects-label',
@@ -181,6 +193,7 @@ paramService.getBreadcrumbItemFromPath = (path) => {
   return find(paramService.enumBreadcrumb, { route: path})
 }
 
+// TODO UT
 /**
  * Compute breadcrumb item from info and blue print
  * 
@@ -204,6 +217,7 @@ paramService.breadcrumbItemFactory = ({
   }
 }
 
+// TODO UT
 paramService.getBreadcrumb = ({
   organisation,
   project = paramService.getBreadcrumbItemProjects(),
@@ -223,7 +237,11 @@ paramService.getBreadcrumb = ({
       disabled: true
     }
   }
-
+  // if the route is a menu that have hidden prop, clear breadcrumb
+  if (breadcrumb.menu && breadcrumb.menu.hidden) {
+    return []
+  }
+  // else filter empty items
   return filter([
     breadcrumb.organisation,
     breadcrumb.project,
