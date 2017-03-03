@@ -10,7 +10,6 @@ import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 chai.use(chaiEnzyme())
 chai.use(sinonChai)
-import merge from '../../../../node_modules/lodash/merge'
 import { getIntlPropsMock } from '../../../../test/helpers'
 
 // contexte
@@ -25,16 +24,16 @@ describe('<User> component', () => {
   let intlProvider
 
   beforeEach(() => {
-    props = merge(
+    props = {
       // component
-      {
+      ...{
         theme: userTheme,
         onUserEdit: () => {},
         onUserSelect: () => {}
       },
       // intl
-      getIntlPropsMock()
-    )
+      ...getIntlPropsMock()
+    }
     intlProvider = new IntlProvider({ locale: 'en' }, {})
   })
 
@@ -57,12 +56,12 @@ describe('<User> component', () => {
 
   it('should init state with checked prop', () => {
     // Given
-    const nextProps = merge(
-      props,
-      {
+    const nextProps = {
+      ...props,
+      ...{
         checked: true
       }
-    )
+    }
     const { context } = intlProvider.getChildContext()
 
     // When
@@ -78,12 +77,12 @@ describe('<User> component', () => {
 
   it('should disable checkbox and input if disabled prop', () => {
     // Given
-    const nextProps = merge(
-      props,
-      {
+    const nextProps = {
+      ...props,
+      ...{
         disabled: true
       }
-    )
+    }
     const { context } = intlProvider.getChildContext()
 
     // When
@@ -100,13 +99,13 @@ describe('<User> component', () => {
 
   it('should disable checkbox on current connected user', () => {
     // Given
-    const nextProps = merge(
-      props,
-      {
+    const nextProps = {
+      ...props,
+      ...{
         userId: '1',
         userIdConnected: '1'
       }
-    )
+    }
     const { context } = intlProvider.getChildContext()
 
     // When
@@ -123,13 +122,13 @@ describe('<User> component', () => {
 
   it('should disable button on not current connected user', () => {
     // Given
-    const nextProps = merge(
-      props,
-      {
+    const nextProps = {
+      ...props,
+      ...{
         userId: '1',
         userIdConnected: '2'
       }
-    )
+    }
     const { context } = intlProvider.getChildContext()
 
     // When
@@ -147,13 +146,13 @@ describe('<User> component', () => {
   it('should handle select user', () => {
     // Given
     const onUserSelectSpy = sinon.spy()
-    const nextProps = merge(
-      props,
-      {
+    const nextProps = {
+      ...props,
+      ...{
         onUserSelect: onUserSelectSpy,
         userId: '1'
       }
-    )
+    }
     const { context } = intlProvider.getChildContext()
 
     // When
@@ -178,13 +177,13 @@ describe('<User> component', () => {
   it('should handle edit user', () => {
     // Given
     const onUserEditSpy = sinon.spy()
-    const nextProps = merge(
-      props,
-      {
+    const nextProps = {
+      ...props,
+      ...{
         onUserEdit: onUserEditSpy,
         userId: '1'
       }
-    )
+    }
     const { context } = intlProvider.getChildContext()
 
     // When

@@ -16,7 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import merge from 'lodash/merge'
 import {
   USER_NEW_ID_REQUEST,
   USER_NEW_ID_SUCCESS,
@@ -95,14 +94,13 @@ export default function users(state = initialState, action) {
   }
 
   if (action.type === USER_UPDATE_SUCCESS) {
-    return merge(
-      {},
-      state,
-      {
+    return {
+      ...state,
+      ...{
         [action.payload.user.id]: action.payload.user,
         isFetching: false
       }
-    )
+    }
   }
 
   if (action.type === USER_UPDATE_FAILURE) {
@@ -120,14 +118,13 @@ export default function users(state = initialState, action) {
   }
 
   if (action.type === USER_SUCCESS) {
-    return merge(
-      {},
-      state,
-      {
+    return {
+      ...state,
+      ...{
         [action.payload.user.id]: action.payload.user,
         isFetching: false
       }
-    )
+    }
   }
 
   if (action.type === USER_FAILURE) {

@@ -20,7 +20,6 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { IntlProvider } from 'react-intl'
 import { storiesOf, linkTo } from '@kadira/storybook'
-import merge from 'lodash/merge'
 
 // contexte
 import configureStore from '../store/configureStore'
@@ -124,10 +123,9 @@ const location = {
 }
 
 const storeInitial = configureStore(initialState)
-const storeWithForm = configureStore(merge(
-  {},
-  initialState,
-  {
+const storeWithForm = configureStore({
+  ...initialState,
+  ...{
     projectConfig: {
       stacks: [
         {
@@ -140,7 +138,7 @@ const storeWithForm = configureStore(merge(
       ]
     }
   }
-))
+})
 
 storiesOf('MembersPage', module)
   .add('with 3 users - disabled', () => (

@@ -20,7 +20,6 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { IntlProvider } from 'react-intl'
 import { storiesOf, linkTo } from '@kadira/storybook'
-import merge from 'lodash/merge'
 
 // contexte
 import configureStore from '../store/configureStore'
@@ -126,10 +125,9 @@ const location = {
 }
 
 const storeInitial = configureStore(initialState)
-const storeWithAlerts = configureStore(merge(
-  {},
-  initialState,
-  {
+const storeWithAlerts = configureStore({
+  ...initialState,
+  ...{
     alerts: {
       display: {
         id: 2,
@@ -172,7 +170,7 @@ const storeWithAlerts = configureStore(merge(
       ]
     }
   }
-))
+})
 
 storiesOf('StacksPage', module)
   .add('stack with all 4 status', () => (

@@ -16,8 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import merge from 'lodash/merge'
-
 import storageService from '../../services/storage.service'
 import { updateBricks, computeAggregatedStackStatus, removeUsers } from '../../services/stateUpdater.service'
 import {
@@ -62,14 +60,11 @@ export default function projectConfig(state = projectConfigReducerInit(), action
   }
 
   if (action.type === PROJECT_CONFIG_NEW_SUCCESS || action.type === PROJECT_CONFIG_SUCCESS) {
-    return merge(
-      {},
-      state,
-      action.payload.projectConfig,
-      {
-        isFetching: false
-      }
-    )
+    return {
+      ...state,
+      ...action.payload.projectConfig,
+      isFetching: false
+    }
   }
 
   if (action.type === PROJECT_CONFIG_NEW_FAILURE || action.type === PROJECT_CONFIG_FAILURE) {
@@ -88,13 +83,10 @@ export default function projectConfig(state = projectConfigReducerInit(), action
   }
 
   if (action.type === PROJECT_CONFIG_ADD_USER_SUCCESS) {
-    return merge(
-      {},
-      state,
-      {
-        isFetching: false
-      }
-    )
+    return {
+      ...state,
+      isFetching: false
+    }
   }
 
   if (action.type === PROJECT_CONFIG_ADD_USER_FAILURE) {
@@ -137,30 +129,26 @@ export default function projectConfig(state = projectConfigReducerInit(), action
     if (action.payload.project && action.payload.project.stacks && action.payload.project.stacks[0] && action.payload.project.stacks[0].bricks) {
       bricks = updateBricks(state.stacks[0].bricks, action.payload.project.stacks[0].bricks)
     }
-    return merge(
-      {},
-      state,
-      {
-        project: {
-          id: action.payload.project.id,
-          updateDate: action.payload.project.updateDate
-        },
-        stacks: [
-          {
-            bricks
-          }
-        ],
-        isFetching: false
-      }
-    )
+    return {
+      ...state,
+      project: {
+        id: action.payload.project.id,
+        updateDate: action.payload.project.updateDate
+      },
+      stacks: [
+        {
+          bricks
+        }
+      ],
+      isFetching: false
+    }
   }
 
   if (action.type === PROJECT_UPDATE && action.payload.brick.type !== 'LOADBALANCER') {
     const bricks = updateBricks(state.stacks[0].bricks, [action.payload.brick])
-    return merge(
-      {},
-      state,
-      {
+    return {
+      ...state,
+      ...{
         stacks: [
           {
             bricks
@@ -168,7 +156,7 @@ export default function projectConfig(state = projectConfigReducerInit(), action
         ],
         isFetching: false
       }
-    )
+    }
   }
 
   // TODO refactor and DRY this

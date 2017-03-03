@@ -12,7 +12,6 @@ import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 chai.use(chaiEnzyme())
 chai.use(sinonChai)
-import merge from 'lodash/merge'
 import { getIntlPropsMock, getReudxFormPropsMock } from '../../../../test/helpers'
 
 
@@ -31,9 +30,9 @@ describe('<UserForm> component', () => {
   let intlProvider
 
   beforeEach(() => {
-    props = merge(
+    props = {
       // component
-      {
+      ...{
         theme: userTheme,
         onCancel: () => {},
         onSubmitUserFailure: () => {},
@@ -43,23 +42,23 @@ describe('<UserForm> component', () => {
         onUserSelect: () => {}
       },
       // redux-form
-      getReudxFormPropsMock(),
+      ...getReudxFormPropsMock(),
       // intl
-      getIntlPropsMock()
-    )
+      ...getIntlPropsMock()
+    }
     intlProvider = new IntlProvider({ locale: 'en' }, {})
   })
 
   describe('state', () => {
     it('should init state', () => {
       // Given
-      const nextProps = merge(
-        props,
-        {
+      const nextProps = {
+        ...props,
+        ...{
           asyncValidate: () => Promise.resolve(),
           handleSubmit: fct => fct
         }
-      )
+      }
       const { context } = intlProvider.getChildContext()
 
       // When
@@ -75,14 +74,14 @@ describe('<UserForm> component', () => {
 
     it('should init state with checked prop', () => {
       // Given
-      const nextProps = merge(
-        props,
-        {
+      const nextProps = {
+        ...props,
+        ...{
           checked: true,
           asyncValidate: () => Promise.resolve(),
           handleSubmit: fct => fct
         }
-      )
+      }
       const { context } = intlProvider.getChildContext()
 
       // When
@@ -124,12 +123,12 @@ describe('<UserForm> component', () => {
 
     it('should disable buttons if disabled prop', () => {
       // Given
-      const nextProps = merge(
-        props,
-        {
+      const nextProps = {
+        ...props,
+        ...{
           disabled: true
         }
-      )
+      }
   
       // When
       const component = mount(
@@ -167,12 +166,12 @@ describe('<UserForm> component', () => {
 
     it('should init required if edition and ', () => {
       // Given
-      const nextProps = merge(
-        props,
-        {
+      const nextProps = {
+        ...props,
+        ...{
           edition: true
         }
-      )
+      }
 
       // When
       const component = mount(
@@ -209,14 +208,14 @@ describe('<UserForm> component', () => {
     it('should handle creation submit', () => {
       // Given
       const email = 'email@user.com'
-      const nextProps = merge(
-        props,
-        {
+      const nextProps = {
+        ...props,
+        ...{
           creation: true,
           edition: false,
           onSubmitUserForm: sinon.stub()
         }
-      )
+      }
       nextProps.onSubmitUserForm.resolves()
       const component = mount(
         <Provider store={store}>
@@ -251,9 +250,9 @@ describe('<UserForm> component', () => {
       const email = 'email@user.com'
       const sshKey = 'sshKeyPublic'
       const password = 'password'
-      const nextProps = merge(
-        props,
-        {
+      const nextProps = {
+        ...props,
+        ...{
           creation: false,
           edition: true,
           submitting: false,
@@ -263,7 +262,7 @@ describe('<UserForm> component', () => {
             id: '1'
           }
         }
-      )
+      }
       nextProps.onSubmitUserForm.resolves()
       const component = mount(
         <Provider store={store}>
@@ -309,9 +308,9 @@ describe('<UserForm> component', () => {
       // Given
       const email = 'email@user.com'
       const sshKey = 'sshKeyPublic'
-      const nextProps = merge(
-        props,
-        {
+      const nextProps = {
+        ...props,
+        ...{
           creation: false,
           edition: true,
           submitting: false,
@@ -321,7 +320,7 @@ describe('<UserForm> component', () => {
             id: '1'
           }
         }
-      )
+      }
       nextProps.onSubmitUserForm.resolves()
       const component = mount(
         <Provider store={store}>
@@ -355,9 +354,9 @@ describe('<UserForm> component', () => {
     it('should handle cancel edit', () => {
       // Given
       const email = 'email@user.com'
-      const nextProps = merge(
-        props,
-        {
+      const nextProps = {
+        ...props,
+        ...{
           asyncValidate: () => Promise.resolve(),
           handleSubmit: fct => fct,
           creation: false,
@@ -368,7 +367,7 @@ describe('<UserForm> component', () => {
           userId: '1',
           reset: sinon.spy()
         }
-      )
+      }
       const { context } = intlProvider.getChildContext()
       const component = shallow(
         <UserForm {...nextProps}/>,

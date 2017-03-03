@@ -16,10 +16,8 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import merge from 'lodash/merge'
-
 /**
- * Set api host and protocl from env if provided
+ * Set api host and protocol from env if provided
  */
 let api = {}
 let localApiProtocol
@@ -34,15 +32,15 @@ if (process.env.API_PROTOCOL_ENV && process.env.API_HOST_ENV) {
   }
 }
 
-const local = merge(
-  {
+const local = {
+  ...{
     api
   },
-  {
+  ...{
     server: {
       port: 3000
     }
   }
-)
+}
 
 export default local

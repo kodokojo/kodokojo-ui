@@ -30,7 +30,6 @@ import sinon from 'sinon'
 import sinonChai from 'sinon-chai'
 chai.use(chaiEnzyme())
 chai.use(sinonChai)
-import merge from '../../../../node_modules/lodash/merge'
 import { getIntlPropsMock, getReudxFormPropsMock } from '../../../../test/helpers'
 
 // contexte
@@ -49,19 +48,19 @@ describe('<Login> component', () => {
   let intlProvider
 
   beforeEach(() => {
-    props = merge(
+    props = {
       // component
-      {
+      ...{
         login: () => {
         },
         logout: () => {
         }
       },
       // redux-form
-      getReudxFormPropsMock(),
+      ...getReudxFormPropsMock(),
       // intl
-      getIntlPropsMock()
-    )
+      ...getIntlPropsMock()
+    }
     messages = {
       'username-hint-label': 'username-hint-label',
       'username-label': 'username-label',
@@ -73,14 +72,14 @@ describe('<Login> component', () => {
 
   it('should render a form if not authenticated', () => {
     // Given
-    const nextProps = merge(
-      props,
-      {
+    const nextProps = {
+      ...props,
+      ...{
         asyncValidate: () => Promise.resolve(),
         handleSubmit: fct => fct,
         isAuthenticated: false
       }
-    )
+    }
     const { context } = intlProvider.getChildContext()
 
     // When
@@ -95,14 +94,14 @@ describe('<Login> component', () => {
 
   it('should render a div if authenticated', () => {
     // Given
-    const nextProps = merge(
-      props,
-      {
+    const nextProps = {
+      ...props,
+      ...{
         asyncValidate: () => Promise.resolve(),
         handleSubmit: fct => fct,
         isAuthenticated: true
       }
-    )
+    }
     // const { context } = intlProvider.getChildContext()
 
     // When
@@ -129,15 +128,15 @@ describe('<Login> component', () => {
     // FIXME remove or improve... don't test a lot
     it('should set props properly', () => {
       // Given
-      const nextProps = merge(
-        props,
-        {
+      const nextProps = {
+        ...props,
+        ...{
           asyncValidate: () => Promise.resolve(),
           handleSubmit: fct => fct,
           username: 'username',
           psw: 'password'
         }
-      )
+      }
 
       // When
       const component = shallow(
@@ -166,12 +165,12 @@ describe('<Login> component', () => {
 
       it('should trigger login if username & password inputs are not empty', () => {
         // Given
-        const nextProps = merge(
-          props,
-          {
+        const nextProps = {
+          ...props,
+          ...{
             login: sinon.stub()
           }
-        )
+        }
         nextProps.login.resolves()
         const component = mount(
           <Provider store={store}>
@@ -200,15 +199,15 @@ describe('<Login> component', () => {
     describe('handle logout', () => {
       it('should logout', () => {
         // Given
-        const nextProps = merge(
-          props,
-          {
+        const nextProps = {
+          ...props,
+          ...{
             asyncValidate: () => Promise.resolve(),
             handleSubmit: fct => fct,
             isAuthenticated: true,
             logout: sinon.spy()
           }
-        )
+        }
         const component = mount(
           <Login {...nextProps}/>
         )

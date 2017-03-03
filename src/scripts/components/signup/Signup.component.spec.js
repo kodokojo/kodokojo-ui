@@ -31,7 +31,6 @@ import sinonChai from 'sinon-chai'
 import 'sinon-as-promised'
 chai.use(chaiEnzyme())
 chai.use(sinonChai)
-import merge from '../../../../node_modules/lodash/merge'
 import { getIntlPropsMock, getReudxFormPropsMock } from '../../../../test/helpers'
 
 // contexte
@@ -51,9 +50,9 @@ describe('<Signup> component', () => {
   let captchaMock
 
   beforeEach(() => {
-    props = merge(
+    props = {
       // component
-      {
+      ...{
         createAccount: () => {},
         initCaptcha: () => {},
         updateCaptcha: () => {},
@@ -62,10 +61,10 @@ describe('<Signup> component', () => {
         captchaReset: false
       },
       // redux-form
-      getReudxFormPropsMock(),
+      ...getReudxFormPropsMock(),
       // intl
-      getIntlPropsMock()
-    )
+      ...getIntlPropsMock()
+    }
     messages = {
       'email-label': 'email-label',
       'email-hint-label': 'email-hint-label',
@@ -88,13 +87,13 @@ describe('<Signup> component', () => {
 
   it('should render a form', () => {
     // Given
-    const nextProps = merge(
-      props,
-      {
+    const nextProps = {
+      ...props,
+      ...{
         asyncValidate: () => Promise.resolve(),
         handleSubmit: fct => fct
       }
-    )
+    }
     const { context } = intlProvider.getChildContext()
 
     // When
@@ -109,16 +108,16 @@ describe('<Signup> component', () => {
 
   it('should render i18n ids', () => {
     // Given
-    const nextProps = merge(
-      props,
-      {
+    const nextProps = {
+      ...props,
+      ...{
         asyncValidate: () => Promise.resolve(),
         handleSubmit: fct => fct,
         intl: {
           formatMessage: sinon.stub(props.intl, 'formatMessage', (options) => options.id)
         }
       }
-    )
+    }
     const { context } = intlProvider.getChildContext()
 
     // When
@@ -149,15 +148,15 @@ describe('<Signup> component', () => {
 
     it('should trigger creatAccount if email input and captcha are not empty', () => {
       // Given
-      const nextProps = merge(
-        props,
-        {
+      const nextProps = {
+        ...props,
+        ...{
           reCaptchaKey: null,
           tosUri: null,
           waitingList: null,
           createAccount: sinon.stub()
         }
-      )
+      }
       nextProps.createAccount.resolves()
       const component = mount(
         <Provider store={store}>

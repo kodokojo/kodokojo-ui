@@ -20,7 +20,6 @@ import cloneDeep from 'lodash/cloneDeep'
 import findIndex from 'lodash/findIndex'
 import difference from 'lodash/difference'
 import map from 'lodash/map'
-import merge from 'lodash/merge'
 
 import { getStatusByState, getStatusByOrder } from './param.service'
 
@@ -40,7 +39,10 @@ stateUpdaterService.updateBricks = (prevBricks, bricks) => {
       if (brick) {
         const prevBrickIndex = findIndex(prevBricks, { name: brick.name })
         const nextBrickIndex = findIndex(nextBricks, { name: brick.name })
-        nextBricks[prevBrickIndex] = merge(prevBricks[prevBrickIndex], bricks[nextBrickIndex])
+        nextBricks[prevBrickIndex] = {
+          ...prevBricks[prevBrickIndex],
+          ...bricks[nextBrickIndex]
+        }
       }
     })
   }

@@ -20,7 +20,6 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { storiesOf, action } from '@kadira/storybook'
 import { IntlProvider } from 'react-intl'
-import merge from 'lodash/merge'
 
 // contexte
 import configureStore from '../../store/configureStore'
@@ -62,15 +61,14 @@ const initialState = {
 }
 
 const initialStateNoNav = initialState
-const initialStateNav = merge(
-  {},
-  initialState,
-  {
+const initialStateNav = {
+  ...initialState,
+  ...{
     prefs: {
       navigation: true
     }
   }
-)
+}
 
 const storeWithNav = configureStore(initialStateNav)
 const storeWithoutNav = configureStore(initialStateNoNav)

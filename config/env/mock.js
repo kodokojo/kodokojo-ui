@@ -16,8 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import merge from 'lodash/merge'
-
 import mockConfig from '../../mocks/config.json'
 
 /**
@@ -32,15 +30,15 @@ if (apiPort) {
     host: `localhost:${apiPort}`
   }
 }
-const local = merge(
-  {
+const local = {
+  ...{
     api
   },
-  {
+  ...{
     server: {
       port: 3000
     }
   }
-)
+}
 
 export default local
