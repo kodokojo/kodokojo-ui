@@ -89,7 +89,10 @@ export function login(username, password) {
         ) {
           return dispatch(requestWebsocket())
             .then(() => Promise.resolve(browserHistory.push(routing.locationBeforeTransitions.state.nextPathname)))
-        } else if (data.payload.account.projectConfigIds.length) {
+        } else if (
+          data.payload.account.projectConfigIds &&
+          data.payload.account.projectConfigIds.length
+        ) {
           const projectConfig = data.payload.account.projectConfigIds[0]
 
           if (projectConfig.projectId) {
@@ -97,7 +100,7 @@ export function login(username, password) {
             return dispatch(
               getProjectConfigAndProject(projectConfig.projectConfigId, projectConfig.projectId))
                 .then(dispatch(requestWebsocket()))
-                .then(Promise.resolve(browserHistory.push('/stacks')))
+                .then(() => Promise.resolve(browserHistory.push('/stacks')))
           }
           if (!projectConfig.projectId) {
             // TODO second case, project config has no project id

@@ -19,7 +19,7 @@
 import React from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { Field, reduxForm, SubmissionError, propTypes } from 'redux-form'
+import { Field, reduxForm, SubmissionError, propTypes, reset } from 'redux-form'
 import { intlShape, injectIntl } from 'react-intl'
 import Promise from 'bluebird'
 
@@ -51,7 +51,7 @@ export class Login extends React.Component {
 
   handleSubmitLogin = (values) => {
     const { login } = this.props // eslint-disable-line no-shadow
-    
+
     const nexUserName = values.username ? values.username.trim() : ''
     const nexPassword = values.password ? values.password.trim() : ''
 
@@ -70,10 +70,11 @@ export class Login extends React.Component {
   }
 
   handleLogout = (event) => {
-    const { logout } = this.props // eslint-disable-line no-shadow
+    const { logout, reset } = this.props // eslint-disable-line no-shadow
     if (event) {
       event.preventDefault()
     }
+    reset()
     logout()
   }
 
