@@ -169,7 +169,7 @@ paramService.enumBreadcrumb = {
     disabled: true
   },
   stacks: {
-    active: 0,
+    variant: 0,
     labelKey: 'stacks-label',
     titleKey: 'stacks-label',
     route: '/stacks',
@@ -177,7 +177,7 @@ paramService.enumBreadcrumb = {
     disabled: true
   },
   members: {
-    active: 1,
+    variant: 1,
     labelKey: 'members-label',
     titleKey: 'members-label',
     route: '/members',
