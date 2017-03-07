@@ -34,14 +34,13 @@ const stateUpdaterService = {}
  */
 stateUpdaterService.updateBricks = (prevBricks, bricks) => {
   const nextBricks = cloneDeep(prevBricks)
-  if (bricks.length > []) {
+  if (bricks.length > 0) {
     bricks.forEach(brick => {
       if (brick) {
         const prevBrickIndex = findIndex(prevBricks, { name: brick.name })
-        const nextBrickIndex = findIndex(nextBricks, { name: brick.name })
         nextBricks[prevBrickIndex] = {
           ...prevBricks[prevBrickIndex],
-          ...bricks[nextBrickIndex]
+          ...brick
         }
       }
     })

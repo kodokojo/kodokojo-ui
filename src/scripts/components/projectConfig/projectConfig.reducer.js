@@ -148,14 +148,12 @@ export default function projectConfig(state = projectConfigReducerInit(), action
     const bricks = updateBricks(state.stacks[0].bricks, [action.payload.brick])
     return {
       ...state,
-      ...{
-        stacks: [
-          {
-            bricks
-          }
-        ],
-        isFetching: false
-      }
+      stacks: [
+        {
+          bricks
+        }
+      ],
+      isFetching: false
     }
   }
 
