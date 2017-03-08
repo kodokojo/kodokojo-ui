@@ -266,9 +266,9 @@
       "resolved": "https://registry.npmjs.org/has-gulplog/-/has-gulplog-0.1.0.tgz"
     },
     "history": {
-      "version": "3.2.1",
+      "version": "3.3.0",
       "from": "history@>=3.0.0 <4.0.0",
-      "resolved": "https://registry.npmjs.org/history/-/history-3.2.1.tgz"
+      "resolved": "http://registry.npmjs.org/history/-/history-3.3.0.tgz"
     },
     "hoist-non-react-statics": {
       "version": "1.2.0",
@@ -371,9 +371,9 @@
       "resolved": "https://registry.npmjs.org/js-tokens/-/js-tokens-3.0.1.tgz"
     },
     "kodokojo-ui-commons": {
-      "version": "1.1.0",
-      "from": "git+https://git@github.com/kodokojo/kodokojo-ui-commons.git#v1.1.0",
-      "resolved": "git+https://git@github.com/kodokojo/kodokojo-ui-commons.git#8be552f3e7d15cec41429e2e7fe22d2d391bf322"
+      "version": "1.2.1",
+      "from": "git+https://git@github.com/kodokojo/kodokojo-ui-commons.git#v1.2.1",
+      "resolved": "git+https://git@github.com/kodokojo/kodokojo-ui-commons.git#3d53414297eeb7278ebe4905638634c00a4c8b8c"
     },
     "lodash": {
       "version": "4.17.2",
@@ -829,9 +829,9 @@
       "resolved": "https://registry.npmjs.org/warning/-/warning-3.0.0.tgz"
     },
     "whatwg-fetch": {
-      "version": "2.0.2",
+      "version": "2.0.3",
       "from": "whatwg-fetch@>=0.10.0",
-      "resolved": "http://registry.npmjs.org/whatwg-fetch/-/whatwg-fetch-2.0.2.tgz"
+      "resolved": "http://registry.npmjs.org/whatwg-fetch/-/whatwg-fetch-2.0.3.tgz"
     },
     "wordwrap": {
       "version": "0.0.3",
