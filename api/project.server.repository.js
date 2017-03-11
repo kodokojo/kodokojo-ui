@@ -27,12 +27,13 @@ const projectRepository = {}
 projectRepository.postProjectConfig = (request) => {
   logger.debug('postProjectConfig')
 
-  const { headers, name, ownerIdentifier, userIdentifiers, stackConfigs } = {
+  const { headers, name, ownerIdentifier, userIdentifiers, stackConfigs, entityIdentifier } = {
     headers: request.headers,
     name: request.body.name,
     ownerIdentifier: request.body.ownerIdentifier,
     userIdentifiers: request.body.userIdentifiers,
-    stackConfigs: request.body.stackConfigs
+    stackConfigs: request.body.stackConfigs,
+    entityIdentifier: request.body.entityIdentifier
   }
   headers.host = config.api.host
 
@@ -45,7 +46,8 @@ projectRepository.postProjectConfig = (request) => {
       name,
       ownerIdentifier,
       userIdentifiers,
-      stackConfigs
+      stackConfigs,
+      entityIdentifier
     },
     rejectUnauthorized: false,
     requestCert: true
