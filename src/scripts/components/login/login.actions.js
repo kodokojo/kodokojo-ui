@@ -139,7 +139,7 @@ export function logout(reason) {
                 icon: 'question_answer',
                 labelId: reason,
                 label: 'id',
-                timeout: 5000,
+                timeout: 30000,
                 variant: 'info'
               }
               dispatch(newAlert(alert))

@@ -212,7 +212,7 @@ export function addUserToProjectConfig(projectConfigId, email) {
           icon: 'question_answer',
           labelId: 'alert-member-create-text',
           label: 'id',
-          timeout: 5000,
+          timeout: 30000,
           variant: 'info'
         }
         dispatch(newAlert(alert))
