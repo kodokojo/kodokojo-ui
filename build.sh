@@ -13,6 +13,7 @@ docker cp ${containerId}:/target/ $(pwd)/docker/delivery/
 rc=$(docker inspect -f {{.State.ExitCode}} $containerId)
 docker rm $containerId
 cd docker/delivery
+test -d ./static/ && rm -rf ./static/
 mkdir static
 tar zxvf target/kodokojo-ui-${KODOKOJO_UI_VERSION}.tar.gz -C static
 cd ../..
