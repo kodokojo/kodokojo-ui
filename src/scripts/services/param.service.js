@@ -197,10 +197,10 @@ paramService.getBreadcrumbItemFromPath = (path) => {
 /**
  * Compute breadcrumb item from info and blue print
  * 
- * @param {string} labelText
- * @param {string} route
- * @param {string} type
- * @returns {object} breadcrumbItem || null
+ * @param {String} labelText
+ * @param {String} route
+ * @param {String} type
+ * @returns {Object} breadcrumbItem || null
  */
 paramService.breadcrumbItemFactory = ({
   labelText,

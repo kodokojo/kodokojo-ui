@@ -34,9 +34,9 @@ const stateUpdaterService = {}
 /**
  * Update bricks, merge previous state with partial state
  *
- * @param prevBricks
- * @param bricks
- * @returns {array} bricks updated
+ * @param {Array} prevBricks
+ * @param {Array} bricks
+ * @returns {Array} bricks updated
  */
 stateUpdaterService.updateBricks = (prevBricks, bricks) => {
   const nextBricks = cloneDeep(prevBricks)
@@ -57,8 +57,8 @@ stateUpdaterService.updateBricks = (prevBricks, bricks) => {
 /**
  * Aggregate brick states for a given stack
  *
- * @param bricks
- * @returns {object} status
+ * @param {Array} bricks
+ * @returns {Object} status
  */
 stateUpdaterService.computeAggregatedStackStatus = (bricks) => {
   if (bricks.length > 1) {
@@ -78,9 +78,9 @@ stateUpdaterService.computeAggregatedStackStatus = (bricks) => {
 /**
  * Return new array without users to delete
  *
- * @param {array} prevUsers
- * @param {array} usersToDelete
- * @returns {array} users
+ * @param {Array} prevUsers
+ * @param {Array} usersToDelete
+ * @returns {Array} users
  */
 stateUpdaterService.removeUsers = (prevUsers, usersToDelete) => {
   if (usersToDelete.length > 0) {
@@ -93,8 +93,8 @@ stateUpdaterService.removeUsers = (prevUsers, usersToDelete) => {
 /**
  * Filter checked members object, return array
  *
- * @param {object} members
- * @returns {array} checked members
+ * @param {Object} members
+ * @returns {Array} checked members
  */
 stateUpdaterService.filterCheckedMembers = (members) => map(members, (user, key) => {
   if (user.checked) {

@@ -44,5 +44,5 @@ http {
           gzip_static on;
           try_files $uri $uri/ /index.html;
         }
-      }
+    }
 }
