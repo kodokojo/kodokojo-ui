@@ -35,7 +35,7 @@ import CloseIcon from 'kodokojo-ui-commons/src/scripts/components/icons/CloseIco
 import userValidator from './user.validator'
 import userTheme from './user.scss'
 import { returnErrorKey } from '../../services/error.service'
-import { getUser } from '../../commons/reducers'
+import { getUserFromId } from '../../commons/reducers'
 
 // validate function
 const validate = userValidator
@@ -261,7 +261,7 @@ export class UserForm extends React.Component {
 
 // UserForm container
 const mapStateProps = (state, ownProps) => {
-  const user = getUser(ownProps.userId, state)
+  const user = getUserFromId(ownProps.userId, state)
   return {
     user,
     initialValues: {

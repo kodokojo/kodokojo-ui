@@ -92,25 +92,28 @@ const initApp = () => {
             <Route
               component={FirstProjectPage}
               // TODO change method to checkRightsUser when groups are implemented
+              // onEnter={authService.checkRightsUser}
               onEnter={authService.checkAuth}
               path="firstProject"
             />
             <Route
               component={StacksPage}
               // TODO change method to checkRightsUser when groups are implemented
+              // onEnter={authService.checkRightsUser}
               onEnter={authService.checkAuth}
               path="stacks"
             />
             <Route
               component={MembersPage}
               // TODO change method to checkRightsUser when groups are implemented
+              // onEnter={authService.checkRightsUser}
               onEnter={authService.checkAuth}
               path="members"
             />
             {/* Root routes */}
             <Route
               component={DbPage}
-              // onEnter={authService.checkRightsSuperAdmin}
+              // onEnter={authService.checkRightsRoot}
               onEnter={authService.checkAuth}
               path="db"
             />

@@ -103,7 +103,7 @@ export class ProjectConfigForm extends React.Component {
   }
 
   handleSubmitProject = (values) => {
-    const { userId, createProjectConfig } = this.props // eslint-disable-line no-shadow
+    const { userId, createProjectConfig, organisation } = this.props // eslint-disable-line no-shadow
 
     const nextProjectName = values.projectName
 
@@ -113,8 +113,14 @@ export class ProjectConfigForm extends React.Component {
       brickConfigs: filter(this.state.brickList, { 'checked': true }).map(brickElement => brickElement.value)
     }
 
-    return createProjectConfig(nextProjectName.trim(), userId, [userId], stackConfiguration)
-      .then(Promise.resolve())
+    return createProjectConfig({
+      projectConfigName: nextProjectName.trim(),
+      projectConfigOwner: userId,
+      projectConfigUsers: [userId],
+      stackConfiguration: stackConfiguration,
+      organisationId: organisation.id
+    })
+      .then(Promise.resolve)
       .catch(err => Promise.reject(
         new SubmissionError(
           { projectName: returnErrorKeyOrMessage(
@@ -304,7 +310,8 @@ export class ProjectConfigForm extends React.Component {
 const mapStateProps = (state) => (
   {
     bricks: state.bricks,
-    userId: state.auth.account && state.auth.account.id ? state.auth.account.id : ''
+    userId: state.context.user.id,
+    organisation: state.context.organisation
   }
 )
 

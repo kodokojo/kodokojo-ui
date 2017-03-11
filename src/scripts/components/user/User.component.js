@@ -33,7 +33,7 @@ import EditIcon from 'kodokojo-ui-commons/src/scripts/components/icons/EditIcon.
 // Component
 import { USER } from '../../commons/identifiers'
 import userTheme from './user.scss'
-import { getUser } from '../../commons/reducers'
+import { getUserFromId } from '../../commons/reducers'
 
 // User component
 export class User extends React.Component {
@@ -150,7 +150,7 @@ export class User extends React.Component {
 // User container
 const mapStateProps = (state, ownProps) => (
   {
-    user: getUser(ownProps.userId, state),
+    user: getUserFromId(ownProps.userId, state),
     userIdConnected: state.auth.account ? state.auth.account.id : ''
   }
 )

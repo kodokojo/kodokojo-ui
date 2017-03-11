@@ -17,11 +17,17 @@
  */
 
 import cloneDeep from 'lodash/cloneDeep'
+import find from 'lodash/find'
 import findIndex from 'lodash/findIndex'
 import difference from 'lodash/difference'
 import map from 'lodash/map'
 
-import { getStatusByState, getStatusByOrder } from './param.service'
+import {
+  getStatusByState,
+  getStatusByOrder,
+  getGroupByLabel
+} from './param.service'
+import { putGroup } from './auth.service'
 
 const stateUpdaterService = {}
 
@@ -97,10 +103,71 @@ stateUpdaterService.filterCheckedMembers = (members) => map(members, (user, key)
   return null
 }).filter((item) => item !== null)
 
+/**
+ * Return next context
+ *
+ * @param {Object} prevContext
+ * @param {Object} nextContext
+ * @returns {Object} nextContext
+ */
+stateUpdaterService.getNextContext = (prevContext, nextContext) => {
+  // organisation
+  let nextOrganisation = find(nextContext.organisations, { id: prevContext.organisation.id })
+
+  // if the saved organisation id is not in the organisations list,
+  // take the first organisation in the list
+  if (!nextOrganisation && nextContext.organisations.length > 0) {
+    nextOrganisation = nextContext.organisations[0]
+  }
+
+  // projectConfig
+  let nextProjectConfig = find(nextOrganisation.projectConfigs, { id: prevContext.projectConfig.id })
+
+  // if the saved projectConfig id is not in the projectConfigs list,
+  // take the first projectConfig in the list
+  if (!nextProjectConfig) {
+    nextProjectConfig = nextOrganisation.projectConfigs[0]
+  }
+
+  // user group
+  let nextUserGroup
+  if (nextContext.isRoot) {
+    nextUserGroup = getGroupByLabel('ROOT')
+  } else if (nextProjectConfig && nextProjectConfig.isTeamLeader) {
+    nextUserGroup = getGroupByLabel('TEAM_LEADER')
+  } else if (nextOrganisation && nextOrganisation.group) {
+    nextUserGroup = getGroupByLabel(nextOrganisation.group)
+  } else {
+    nextUserGroup = getGroupByLabel('USER')
+  }
+  // persist user group
+  putGroup(nextUserGroup.label)
+
+  return   {
+    user: {
+      id: nextContext.id,
+      name: nextContext.name,
+      group: nextUserGroup.label
+    },
+    organisation: {
+      id: nextOrganisation.id,
+      name: nextOrganisation.name
+    },
+    projectConfig: {
+      id: nextProjectConfig ? nextProjectConfig.id : undefined,
+      name: nextProjectConfig ? nextProjectConfig.name : ''
+    },
+    project: {
+      id: nextProjectConfig ? nextProjectConfig.project.id : undefined
+    }
+  }
+}
+
 // public API
 export const updateBricks = stateUpdaterService.updateBricks
 export const computeAggregatedStackStatus = stateUpdaterService.computeAggregatedStackStatus
 export const removeUsers = stateUpdaterService.removeUsers
 export const filterCheckedMembers = stateUpdaterService.filterCheckedMembers
+export const getNextContext = stateUpdaterService.getNextContext
 
 export default stateUpdaterService

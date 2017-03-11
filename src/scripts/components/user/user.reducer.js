@@ -137,4 +137,4 @@ export default function users(state = initialState, action) {
   return state
 }
 
-export const getUser = (userId, state) => state[userId]
+export const getUserFromId = (userId, state) => state[userId]

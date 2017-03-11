@@ -116,23 +116,57 @@ describe('auth service', () => {
       // Given
       const id = 'userId'
       const userName = 'userName'
-      const entityId = 'entityId'
       const putSpy = sinon.spy(storageService, 'put')
       const account = {
         id,
-        userName,
-        entityId
+        userName
       }
 
       // When
       authService.putAuth(account)
 
       // Then
-      expect(putSpy).to.have.callCount(4)
+      expect(putSpy).to.have.callCount(3)
       expect(putSpy).to.have.been.calledWithExactly('isAuthenticated', true, 'session')
       expect(putSpy).to.have.been.calledWithExactly('userId', id, 'session')
       expect(putSpy).to.have.been.calledWithExactly('userName', userName, 'session')
-      expect(putSpy).to.have.been.calledWithExactly('entityId', entityId, 'session')
+    })
+  })
+
+  describe('putGroup method', () => {
+    afterEach(() => {
+      storageService.put.restore()
+    })
+
+    it('should put group', () => {
+      // Given
+      const group = 'USER'
+      const putSpy = sinon.spy(storageService, 'put')
+
+      // When
+      authService.putGroup(group)
+
+      // Then
+      expect(putSpy).to.have.callCount(1)
+      expect(putSpy).to.have.been.calledWithExactly('userGroup', group, 'session')
+    })
+  })
+
+  describe('getGroup method', () => {
+    afterEach(() => {
+      storageService.get.restore()
+    })
+
+    it('should get group', () => {
+      // Given
+      const getSpy = sinon.spy(storageService, 'get')
+
+      // When
+      authService.getGroup()
+
+      // Then
+      expect(getSpy).to.have.callCount(1)
+      expect(getSpy).to.have.been.calledWithExactly('userGroup', 'session')
     })
   })
 
@@ -154,7 +188,7 @@ describe('auth service', () => {
       expect(removeSpy).to.have.been.calledWithExactly('isAuthenticated', 'session')
       expect(removeSpy).to.have.been.calledWithExactly('userId', 'session')
       expect(removeSpy).to.have.been.calledWithExactly('userName', 'session')
-      expect(removeSpy).to.have.been.calledWithExactly('entityId', 'session')
+      expect(removeSpy).to.have.been.calledWithExactly('userGroup', 'session')
     })
   })
 
@@ -246,11 +280,11 @@ describe('auth service', () => {
       const token = 'token'
       const userName = 'userName'
       const userId = 'userId'
-      const entityId = 'entityId'
+      const group = 'groupLabel'
       const getSpy = sinon.stub(storageService, 'get')
       getSpy.onCall(0).returns(userId)
       getSpy.onCall(1).returns(userName)
-      getSpy.onCall(2).returns(entityId)
+      getSpy.onCall(2).returns(group)
       const getTokenSpy = sinon.stub(authService, 'getToken').returns(token)
 
       // When
@@ -261,12 +295,12 @@ describe('auth service', () => {
         id: userId,
         userName,
         token: token,
-        entityId: entityId
+        group
       })
       expect(getSpy).to.have.callCount(3)
       expect(getSpy).to.have.been.calledWithExactly('userId', 'session')
       expect(getSpy).to.have.been.calledWithExactly('userName', 'session')
-      expect(getSpy).to.have.been.calledWithExactly('entityId', 'session')
+      expect(getSpy).to.have.been.calledWithExactly('userGroup', 'session')
       expect(getTokenSpy).to.have.callCount(1)
       expect(getTokenSpy).to.have.been.calledWithExactly()
     })

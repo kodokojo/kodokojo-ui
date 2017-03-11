@@ -82,6 +82,8 @@ export function login(username, password) {
           crispService.putUser(data.payload.account)
         }
 
+        const context = getState().context
+
         // if route exist before accessing login, reroute to it
         if (
           routing && routing.locationBeforeTransitions &&
@@ -90,19 +92,16 @@ export function login(username, password) {
           return dispatch(requestWebsocket())
             .then(() => Promise.resolve(browserHistory.push(routing.locationBeforeTransitions.state.nextPathname)))
         } else if (
-          data.payload.account.projectConfigIds &&
-          data.payload.account.projectConfigIds.length
+          context.projectConfig &&
+          context.projectConfig.id
         ) {
-          const projectConfig = data.payload.account.projectConfigIds[0]
-
-          if (projectConfig.projectId) {
+          if (context.project && context.project.id) {
             // get project config and project and redirect to project
             return dispatch(
-              getProjectConfigAndProject(projectConfig.projectConfigId, projectConfig.projectId))
+              getProjectConfigAndProject(context.projectConfig.id, context.project.id))
                 .then(dispatch(requestWebsocket()))
                 .then(() => Promise.resolve(browserHistory.push('/stacks')))
-          }
-          if (!projectConfig.projectId) {
+          } else {
             // TODO second case, project config has no project id
             // must redirect to project config stack, with a button to start it
             return dispatch(requestWebsocket())

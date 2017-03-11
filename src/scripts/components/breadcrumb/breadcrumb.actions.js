@@ -5,13 +5,13 @@ import {
   BREADCRUMB_INIT,
   BREADCRUMB_UPDATE
 } from '../../commons/constants'
-import { getOrganisation, getProjectConfigName } from '../../commons/reducers'
 import {
   getBreadcrumb,
   getBreadcrumbItemFromPath,
   breadcrumbItemFactory
 } from '../../services/param.service'
 
+// TODO UT
 export function updateBreadcrumb(breadcrumb) {
   return {
     type: BREADCRUMB_UPDATE,
@@ -40,11 +40,11 @@ export function updateBreadcrumbPath(path) {
     const state = getState()
 
     const organisation = breadcrumbItemFactory({
-      labelText: getOrganisation(state),
+      labelText: state.context.organisation.name || '',
       type: 'organisation'
     })
     const project = breadcrumbItemFactory({
-      labelText: getProjectConfigName(state),
+      labelText: state.context.projectConfig.name || '',
       type: 'project'
     })
     const menu = getBreadcrumbItemFromPath(path)

@@ -23,10 +23,10 @@ import groupBy from 'lodash/groupBy'
 const mappingService = {}
 
 /**
- * mapping for account
+ * Mapping for account
  *
- * @param data
- * @returns {object} account {id {string}, name {string}, userName {string}, email {string}, password {string}, sshKeyPublic {string}, sshKeyPrivate {string}}
+ * @param {Object} data
+ * @returns {Object} account
  */
 mappingService.mapAccount = (data) => (
   {
@@ -37,30 +37,52 @@ mappingService.mapAccount = (data) => (
     password: data.password,
     sshKeyPublic: data.sshPublicKey,
     sshKeyPrivate: data.privateKey,
-    entityId: data.entityIdentifier,
-    projectConfigIds: data.projectConfigurationIds ?
-      data.projectConfigurationIds.map(projectConfigId => mappingService.mapProjectConfigId(projectConfigId)) :
+    isRoot: data.isRoot || false,
+    organisations: data.organisations ?
+      data.organisations.map(organisation => mappingService.mapOrganisation(organisation)) :
       undefined
   }
 )
 
 /**
- * mapping for "project config id"
- * @param data
- * @returns {object} {projectConfigurationId {string}, projectId {string}}
+ * Mapping for organisation
+ *
+ * @param {Object} data
+ * @returns {Object} organisation
  */
-mappingService.mapProjectConfigId = (data) => (
+mappingService.mapOrganisation = (data) => (
   {
-    projectConfigId: data.projectConfigurationId,
-    projectId: data.projectId
+    id: data.identifier,
+    name: data.name,
+    group: data.right,
+    projectConfigs: data.projectConfigurations ?
+      data.projectConfigurations.map((projectConfig) => mappingService.mapOrganisationProjectConfig(projectConfig)) :
+      undefined
   }
 )
 
 /**
- * mapping for user
+ * Mapping for organisation projectConfig (with user rights)
  *
- * @param data
- * @returns {object} user {id {string}, firstName {string}, lastName {string}, name {string}, userName {string}, email {string}}
+ * @param {Object} data
+ * @returns {Object} organisation
+ */
+mappingService.mapOrganisationProjectConfig = (data) => (
+  {
+    id: data.identifier,
+    name: data.projectName || '',
+    project: {
+      id: data.projectId || undefined,
+    },
+    isTeamLeader: data.isTeamLeader
+  }
+)
+
+/**
+ * Mapping for user
+ *
+ * @param {Object} data
+ * @returns {Object} user
  */
 mappingService.mapUser = (data) => (
   {
@@ -150,7 +172,25 @@ mappingService.mapProjectConfig = (data) => (
 )
 
 /**
- * mapping for project
+ * Mapping projectConfig to backend
+ *
+ * @param {Object} data
+ * @returns {Object} projectConfig for backend
+ */
+mappingService.mapProjectConfigOutput = (data) => (
+  {
+    name: data.projectConfigName,
+    ownerIdentifier: data.projectConfigOwner,
+    userIdentifiers: data.projectConfigUsers,
+    stackConfigs: [
+      data.stackConfiguration
+    ],
+    entityIdentifier: data.organisationId // TODO implement in projectconfigform
+  }
+)
+
+/**
+ * Mapping for project
  *
  * @param data
  * @returns {object} project {id {string}, projectConfigId {string}, name {string}, updateDate {string}, stacks: {array}<stack>}
@@ -219,11 +259,13 @@ mappingService.groupBricks = (data) => {
 
 // public API
 export const mapAccount = mappingService.mapAccount
+export const mapOrganisation = mappingService.mapOrganisation
+export const mapOrganisationProjectConfig = mappingService.mapOrganisationProjectConfig
 export const mapUser = mappingService.mapUser
 export const mapUserOutput = mappingService.mapUserOutput
 export const mapProject = mappingService.mapProject
 export const mapProjectConfig = mappingService.mapProjectConfig
-export const mapProjectConfigId = mappingService.mapProjectConfigId
+export const mapProjectConfigOutput = mappingService.mapProjectConfigOutput
 export const mapBrickEvent = mappingService.mapBrickEvent
 export const mapBricksDetails = mappingService.mapBricksDetails
 

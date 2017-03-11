@@ -13,9 +13,8 @@ export default function breadcrumb(state = stateDefault, action) {
   }
 
   if (action.type === AUTH_RESET) {
-    return {}
+    return []
   }
-
 
   return state
 }

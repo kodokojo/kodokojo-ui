@@ -21,7 +21,8 @@ import { routerReducer } from 'react-router-redux'
 import { reducer as formReducer } from 'redux-form'
 
 import alerts from '../components/alert/alert.reducer'
-import auth, * as fromAuth from '../components/auth/auth.reducer'
+import auth from '../components/auth/auth.reducer'
+import context from '../components/context/context.reducer'
 import breadcrumb from '../components/breadcrumb/breadcrumb.reducer'
 import bricks from '../components/brick/brick.reducer'
 import menu from '../components/menu/menu.reducer'
@@ -36,6 +37,7 @@ const rootReducer = combineReducers({
   auth,
   breadcrumb,
   bricks,
+  context,
   db,
   menu,
   prefs,
@@ -50,14 +52,10 @@ const rootReducer = combineReducers({
 
 export default rootReducer
 
-
 // TODO UT
 // selectors
-// auth
-export const getOrganisation = (state) => fromAuth.getOrganisation(state.auth)
-
 // users
-export const getUser = (userId, state) => fromUser.getUser(userId, state.users)
+export const getUserFromId = (userId, state) => fromUser.getUserFromId(userId, state.users)
 
 // projectConfig
 export const getProjectConfigName = (state) => fromProjectConfig.getProjectConfigName(state.projectConfig)

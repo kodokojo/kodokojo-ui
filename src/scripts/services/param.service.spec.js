@@ -251,7 +251,7 @@ describe('param service', () => {
             const enumElements = Object.keys(paramService.enumGroups)
 
             // Then
-            expect(enumElements.length).to.equal(3)
+            expect(enumElements.length).to.equal(4)
           })
         })
 
@@ -276,10 +276,10 @@ describe('param service', () => {
 
             // Then
             expect(returned.label).to.equal('USER')
-            expect(returned.id).to.equal(0)
+            expect(returned.id).to.equal(groupId)
           })
 
-          it('should return ADMIN_SUPER group', () => {
+          it('should return TEAM_LEADER group', () => {
             // Given
             const groupId = 1
 
@@ -287,8 +287,8 @@ describe('param service', () => {
             const returned = paramService.getGroupById(groupId)
 
             // Then
-            expect(returned.label).to.equal('ADMIN_SUPER')
-            expect(returned.id).to.equal(1)
+            expect(returned.label).to.equal('TEAM_LEADER')
+            expect(returned.id).to.equal(groupId)
           })
 
           it('should return ADMIN group', () => {
@@ -300,7 +300,19 @@ describe('param service', () => {
 
             // Then
             expect(returned.label).to.equal('ADMIN')
-            expect(returned.id).to.equal(2)
+            expect(returned.id).to.equal(groupId)
+          })
+
+          it('should return ROOT group', () => {
+            // Given
+            const groupId = 3
+
+            // When
+            const returned = paramService.getGroupById(groupId)
+
+            // Then
+            expect(returned.label).to.equal('ROOT')
+            expect(returned.id).to.equal(groupId)
           })
         })
 
@@ -324,20 +336,20 @@ describe('param service', () => {
             const returned = paramService.getGroupByLabel(groupLabel)
 
             // Then
-            expect(returned.label).to.equal('USER')
+            expect(returned.label).to.equal(groupLabel)
             expect(returned.id).to.equal(0)
           })
 
-          it('should return ADMIN_SUPER group', () => {
+          it('should return TEAM_LEADER group', () => {
             // Given
-            const groupLabel = 'ADMIN_SUPER'
+            const groupLabel = 'TEAM_LEADER'
 
             // When
             const returned = paramService.getGroupByLabel(groupLabel)
-            expect(returned.id).to.equal(1)
 
             // Then
-            expect(returned.label).to.equal('ADMIN_SUPER')
+            expect(returned.label).to.equal(groupLabel)
+            expect(returned.id).to.equal(1)
           })
 
           it('should return ADMIN group', () => {
@@ -348,9 +360,22 @@ describe('param service', () => {
             const returned = paramService.getGroupByLabel(groupLabel)
 
             // Then
-            expect(returned.label).to.equal('ADMIN')
+            expect(returned.label).to.equal(groupLabel)
             expect(returned.id).to.equal(2)
           })
+
+          it('should return ROOT group', () => {
+            // Given
+            const groupLabel = 'ROOT'
+
+            // When
+            const returned = paramService.getGroupByLabel(groupLabel)
+
+            // Then
+            expect(returned.label).to.equal(groupLabel)
+            expect(returned.id).to.equal(3)
+          })
+
         })
       })
     })

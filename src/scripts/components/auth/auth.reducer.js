@@ -142,10 +142,3 @@ export default function auth(state = authReducerInit(), action) {
 
   return state
 }
-
-export const getOrganisation = (state) => {
-  if (state && state.account) {
-    return state.account.entityId
-  }
-  return ''
-}

@@ -30,6 +30,7 @@ import mappingService from './mapping.service'
 describe('mapping service', () => {
   describe('map account', () => {
     let accountFromApi
+    let mapOrganisationSpy
 
     beforeEach(() => {
       accountFromApi = {
@@ -40,18 +41,16 @@ describe('mapping service', () => {
         password: 'password',
         sshPublicKey: 'sshPublicKey',
         privateKey: 'privateKey',
-        entityIdentifier: 'entityIdentifier'
+        isRoot: false,
       }
+      mapOrganisationSpy = sinon.stub(mappingService, 'mapOrganisation', data => data)
     })
 
     afterEach(() => {
-      mappingService.mapProjectConfigId.restore()
+      mappingService.mapOrganisation.restore()
     })
 
-    it('should map account without project config ids', () => {
-      // Given
-      const mapProjectConfigIdSpy = sinon.stub(mappingService, 'mapProjectConfigId', data => data)
-
+    it('should map account without organisations', () => {
       // When
       const returns = mappingService.mapAccount(accountFromApi)
 
@@ -64,20 +63,18 @@ describe('mapping service', () => {
         password: 'password',
         sshKeyPublic: 'sshPublicKey',
         sshKeyPrivate: 'privateKey',
-        entityId: 'entityIdentifier',
-        projectConfigIds: undefined
+        isRoot: false,
+        organisations: undefined
       })
-      expect(mapProjectConfigIdSpy).to.have.callCount(0)
+      expect(mapOrganisationSpy).to.have.callCount(0)
     })
 
-    it('should map account with project config ids', () => {
+    it('should map account with organisations', () => {
       // Given
-      accountFromApi.projectConfigurationIds = [
-        'projectConfig1',
-        'projectConfig2'
+      accountFromApi.organisations = [
+        'organisation1',
+        'organisation2'
       ]
-      
-      const mapProjectConfigIdSpy = sinon.stub(mappingService, 'mapProjectConfigId', data => data)
 
       // When
       const returns = mappingService.mapAccount(accountFromApi)
@@ -91,33 +88,90 @@ describe('mapping service', () => {
         password: 'password',
         sshKeyPublic: 'sshPublicKey',
         sshKeyPrivate: 'privateKey',
-        entityId: 'entityIdentifier',
-        projectConfigIds: [
-          'projectConfig1',
-          'projectConfig2'
-        ]
+        isRoot: false,
+        organisations: accountFromApi.organisations
       })
-      expect(mapProjectConfigIdSpy).to.have.callCount(2)
-      expect(mapProjectConfigIdSpy).to.have.been.calledWith('projectConfig1')
-      expect(mapProjectConfigIdSpy).to.have.been.calledWith('projectConfig2')
+      expect(mapOrganisationSpy).to.have.callCount(2)
+      expect(mapOrganisationSpy).to.have.been.calledWith(accountFromApi.organisations[0])
+      expect(mapOrganisationSpy).to.have.been.calledWith(accountFromApi.organisations[1])
     })
   })
 
-  describe('map project config id', () => {
-    it('should map project config id', () => {
-      // Given
-      const projectConfigIdFromApi = {
-        projectConfigurationId: 'projectConfigId',
-        projectId: 'projectId'
-      }
+  describe('map organisation', () => {
+    let organisationFromApi
+    let mapOrganisationProjectConfigSpy
 
+    beforeEach(() => {
+      organisationFromApi = {
+        identifier: 'identifier',
+        name: 'name',
+        right: 'RIGHT'
+      }
+      mapOrganisationProjectConfigSpy = sinon.stub(mappingService, 'mapOrganisationProjectConfig', data => data)
+    })
+
+    afterEach(() => {
+      mappingService.mapOrganisationProjectConfig.restore()
+    })
+
+    it('should map organisation from account without project configurations', () => {
       // When
-      const returns = mappingService.mapProjectConfigId(projectConfigIdFromApi)
+      const returns = mappingService.mapOrganisation(organisationFromApi)
 
       // Then
       expect(returns).to.deep.equal({
-        projectConfigId: 'projectConfigId',
-        projectId: 'projectId'
+        id: 'identifier',
+        name: 'name',
+        group: 'RIGHT',
+        projectConfigs: undefined
+      })
+      expect(mapOrganisationProjectConfigSpy).to.have.callCount(0)
+    })
+
+    it('should map organisation from account with project configurations', () => {
+      // Given
+      organisationFromApi.projectConfigurations = [
+        'projectConfig1',
+        'projectConfig2'
+      ]
+
+      // When
+      const returns = mappingService.mapOrganisation(organisationFromApi)
+
+      // Then
+      expect(returns).to.deep.equal({
+        id: 'identifier',
+        name: 'name',
+        group: 'RIGHT',
+        projectConfigs: organisationFromApi.projectConfigurations
+      })
+      expect(mapOrganisationProjectConfigSpy).to.have.callCount(2)
+      expect(mapOrganisationProjectConfigSpy).to.have.been.calledWith(organisationFromApi.projectConfigurations[0])
+      expect(mapOrganisationProjectConfigSpy).to.have.been.calledWith(organisationFromApi.projectConfigurations[1])
+    })
+  })
+
+  describe('map organisation project config', () => {
+    it('should map organisation project config', () => {
+      // Given
+      const organisationProjectConfigFromApi = {
+        identifier: 'id',
+        projectName: 'name',
+        projectId: 'projectId',
+        isTeamLeader: true
+      }
+
+      // When
+      const returns = mappingService.mapOrganisationProjectConfig(organisationProjectConfigFromApi)
+
+      // Then
+      expect(returns).to.deep.equal({
+        id: 'id',
+        name: 'name',
+        project:{
+          id: 'projectId'
+        },
+        isTeamLeader: true
       })
     })
   })

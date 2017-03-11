@@ -21,48 +21,71 @@ import { getGroupByLabel } from './param.service'
 
 const authService = {}
 
+// TODO UT
+/**
+ * Check if user belongs to user group USER
+ * @param {Object} nextState
+ * @param {Function} replaceState
+ * @returns {Boolean}
+ */
+authService.checkRightsUser = (nextState, replaceState) => authService.checkRights(nextState, replaceState, 'USER')
+
+// TODO UT
+/**
+ * Check if user belongs to user group TEAM_LEADER
+ * @param {Object} nextState
+ * @param {Function} replaceState
+ * @returns {Boolean}
+ */
+authService.checkRightsTeamLeader = (nextState, replaceState) => authService.checkRights(nextState, replaceState, 'TEAM_LEADER')
+
+// TODO UT
+/**
+ * Check if user belongs to user group ADMIN
+ * @param {Object} nextState
+ * @param {Function} replaceState
+ * @returns {Boolean}
+ */
+authService.checkRightsAdmin = (nextState, replaceState) => authService.checkRights(nextState, replaceState, 'ADMIN')
+
+// TODO UT
+/**
+ * Check if user belongs to user group ROOT
+ * @param {Object} nextState
+ * @param {Function} replaceState
+ * @returns {Boolean}
+ */
+authService.checkRightsRoot = (nextState, replaceState) => authService.checkRights(nextState, replaceState, 'ROOT')
+
+// TODO UT
 /**
  * Check if user belongs to user group
  *
- * @param nextState
- * @param replaceState
- * @returns {boolean}
+ * @param {Object} nextState
+ * @param {Function} replaceState
+ * @param {String} groupLabel
+ * @returns {Boolean}
  */
-authService.checkRightsUser = (nextState, replaceState) => {
+authService.checkRights = (nextState, replaceState, groupLabel) => {
   checkAuth(nextState, replaceState)
-  if (!authService.hasUserRights()) {
+  const hasRights = authService.hasRights(groupLabel)
+  if (!hasRights) {
     // use react router onEnter callback argument to replace router state
     replaceState({
       pathname: '/login',
       state: { nextPathname: nextState.location.pathname }
     })
   }
-}
 
-/**
- * Check if user belongs to root group
- *
- * @param nextState
- * @param replaceState
- * @returns {boolean}
- */
-authService.checkRightsRoot = (nextState, replaceState) => {
-  checkAuth(nextState, replaceState)
-  if (!authService.hasRootRights()) {
-    // use react router onEnter callback argument to replace router state
-    replaceState({
-      pathname: '/login',
-      state: { nextPathname: nextState.location.pathname }
-    })
-  }
+  return hasRights
 }
 
 /**
  * Check auth & redirect to login page
  *
- * @param nextState
- * @param replaceState
- * @returns {boolean}
+ * @param {Object} nextState
+ * @param {Object} replaceState
+ * @returns {Boolean}
  */
 authService.checkAuth = (nextState, replaceState) => {
   const isAuthenticated = authService.isAuth()
@@ -84,9 +107,9 @@ authService.checkAuth = (nextState, replaceState) => {
 /**
  * Return encrypted authentication
  *
- * @param login
- * @param password
- * @returns {string} tokenize auth
+ * @param {String} login
+ * @param {String} password
+ * @returns {String} tokenize auth
  */
 authService.setAuth = (login, password) => {
   if (login && password) {
@@ -100,93 +123,105 @@ authService.setAuth = (login, password) => {
 /**
  * Put authentication
  *
- * @param {object} account
+ * @param {Object} account
  */
 authService.putAuth = (account) => {
-  storageService.put('isAuthenticated', true, 'session')
   storageService.put('userId', account.id, 'session')
   storageService.put('userName', account.userName, 'session')
-  storageService.put('entityId', account.entityId, 'session')
+  storageService.put('isAuthenticated', true, 'session')
 }
+
+/**
+ * Put user group
+ *
+ * @param {String} group
+ */
+authService.putGroup = (group) => {
+  storageService.put('userGroup', group, 'session')
+}
+
+/**
+ * Return user group
+ *
+ * @returns {String} group
+ */
+authService.getGroup = () => storageService.get('userGroup', 'session') || ''
 
 /**
  * Reset authentication
  */
 authService.resetAuth = () => {
-  storageService.remove('token', 'session')
-  storageService.remove('isAuthenticated', 'session')
   storageService.remove('userId', 'session')
   storageService.remove('userName', 'session')
-  storageService.remove('entityId', 'session')
+  storageService.remove('isAuthenticated', 'session')
+  storageService.remove('token', 'session')
+  storageService.remove('userGroup', 'session')
 }
 
 /**
  * Return authenticated state
  *
- * @returns {boolean}
+ * @returns {Boolean}
  */
 authService.isAuth = () => !!storageService.get('isAuthenticated', 'session')
 
 /**
  * Return token
  *
- * @returns {string} token
+ * @returns {String} token
  */
 authService.getToken = () => storageService.get('token', 'session') || ''
 
 /**
  * Return user account
  *
- * @returns {object} account
+ * @returns {Object} account
  */
 authService.getAccount = () => (
   {
     id: storageService.get('userId', 'session'),
     userName: storageService.get('userName', 'session'),
-    entityId: storageService.get('entityId', 'session'),
+    group: storageService.get('userGroup', 'session'),
     token: authService.getToken()
   }
 )
 
-/**
- * Return user group id
- *
- * @returns {number} group id
- */
-authService.getGroupId = () => storageService.get('groupId', 'session') || ''
-
+// TODO UT
 /**
  * Return if user has user rights
  *
- * @returns {boolean}
+ * @returns {Boolean}
  */
-authService.hasUserRights = () => getGroupByLabel('USER') === authService.getGroupId()
-
-/**
- * Return if user has root rights
- *
- * @returns {boolean}
- */
-authService.hasRootRights = () => getGroupByLabel('ROOT') === authService.getGroupId()
+authService.hasRights = (groupLabel) => {
+  const targetGroup = getGroupByLabel(groupLabel)
+  if (targetGroup && targetGroup.id) {
+    return getGroupByLabel(authService.getGroup()).id >= targetGroup.id
+  }
+  return false
+}
 
 /**
  * Return encrypted basic auth string
  *
- * @param auth {string}
- * @returns {string}
+ * @param auth {String}
+ * @returns {String}
  */
 authService.encryptBasicAuth = (auth) => btoa(auth)
 
 /**
  * Return decrypted basic auth string
  *
- * @param auth {string}
- * @returns {string}
+ * @param auth {String}
+ * @returns {String}
  */
 authService.decryptBasicAuth = (auth) => atob(auth)
 
 // public API
 export const checkRightsUser = authService.checkRightsUser
+export const checkRightsTeamLeader = authService.checkRightsTeamLeader
+export const checkRightsAdmin = authService.checkRightsAdmin
+export const checkRightsRoot = authService.checkRightsRoot
+export const checkRights = authService.checkRights
 export const checkAuth = authService.checkAuth
 export const setAuth = authService.setAuth
 export const putAuth = authService.putAuth
@@ -194,9 +229,9 @@ export const resetAuth = authService.resetAuth
 export const isAuth = authService.isAuth
 export const getToken = authService.getToken
 export const getAccount = authService.getAccount
-export const getGroupId = authService.getGroupId
-export const hasUserRights = authService.hasUserRights
-export const hasSuperAdminRights = authService.hasRootRights
+export const putGroup = authService.putGroup
+export const getGroup = authService.getGroup
+export const hasRights = authService.hasRights
 
 // service
 export default authService

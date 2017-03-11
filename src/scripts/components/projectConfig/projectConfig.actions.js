@@ -22,7 +22,7 @@ import Promise from 'bluebird'
 
 import api from '../../commons/config'
 import { getHeaders } from '../../services/io.service'
-import { mapProjectConfig } from '../../services/mapping.service'
+import { mapProjectConfig, mapProjectConfigOutput } from '../../services/mapping.service'
 import { logout } from '../login/login.actions'
 import { createUser, getUser } from '../user/user.actions'
 import { createProject, getProject } from '../project/project.actions'
@@ -126,7 +126,7 @@ export function getProjectConfigAndProject(projectConfigId, projectId) {
     })
 }
 
-export function requestProjectConfig(projectConfigName, projectConfigOwner, projectConfigUsers, stackConfiguration) {
+export function requestProjectConfig(projectConfig) {
   return {
     [CALL_API]: {
       method: 'POST',
@@ -134,14 +134,7 @@ export function requestProjectConfig(projectConfigName, projectConfigOwner, proj
         `${window.location.protocol || 'http:'}//` +
         `${window.location.host || 'localhost'}${api.projectConfig}`,
       headers: getHeaders(),
-      body: JSON.stringify({
-        name: projectConfigName,
-        ownerIdentifier: projectConfigOwner,
-        userIdentifiers: projectConfigUsers,
-        stackConfigs: [
-          stackConfiguration
-        ]
-      }),
+      body: JSON.stringify(mapProjectConfigOutput(projectConfig)),
       types: [
         PROJECT_CONFIG_NEW_REQUEST,
         {
@@ -161,8 +154,8 @@ export function requestProjectConfig(projectConfigName, projectConfigOwner, proj
   }
 }
 
-export function createProjectConfig(projectConfigName, projectConfigOwner, projectConfigUsers, stackConfiguration) {
-  return (dispatch, getState) => dispatch(requestProjectConfig(projectConfigName, projectConfigOwner, projectConfigUsers, stackConfiguration))
+export function createProjectConfig(projectConfig) {
+  return (dispatch, getState) => dispatch(requestProjectConfig(projectConfig))
     .then(data => {
       if (!data.error) {
         return dispatch(getProjectConfig(data.payload.projectConfig.id))

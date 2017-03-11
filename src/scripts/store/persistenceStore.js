@@ -34,16 +34,27 @@ export default function persistenceHandler(next) {
             storageService.put('theme', storeState.prefs.theme)
             storageService.put('navigation', storeState.prefs.navigation)
           }
-          if (storeState.projectConfig) {
-            const projectConfigId = storeState.projectConfig.id
-            if (projectConfigId) {
-              storageService.put('projectConfigId', projectConfigId)
-              const project = storeState.projectConfig.project
+          if (storeState.context && storeState.context.organisation.id) {
+            const organisationId = storeState.context.organisation.id
+            const organisationName = storeState.context.organisation.name
+            if (organisationId) {
+              storageService.put('organisationId', organisationId)
+              storageService.put('organisationName', organisationName)
+              const projectConfigId = storeState.context.projectConfig.id
+              const projectConfigName = storeState.context.projectConfig.name
+              if (projectConfigId) {
+                storageService.put('projectConfigId', projectConfigId)
+                storageService.put('projectConfigName', projectConfigName)
+              }
+              const project = storeState.context.project.id
               if (project) {
                 storageService.put('projectId', project.id)
               }
             } else {
+              storageService.remove('OrganisationId')
+              storageService.remove('OrganisationName')
               storageService.remove('projectConfigId')
+              storageService.remove('projectConfigName')
               storageService.remove('projectId')
             }
           }

@@ -78,18 +78,23 @@ describe('project config actions', () => {
   describe('create project config', () => {
     let getProjectConfigSpy
     let createProjectSpy
+    let mapProjectConfigOutputSpy
 
     afterEach(() => {
       actionsRewireApi.__ResetDependency__('getProjectConfig')
       actionsRewireApi.__ResetDependency__('createProject')
+      actionsRewireApi.__ResetDependency__('mapProjectConfigOutput')
     })
 
     // TODO UT add test for users array and stackConfig params
     it('should create project config', () => {
       // Given
-      const projectConfigName = 'Acme'
-      const projectConfigAdmins = ['idUs3r']
-      const projectConfigId = 'projectId'
+      const projectConfig = {
+        id: 'projectId',
+        name: 'Acme',
+        admins: ['idUs3r']
+      }
+      mapProjectConfigOutputSpy = sinon.stub().returns(projectConfig)
       getProjectConfigSpy = sinon.stub().returns({
         type: 'MOCKED_GET_PROJECT_CONFIG'
       })
@@ -108,7 +113,7 @@ describe('project config actions', () => {
           type: PROJECT_CONFIG_NEW_SUCCESS,
           payload: {
             projectConfig: {
-              id: projectConfigId
+              id: projectConfig.id
             }
           },
           meta: undefined
@@ -122,26 +127,26 @@ describe('project config actions', () => {
       ]
       nock('http://localhost')
         .post(`${api.projectConfig}`)
-        .reply(201, () => projectConfigId)
+        .reply(201, () => projectConfig.id)
 
       // When
       const store = mockStore({
         projectConfig: {
-          id: projectConfigId
+          id: projectConfig.id
         }
       })
 
       // Then
       return store
-        .dispatch(actions.createProjectConfig(projectConfigName, projectConfigAdmins))
+        .dispatch(actions.createProjectConfig(projectConfig))
         .then(() => {
           expect(store.getActions()).to.deep.equal(expectedActions)
           expect(getHeadersSpy).to.have.callCount(1)
           expect(mapProjectConfigSpy).to.have.callCount(0)
           expect(getProjectConfigSpy).to.have.callCount(1)
-          expect(getProjectConfigSpy).to.have.been.calledWith(projectConfigId)
+          expect(getProjectConfigSpy).to.have.been.calledWith(projectConfig.id)
           expect(createProjectSpy).to.have.callCount(1)
-          expect(createProjectSpy).to.have.been.calledWith(projectConfigId)
+          expect(createProjectSpy).to.have.been.calledWith(projectConfig.id)
           expect(historyPushSpy).to.have.callCount(1)
           expect(historyPushSpy).to.have.been.calledWith('/stacks')
         })
@@ -170,9 +175,10 @@ describe('project config actions', () => {
     })
 
     afterEach(() => {
-      actionsRewireApi.__ResetDependency__('getUser')
+      actionsRewireApi.__ResetDependency__('getUserFromId')
       actionsRewireApi.__ResetDependency__('updateMenuProject')
       actionsRewireApi.__ResetDependency__('updateBreadcrumbProject')
+      actionsRewireApi.__ResetDependency__('mapProjectConfig')
     })
 
     it('should return project config', () => {
@@ -245,7 +251,7 @@ describe('project config actions', () => {
     })
   })
 
-  // TODO failure TU
+  // TODO failure UT
   describe('add user to project config', () => {
     let createUserSpy
     let getProjectConfigSpy

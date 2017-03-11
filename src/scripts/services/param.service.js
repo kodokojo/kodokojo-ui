@@ -218,6 +218,13 @@ paramService.breadcrumbItemFactory = ({
 }
 
 // TODO UT
+/**
+ *
+ * @param {Object} organisation
+ * @param {Object} project
+ * @param {Object} menu
+ * @returns {Array} breadcrumb || []
+ */
 paramService.getBreadcrumb = ({
   organisation,
   project = paramService.getBreadcrumbItemProjects(),
@@ -253,17 +260,21 @@ paramService.getBreadcrumb = ({
 
 // groups params
 paramService.enumGroups = {
-  USER: {
-    id: 0,
-    label: 'USER'
-  },
-  ADMIN_SUPER: {
-    id: 1,
-    label: 'ADMIN_SUPER'
+  ROOT: {
+    id: 3,
+    label: 'ROOT'
   },
   ADMIN: {
     id: 2,
     label: 'ADMIN'
+  },
+  TEAM_LEADER: {
+    id: 1,
+    label: 'TEAM_LEADER'
+  },
+  USER: {
+    id: 0,
+    label: 'USER'
   }
 }
 

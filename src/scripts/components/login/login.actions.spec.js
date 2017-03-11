@@ -138,9 +138,17 @@ describe('login actions', () => {
       }).get(`${api.user}`)
         .reply(200, () => account)
 
-
       // When
-      const store = mockStore({})
+      const store = mockStore({
+        context: {
+          projectConfig: {
+            id: 'projectConfigId'
+          },
+          project: {
+            id: 'projectId'
+          }
+        }
+      })
 
       // Then
       return store.dispatch(actions.login(username, password)).then(() => {
@@ -189,7 +197,13 @@ describe('login actions', () => {
       ]
 
       // When
-      const store = mockStore({})
+      const store = mockStore({
+        context: {
+          projectConfig: {
+            id: undefined
+          }
+        }
+      })
 
       // Then
       return store.dispatch(actions.login(username, password)).then(() => {
