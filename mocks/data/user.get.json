@@ -1,17 +1,18 @@
 {
   "identifier": "{{req.id}}",
-  "entityIdentifier": "15c850471f3add8a0dd937fda85ef0fe27519481",
-  "firstName": "jpthiery",
-  "lastName": "jpthiery",
-  "name": "jpthiery jpthiery",
-  "username": "jpthiery",
-  "email": "jpthiery@xebia.fr",
+  "firstName": "aletaxin",
+  "lastName": "aletaxin",
+  "name": "aletaxin aletaxin",
+  "username": "aletaxin",
+  "email": "aletaxin@kodokojo.io",
+  "sshPublicKey": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCByUQOuejQKtvuSg/ytTcWOo+OqqMcSBIPqDziAIy23cFt6LDFwEcdDT0XiCABQZcmK5KsoaZscMOzcftVGopfbAcAnRqIYHjuW0elUloAbJ/D97Cyiy1PNJFe2W3ac7Ugl77xjEtojzkJVH3MwcQtwphEF9XGjOOrDW0MgejBGRh4rIJTBbvPbcrmdR/dKpLVwM/Ci7fO13SAnCK0yTh98///XHIKxstNlHFaLYgQmcxbK8WnbJIKXY1kryY0vlUumixVny044qvMWvtgdqcbgQMH9XV18+9h+QZ4ZBWzu3GYtOS+SSISysFNZM3G0G32+2CeGVyu2CqrtwLcqsn3 aletaxin@kodokojo.io",
   "password": "",
-  "sshPublicKey": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDYji20blJoetQ7BLDEeRzmf3i49fQDCGSWrTF/i8ANiJufVOs7Q8Ce4+JXuTmQD4Kol7LaKmc7ObhZN8w7PrAd2HM8PqQQaVIww+hlmTXJDWpSMwl5+RyT/wWzO8n+F+F3ZiAL+IqqkAn3G5Q4Aw7lN65geceD57yrMJ9C3xedafHDHEQIuD34ACCbhp53ZXFpBMryDrRmMiYhUloxN0iYcgeYzG3AxXEYLaxp4hr74rEeJ1CRYArE/Z8cT3iyQ4/+oAZHfWq9Mc8ZKHMLz3lK3IkhDNE2Y4eFE/n1YEaw0h/uwCfo0mR6LX8pt7mJmHEjbdf8rHVXH4N4BZ7szMfp jpthiery@xebia.fr",
-  "projectConfigurationIds": [
+  "organisations": [
     {
-      "projectConfigurationId": "1e25e0ca2fc382f332be16f1342d152eacedb434",
-      "projectId": "b1392a68c1ea01d1e445f9464351f67af86c5e14"
+      "identifier": "c860ff4c56ecc3cf4085d065d2d1b92df302d4b4",
+      "name": "aletaxin@kodokojo.io",
+      "right": "USER",
+      "projectConfigurations": []
     }
   ]
 }
