@@ -43,7 +43,12 @@ export const eventSourceInit = () => {
   const apiHost =  apiHostConfig || window.location.host
   const basicAuth = authService.getBasicAuth()
 
+  if (eventSource) {
+    eventSourceClear()
+  }
+
   return {
+    basicAuth,
     url: `${apiProtocol}${basicAuth}@${apiHost}${api.event}`,
     readyState: undefined
   }
@@ -54,7 +59,9 @@ export const eventSourceClear = () => {
 }
 
 const eventSourceMiddleware = store => next => action => {
-  if (!eventSourceConfig) {
+  const currentAuth = authService.getBasicAuth()
+
+  if (!eventSourceConfig || eventSourceConfig.basicAuth !== currentAuth) {
     eventSourceConfig = eventSourceInit()
   }
 

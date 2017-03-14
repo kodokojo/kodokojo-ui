@@ -36,20 +36,20 @@ import {
 } from '../commons/constants'
 
 describe('event source middleware', () => {
+  let apiConfHostSpy
+  let getBasicAuthSpy
+
+  beforeEach(() => {
+    apiConfHostSpy = sinon.stub(apiConf, 'getHost')
+    getBasicAuthSpy = sinon.stub(authService, 'getBasicAuth', () => 'login:psw')
+  })
+
+  afterEach(() => {
+    apiConf.getHost.restore()
+    authService.getBasicAuth.restore()
+  })
+
   describe('event source init', () => {
-    let apiConfHostSpy
-    let getBasicAuthSpy
-
-    beforeEach(() => {
-      apiConfHostSpy = sinon.stub(apiConf, 'getHost')
-      getBasicAuthSpy = sinon.stub(authService, 'getBasicAuth', () => 'login:psw')
-    })
-
-    afterEach(() => {
-      apiConf.getHost.restore()
-      authService.getBasicAuth.restore()
-    })
-
     it('should init event source with localhost and credentials', () => {
       // Given
       apiConfHostSpy.returns('')
@@ -59,6 +59,7 @@ describe('event source middleware', () => {
 
       // Then
       expect(eventSourceConfig).to.deep.equal({
+        basicAuth: 'login:psw',
         url: `http://login:psw@localhost${api.event}`,
         readyState: undefined
       })
@@ -74,6 +75,7 @@ describe('event source middleware', () => {
 
       // Then
       expect(eventSourceConfig).to.deep.equal({
+        basicAuth: 'login:psw',
         url: `http://login:psw@test${api.event}`,
         readyState: undefined
       })
@@ -115,14 +117,12 @@ describe('event source middleware', () => {
       eventSourceMiddleware.__Rewire__('eventSourceClear', eventSourceClearSpy)
       eventSourceFactorySpy = sinon.stub().returns({})
       eventSourceMiddleware.__Rewire__('eventSourceFactory', eventSourceFactorySpy)
-      sinon.stub(apiConf, 'getHost').returns('')
     })
   
     afterEach(() => {
       eventSourceMiddleware.__ResetDependency__('eventSourceInit')
       eventSourceMiddleware.__ResetDependency__('eventSourceClear')
       eventSourceMiddleware.__ResetDependency__('eventSourceFactory')
-      apiConf.getHost.restore()
     })
   
     it('should pass action if not event type', () => {
