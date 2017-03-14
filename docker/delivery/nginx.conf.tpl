@@ -29,9 +29,10 @@ http {
 
         location ~ ^/api/v1/event.* {
             proxy_pass http://@@BACK_HOST@@:@@BACK_PORT@@;
+            proxy_set_header Connection "";
             proxy_http_version 1.1;
-            proxy_set_header Upgrade $http_upgrade;
-            proxy_set_header Connection "upgrade";
+            chunked_transfer_encoding off;
+            proxy_buffering off;
         }
 
         location ~ ^/api.* {
