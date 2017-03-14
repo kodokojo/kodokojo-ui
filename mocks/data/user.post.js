@@ -1,5 +1,6 @@
 /* eslint-disable quotes */
 /* eslint-disable max-len */
+/* eslint-disable no-console */
 
 var callCount = 0
 

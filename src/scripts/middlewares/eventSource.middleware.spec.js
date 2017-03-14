@@ -28,7 +28,6 @@ chai.use(sinonChai)
 
 import eventSourceMiddleware, { eventSourceInit} from './eventSource.middleware'
 import api from '../commons/config'
-import apiConf from '../../../config/shared/api.env'
 import authService from '../services/auth.service'
 import {
   EVENT_REQUEST,
@@ -36,24 +35,18 @@ import {
 } from '../commons/constants'
 
 describe('event source middleware', () => {
-  let apiConfHostSpy
   let getBasicAuthSpy
 
   beforeEach(() => {
-    apiConfHostSpy = sinon.stub(apiConf, 'getHost')
     getBasicAuthSpy = sinon.stub(authService, 'getBasicAuth', () => 'login:psw')
   })
 
   afterEach(() => {
-    apiConf.getHost.restore()
     authService.getBasicAuth.restore()
   })
 
   describe('event source init', () => {
     it('should init event source with localhost and credentials', () => {
-      // Given
-      apiConfHostSpy.returns('')
-
       // When
       const eventSourceConfig = eventSourceInit()
 
@@ -63,23 +56,6 @@ describe('event source middleware', () => {
         url: `http://login:psw@localhost${api.event}`,
         readyState: undefined
       })
-      expect(apiConfHostSpy).to.have.callCount(1)
-    })
-
-    it('should init event source with host from env', () => {
-      // Given
-      apiConfHostSpy.returns('test')
-
-      // When
-      const eventSourceConfig = eventSourceInit()
-
-      // Then
-      expect(eventSourceConfig).to.deep.equal({
-        basicAuth: 'login:psw',
-        url: `http://login:psw@test${api.event}`,
-        readyState: undefined
-      })
-      expect(apiConfHostSpy).to.have.callCount(1)
     })
   })
 

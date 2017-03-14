@@ -18,13 +18,11 @@
 
 import path from 'path'
 import express from 'express'
-import bodyParser from 'body-parser'
+import proxy from 'http-proxy-middleware'
 import webpack from 'webpack'
 import webpackConfig from './webpack.config'
 import config from './config/config'
 import logger from './config/logger'
-
-import apiRoutes from './api/api.server.routes'
 
 // express config
 const app = express()
@@ -49,11 +47,8 @@ if (config.api.host) {
   config.api.error = true
 }
 
-app.use(bodyParser.json()) // for parsing application/json
-app.use(bodyParser.urlencoded({ extended: true }))
-
-// routes
-apiRoutes(app)
+// static content
+app.use(express.static('static'))
 
 // webpack config
 const compiler = webpack(webpackConfig)
@@ -71,13 +66,38 @@ app.use(require('webpack-dev-middleware')(compiler, {
 }))
 app.use(require('webpack-hot-middleware')(compiler))
 
-// static content
-app.use(express.static('static'))
-
 // serve index.html for all get to anything but /api
 app.get(/^(\/(?!api).*)$/, (req, res) => {
   res.sendFile(path.join(__dirname, 'static/index.html'))
 })
+
+// proxy
+app.use('/api/v1/', proxy({
+  target: `${config.api.protocol}${config.api.host}`,
+  changeOrigin: true,
+  headers: {
+    host: config.api.host
+  },
+  logProvider(provider) {
+    return {
+      debug: logger.debug,
+      info: logger.info,
+      warn: logger.warn,
+      error: logger.error
+    }
+  },
+  logLevel: process.env.LOG_LEVEL_ENV || 'debug',
+  onProxyReq(proxyReq, req, res) {
+    logger.debug(
+      `
+        ProxyReq
+        method: ${req.method}
+        body: ${JSON.stringify(req.body)}
+        headers: ${JSON.stringify(req.headers)}
+      `
+    )
+  }
+}))
 
 // server config
 const port = config.server.port

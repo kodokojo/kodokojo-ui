@@ -18,7 +18,6 @@
 
 import authService from '../services/auth.service'
 import api from '../commons/config'
-import apiConf from '../../../config/shared/api.env'
 import eventSourceFactory from './eventSource.factory'
 import { mapBrickEvent } from '../services/mapping.service'
 import { updateProject } from '../components/project/project.actions'
@@ -39,8 +38,7 @@ let eventSourceConfig
 
 export const eventSourceInit = () => {
   const apiProtocol = `${window.location.protocol}//`
-  const apiHostConfig = apiConf.getHost()
-  const apiHost =  apiHostConfig || window.location.host
+  const apiHost =  window.location.host
   const basicAuth = authService.getBasicAuth()
 
   if (eventSource) {
