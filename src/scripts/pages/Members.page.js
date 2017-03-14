@@ -318,8 +318,8 @@ export class MembersPage extends React.Component {
 // StacksPage container
 const mapStateProps = (state) => (
   {
-    projectConfigId: state.projectConfig.id,
-    projectId: state.projectConfig && state.projectConfig.project ? state.projectConfig.project.id : '',
+    projectConfigId: state.context.projectConfig.id,
+    projectId: state.context.project.id,
     members: state.projectConfig.users,
     aggregatedStackStatus: getAggregatedStackStatus(state)
   }

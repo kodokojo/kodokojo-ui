@@ -46,9 +46,9 @@ export default function persistenceHandler(next) {
                 storageService.put('projectConfigId', projectConfigId)
                 storageService.put('projectConfigName', projectConfigName)
               }
-              const project = storeState.context.project.id
-              if (project) {
-                storageService.put('projectId', project.id)
+              const projectId = storeState.context.project.id
+              if (projectId) {
+                storageService.put('projectId', projectId)
               }
             } else {
               storageService.remove('OrganisationId')
