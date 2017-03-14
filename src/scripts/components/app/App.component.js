@@ -38,7 +38,7 @@ import Menu from '../menu/Menu.component'
 import { getHelpEmail } from '../../commons/reducers'
 import { logout } from '../login/login.actions'
 import { nextAlert } from '../alert/alert.actions'
-import { requestWebsocket } from '../_utils/websocket/websocket.actions'
+import { eventRequest } from '../event/event.actions'
 import {
   getApiVersion,
   getUiConfiguration,
@@ -69,7 +69,7 @@ class App extends React.Component {
     menu: React.PropTypes.object,
     navigation: React.PropTypes.bool,
     nextAlert: React.PropTypes.func,
-    requestWebsocket: React.PropTypes.func.isRequired,
+    eventRequest: React.PropTypes.func.isRequired,
     setLocale: React.PropTypes.func.isRequired,
     setNavVisibility: React.PropTypes.func.isRequired,
     theme: React.PropTypes.string.isRequired,
@@ -88,10 +88,10 @@ class App extends React.Component {
   }
 
   componentWillMount = () => {
-    const { isAuthenticated, requestWebsocket, getApiVersion, getUiConfiguration } = this.props // eslint-disable-line no-shadow
+    const { isAuthenticated, eventRequest, getApiVersion, getUiConfiguration } = this.props // eslint-disable-line no-shadow
 
     if (isAuthenticated) {
-      requestWebsocket()
+      eventRequest()
     }
 
     getApiVersion()
@@ -200,7 +200,7 @@ export default themr(APP)(connect(
     getUiConfiguration,
     logout,
     nextAlert,
-    requestWebsocket,
+    eventRequest,
     setTheme,
     setLocale,
     setNavVisibility

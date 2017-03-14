@@ -163,7 +163,7 @@ Then open ui project in browser.
 
 #### Mocked API
 
-To connect the frontend to mocked backend (just HTTP, not websocket for now). We use [kodokojo-mocks](https://github.com/kodokojo/kodokojo-mocks) for this. Configurations are in `mocks/` folder.
+To connect the frontend to mocked backend. We use [kodokojo-mocks](https://github.com/kodokojo/kodokojo-mocks) for this. Configurations are in `mocks/` folder.
 
 First start mock server in a terminal:
 

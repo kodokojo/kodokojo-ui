@@ -17,33 +17,33 @@
  */
 
 import {
-  WEBSOCKET_REQUEST,
-  WEBSOCKET_SUCCESS,
-  WEBSOCKET_FAILURE,
-  WEBSOCKET_STOP
-} from '../../../commons/constants'
+  EVENT_REQUEST,
+  EVENT_SUCCESS,
+  EVENT_FAILURE,
+  EVENT_STOP
+} from '../../commons/constants'
 
-export function requestWebsocket() {
+export function eventRequest() {
   return {
-    type: WEBSOCKET_REQUEST
+    type: EVENT_REQUEST
   }
 }
 
-export function successWebsocket() {
+export function eventSuccess() {
   return {
-    type: WEBSOCKET_SUCCESS
+    type: EVENT_SUCCESS
   }
 }
 
-export function failureWebsocket(event) {
+export function eventFailure(event) {
   return {
-    type: WEBSOCKET_FAILURE,
+    type: EVENT_FAILURE,
     payload: event
   }
 }
 
-export function stopWebsocket() {
+export function eventStop() {
   return {
-    type: WEBSOCKET_STOP
+    type: EVENT_STOP
   }
 }

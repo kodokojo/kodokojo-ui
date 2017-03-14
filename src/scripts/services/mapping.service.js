@@ -206,7 +206,7 @@ mappingService.mapProject = (data) => (
 )
 
 /**
- * Mapping for brick event from websocket
+ * Mapping for brick event from event source
  *
  * @param {Object} data
  * @returns {Object} brick event

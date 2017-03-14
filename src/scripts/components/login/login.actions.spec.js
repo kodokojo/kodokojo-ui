@@ -63,17 +63,17 @@ describe('login actions', () => {
   describe('login', () => {
     let mapAccountSpy
     let getProjectConfigAndProjectSpy
-    let requestWebsocketSpy
+    let eventRequestSpy
 
     beforeEach(() => {
       getProjectConfigAndProjectSpy = sinon.stub().returns({
         type: 'MOCKED_GET_PROJECTCONFIG_PROJECT'
       })
       actionsRewireApi.__Rewire__('getProjectConfigAndProject', getProjectConfigAndProjectSpy)
-      requestWebsocketSpy = sinon.stub().returns({
-        type: 'MOCKED_WEBSOCKET_REQUEST'
+      eventRequestSpy = sinon.stub().returns({
+        type: 'MOCKED_EVENT_REQUEST'
       })
-      actionsRewireApi.__Rewire__('requestWebsocket', requestWebsocketSpy)
+      actionsRewireApi.__Rewire__('eventRequest', eventRequestSpy)
     })
 
     afterEach(() => {
@@ -84,7 +84,7 @@ describe('login actions', () => {
       actionsRewireApi.__ResetDependency__('getProjectConfigAndProject')
       actionsRewireApi.__ResetDependency__('putAuth')
       actionsRewireApi.__ResetDependency__('requestAuthentication')
-      actionsRewireApi.__ResetDependency__('requestWebsocket')
+      actionsRewireApi.__ResetDependency__('eventRequest')
     })
 
     it('should request auth', () => {
@@ -118,7 +118,7 @@ describe('login actions', () => {
           type: 'MOCKED_GET_PROJECTCONFIG_PROJECT'
         },
         {
-          type: 'MOCKED_WEBSOCKET_REQUEST'
+          type: 'MOCKED_EVENT_REQUEST'
         }
       ]
       const headers = {
@@ -161,7 +161,7 @@ describe('login actions', () => {
         expect(getProjectConfigAndProjectSpy).to.have.callCount(1)
         expect(historyPushSpy).to.have.callCount(1)
         expect(historyPushSpy).to.have.been.calledWith('/stacks')
-        expect(requestWebsocketSpy).to.have.callCount(1)
+        expect(eventRequestSpy).to.have.callCount(1)
       })
     })
 
@@ -192,7 +192,7 @@ describe('login actions', () => {
           }
         },
         {
-          type: 'MOCKED_WEBSOCKET_REQUEST'
+          type: 'MOCKED_EVENT_REQUEST'
         }
       ]
 
@@ -216,7 +216,7 @@ describe('login actions', () => {
         expect(requestAuthenticationSpy).to.have.callCount(1)
         expect(historyPushSpy).to.have.callCount(1)
         expect(historyPushSpy).to.have.been.calledWith('/firstProject')
-        expect(requestWebsocketSpy).to.have.callCount(1)
+        expect(eventRequestSpy).to.have.callCount(1)
       })
     })
 
@@ -247,7 +247,7 @@ describe('login actions', () => {
           }
         },
         {
-          type: 'MOCKED_WEBSOCKET_REQUEST'
+          type: 'MOCKED_EVENT_REQUEST'
         }
       ]
 
@@ -274,7 +274,7 @@ describe('login actions', () => {
         expect(getProjectConfigAndProjectSpy).to.have.callCount(0)
         expect(historyPushSpy).to.have.callCount(1)
         expect(historyPushSpy).to.have.been.calledWith('/someprotectedurl')
-        expect(requestWebsocketSpy).to.have.callCount(1)
+        expect(eventRequestSpy).to.have.callCount(1)
       })
     })
 
@@ -331,23 +331,23 @@ describe('login actions', () => {
           expect(setAuthSpy).to.have.been.calledWith(username, password)
           expect(putAuthSpy).to.have.callCount(0)
           expect(getHeadersSpy).to.have.callCount(1)
-          expect(requestWebsocketSpy).to.have.callCount(0)
+          expect(eventRequestSpy).to.have.callCount(0)
         })
     })
   })
 
   describe('logout', () => {
-    let stopWebsocketSpy
+    let eventStopSpy
 
     beforeEach(() => {
-      stopWebsocketSpy = sinon.stub().returns({
-        type: 'MOCKED_WEBSOCKET_STOP'
+      eventStopSpy = sinon.stub().returns({
+        type: 'MOCKED_EVENT_STOP'
       })
-      actionsRewireApi.__Rewire__('stopWebsocket', stopWebsocketSpy)
+      actionsRewireApi.__Rewire__('eventStop', eventStopSpy)
     })
 
     afterEach(() => {
-      actionsRewireApi.__ResetDependency__('stopWebsocket')
+      actionsRewireApi.__ResetDependency__('eventStop')
     })
 
     it('should reset auth', () => {
@@ -357,7 +357,7 @@ describe('login actions', () => {
           type: AUTH_RESET
         },
         {
-          type: 'MOCKED_WEBSOCKET_STOP'
+          type: 'MOCKED_EVENT_STOP'
         }
       ]
       const resetAuthSpy = sinon.spy(authService, 'resetAuth')
@@ -370,7 +370,7 @@ describe('login actions', () => {
         .then(() => {
           expect(store.getActions()).to.deep.equal(expectedActions)
           expect(resetAuthSpy).to.have.callCount(1)
-          expect(stopWebsocketSpy).to.have.callCount(1)
+          expect(eventStopSpy).to.have.callCount(1)
           expect(historyPushSpy).to.have.callCount(1)
           expect(historyPushSpy).to.have.been.calledWith('/login')
         })

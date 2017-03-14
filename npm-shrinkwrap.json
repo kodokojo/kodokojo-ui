@@ -193,7 +193,7 @@
     },
     "eventsource-polyfill": {
       "version": "0.9.6",
-      "from": "eventsource-polyfill@0.9.6",
+      "from": "https://registry.npmjs.org/eventsource-polyfill/-/eventsource-polyfill-0.9.6.tgz",
       "resolved": "https://registry.npmjs.org/eventsource-polyfill/-/eventsource-polyfill-0.9.6.tgz"
     },
     "extend": {

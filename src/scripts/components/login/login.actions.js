@@ -27,7 +27,7 @@ import storageService from '../../services/storage.service'
 import ioService from '../../services/io.service'
 import { mapAccount } from '../../services/mapping.service'
 import { getProjectConfigAndProject } from '../projectConfig/projectConfig.actions'
-import { requestWebsocket, stopWebsocket } from '../_utils/websocket/websocket.actions'
+import { eventRequest, eventStop } from '../event/event.actions'
 import { newAlert } from '../alert/alert.actions'
 import crispService from '../../services/crisp.service'
 import {
@@ -89,7 +89,7 @@ export function login(username, password) {
           routing && routing.locationBeforeTransitions &&
           routing.locationBeforeTransitions.state && routing.locationBeforeTransitions.state.nextPathname
         ) {
-          return dispatch(requestWebsocket())
+          return dispatch(eventRequest())
             .then(() => Promise.resolve(browserHistory.push(routing.locationBeforeTransitions.state.nextPathname)))
         } else if (
           context.projectConfig &&
@@ -99,16 +99,16 @@ export function login(username, password) {
             // get project config and project and redirect to project
             return dispatch(
               getProjectConfigAndProject(context.projectConfig.id, context.project.id))
-                .then(dispatch(requestWebsocket()))
+                .then(dispatch(eventRequest()))
                 .then(() => Promise.resolve(browserHistory.push('/stacks')))
           } else {
             // TODO second case, project config has no project id
             // must redirect to project config stack, with a button to start it
-            return dispatch(requestWebsocket())
+            return dispatch(eventRequest())
           }
         }
         // if no ids, redirect to first project
-        return dispatch(requestWebsocket())
+        return dispatch(eventRequest())
           .then(() => Promise.resolve(browserHistory.push('/firstProject')))
       }
       throw new Error(data.payload.status)
@@ -131,7 +131,7 @@ export function logout(reason) {
         // reset auth
         authService.resetAuth()
         storageService.clean()
-        return dispatch(stopWebsocket())
+        return dispatch(eventStop())
           .then(() => {
             // TODO update UT
             if (reason) {

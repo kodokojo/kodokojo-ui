@@ -51,7 +51,7 @@ describe('signup actions', () => {
     let pushHistorySpy
     let setAuthSpy
     let putAuthSpy
-    let requestWebsocketSpy
+    let requestEventSpy
     let createUserSpy
     let account
 
@@ -73,17 +73,17 @@ describe('signup actions', () => {
       actionsRewireApi.__Rewire__('setAuth', setAuthSpy)
       putAuthSpy = sinon.spy()
       actionsRewireApi.__Rewire__('putAuth', putAuthSpy)
-      requestWebsocketSpy = sinon.stub().returns({
-        type: 'MOCKED_WEBSOCKET_REQUEST'
+      requestEventSpy = sinon.stub().returns({
+        type: 'MOCKED_EVENT_REQUEST'
       })
-      actionsRewireApi.__Rewire__('requestWebsocket', requestWebsocketSpy)
+      actionsRewireApi.__Rewire__('eventRequest', requestEventSpy)
     })
 
     afterEach(() => {
       actionsRewireApi.__ResetDependency__('browserHistory')
       actionsRewireApi.__ResetDependency__('setAuth')
       actionsRewireApi.__ResetDependency__('putAuth')
-      actionsRewireApi.__ResetDependency__('requestWebsocket')
+      actionsRewireApi.__ResetDependency__('eventRequest')
       actionsRewireApi.__ResetDependency__('createUser')
     })
 
@@ -116,7 +116,7 @@ describe('signup actions', () => {
           }
         },
         {
-          type: 'MOCKED_WEBSOCKET_REQUEST'
+          type: 'MOCKED_EVENT_REQUEST'
         }
       ]
 
@@ -135,7 +135,7 @@ describe('signup actions', () => {
           expect(setAuthSpy).to.have.been.calledWith(account.userName, account.password)
           expect(putAuthSpy).to.have.callCount(1)
           expect(putAuthSpy).to.have.been.calledWith(account)
-          expect(requestWebsocketSpy).to.have.callCount(1)
+          expect(requestEventSpy).to.have.callCount(1)
         })
     })
 
@@ -178,7 +178,7 @@ describe('signup actions', () => {
           expect(pushHistorySpy).to.have.callCount(0)
           expect(setAuthSpy).to.have.callCount(0)
           expect(putAuthSpy).to.have.callCount(0)
-          expect(requestWebsocketSpy).to.have.callCount(0)
+          expect(requestEventSpy).to.have.callCount(0)
         })
     })
 
@@ -225,7 +225,7 @@ describe('signup actions', () => {
           expect(pushHistorySpy).to.have.callCount(0)
           expect(setAuthSpy).to.have.callCount(0)
           expect(putAuthSpy).to.have.callCount(0)
-          expect(requestWebsocketSpy).to.have.callCount(0)
+          expect(requestEventSpy).to.have.callCount(0)
         })
     })
   })

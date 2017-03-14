@@ -19,7 +19,7 @@
 import { browserHistory } from 'react-router'
 
 import { setAuth, putAuth } from '../../services/auth.service'
-import { requestWebsocket } from '../_utils/websocket/websocket.actions'
+import { eventRequest } from '../event/event.actions'
 import { createUser } from '../user/user.actions'
 import {
   ACCOUNT_NEW_REQUEST,
@@ -87,8 +87,8 @@ export function createAccount(email, captcha) {
           crispService.putUser(data.payload.account)
         }
 
-        // init websocket and go to first project
-        return dispatch(requestWebsocket())
+        // init event source and go to first project
+        return dispatch(eventRequest())
           .then(() => Promise.resolve(browserHistory.push('/firstProject')))
       }
       throw new Error(data.payload.status)

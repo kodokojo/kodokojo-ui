@@ -172,6 +172,14 @@ authService.isAuth = () => !!storageService.get('isAuthenticated', 'session')
  */
 authService.getToken = () => storageService.get('token', 'session') || ''
 
+// TODO UT
+/**
+ * Return basic auth
+ *
+ * @returns {String} basic auth
+ */
+authService.getBasicAuth = () => authService.decryptBasicAuth(authService.getToken())
+
 /**
  * Return user account
  *
@@ -208,6 +216,7 @@ authService.hasRights = (groupLabel) => {
  */
 authService.encryptBasicAuth = (auth) => btoa(auth)
 
+// TODO UT
 /**
  * Return decrypted basic auth string
  *
@@ -228,6 +237,7 @@ export const putAuth = authService.putAuth
 export const resetAuth = authService.resetAuth
 export const isAuth = authService.isAuth
 export const getToken = authService.getToken
+export const getBasicAuth = authService.getBasicAuth
 export const getAccount = authService.getAccount
 export const putGroup = authService.putGroup
 export const getGroup = authService.getGroup

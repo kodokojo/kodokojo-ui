@@ -16,14 +16,39 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * factory for native WebSocket (to be able to mock it)
- *
- */
-export const webSocketFactory = {}
+import {
+  EVENT_REQUEST,
+  EVENT_SUCCESS,
+  EVENT_FAILURE,
+  EVENT_STOP
+} from '../../commons/constants'
 
-webSocketFactory.getWebSocket = (url) => new WebSocket(url)
+const initialState = {
+  connected: false,
+  isFetching: false
+}
 
-export const getWebSocket = webSocketFactory.getWebSocket
-
-export default webSocketFactory
+export default function event(state = initialState, action) {
+  switch (action.type) {
+    case EVENT_REQUEST:
+      return {
+        ...state,
+        isFetching: true
+      }
+    case EVENT_SUCCESS:
+      return {
+        ...state,
+        connected: true,
+        isFetching: false
+      }
+    case EVENT_FAILURE:
+    case EVENT_STOP:
+      return {
+        ...state,
+        connected: false,
+        isFetching: false
+      }
+    default:
+      return state
+  }
+}

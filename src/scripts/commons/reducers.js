@@ -29,7 +29,7 @@ import menu from '../components/menu/menu.reducer'
 import db from '../components/db/db.reducer'
 import prefs, * as fromPrefs from '../components/app/app.reducer'
 import projectConfig, * as fromProjectConfig from '../components/projectConfig/projectConfig.reducer'
-import socket from '../components/_utils/websocket/websocket.reducer'
+import event from '../components/event/event.reducer'
 import users, * as fromUser from '../components/user/user.reducer'
 
 const rootReducer = combineReducers({
@@ -42,7 +42,7 @@ const rootReducer = combineReducers({
   menu,
   prefs,
   projectConfig,
-  socket,
+  event,
   users,
   // redux-form reducer
   form: formReducer,

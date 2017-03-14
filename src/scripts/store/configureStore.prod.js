@@ -21,7 +21,7 @@ import { apiMiddleware } from 'redux-api-middleware'
 import thunk from 'redux-thunk'
 
 import persistenceStore from './persistenceStore'
-import websocketMiddleware from '../middlewares/websocket.middleware'
+import eventSourceMiddleware from '../middlewares/eventSource.middleware'
 import rootReducer from '../commons/reducers'
 
 export default function configureStore(initialState) {
@@ -29,7 +29,7 @@ export default function configureStore(initialState) {
     applyMiddleware(
       thunk,
       apiMiddleware,
-      websocketMiddleware
+      eventSourceMiddleware
     ),
     persistenceStore
   )(createStore)
