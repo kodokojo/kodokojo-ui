@@ -32,6 +32,7 @@ module.exports = {
     filename: 'assets/scripts/[name]-[hash].js',
     publicPath: '/'
   },
+  devtool: 'source-map',
   plugins: [
     new CompressionPlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),

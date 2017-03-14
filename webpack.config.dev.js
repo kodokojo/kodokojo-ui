@@ -35,7 +35,8 @@ module.exports = {
   },
   // FIXME due to a webpack bug, source map are broken with recommended devtool
   // devtool: 'cheap-module-eval-source-map',
-  devtool: "#inline-source-map",
+  // devtool: "#inline-source-map",
+  devtool: 'eval-source-map',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
