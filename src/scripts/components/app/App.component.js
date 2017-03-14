@@ -60,6 +60,7 @@ class App extends React.Component {
       React.PropTypes.string,
       React.PropTypes.node
     ]),
+    eventRequest: React.PropTypes.func.isRequired,
     getApiVersion: React.PropTypes.func.isRequired,
     getUiConfiguration: React.PropTypes.func.isRequired,
     help: React.PropTypes.string,
@@ -69,7 +70,6 @@ class App extends React.Component {
     menu: React.PropTypes.object,
     navigation: React.PropTypes.bool,
     nextAlert: React.PropTypes.func,
-    eventRequest: React.PropTypes.func.isRequired,
     setLocale: React.PropTypes.func.isRequired,
     setNavVisibility: React.PropTypes.func.isRequired,
     theme: React.PropTypes.string.isRequired,
