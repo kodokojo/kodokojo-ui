@@ -73,8 +73,15 @@ describe('user actions', () => {
 
     it('should create user', () => {
       // Given
-      const email = 'test@email.com'
       const id = 'idUs3r'
+      const email = 'test@email.com'
+      const isRoot = false
+      const organisationId = 'organisationId'
+      const user = {
+        email,
+        isRoot,
+        organisationId
+      }
       const account = {
         id,
         userName: 'test',
@@ -128,7 +135,7 @@ describe('user actions', () => {
       const store = mockStore({})
 
       // Then
-      return store.dispatch(actions.createUser(email, 'captcha'))
+      return store.dispatch(actions.createUser(user, 'captcha'))
         .then(() => {
           expect(store.getActions()).to.deep.equal(expectedActions)
           expect(getHeadersSpy).to.have.callCount(2)
@@ -138,8 +145,15 @@ describe('user actions', () => {
 
     it('should add user to waiting list', () => {
       // Given
-      const email = 'test@email.com'
       const id = 'idUs3r'
+      const email = 'test@email.com'
+      const isRoot = false
+      const organisationId = 'organisationId'
+      const user = {
+        email,
+        isRoot,
+        organisationId
+      }
       const status = 202
       const expectedActions = [
         {
@@ -186,7 +200,7 @@ describe('user actions', () => {
       const store = mockStore({})
 
       // Then
-      return store.dispatch(actions.createUser(email))
+      return store.dispatch(actions.createUser(user))
         .then(() => {
           expect(store.getActions()).to.deep.equal(expectedActions)
           expect(getHeadersSpy).to.have.callCount(2)
@@ -196,7 +210,15 @@ describe('user actions', () => {
 
     it('should fail to create user id', () => {
       // Given
+      const id = 'idUs3r'
       const email = 'test@email.com'
+      const isRoot = false
+      const organisationId = 'organisationId'
+      const user = {
+        email,
+        isRoot,
+        organisationId
+      }
       const expectedActions = [
         {
           type: USER_NEW_ID_REQUEST,
@@ -234,7 +256,7 @@ describe('user actions', () => {
       })
 
       // Then
-      return store.dispatch(actions.createUser(email))
+      return store.dispatch(actions.createUser(user))
         .then(() => {
           new Error('This fail case test passed')
         })
@@ -246,8 +268,15 @@ describe('user actions', () => {
 
     it('should fail to create user', () => {
       // Given
-      const email = 'test@email.com'
       const id = 'idUs3r'
+      const email = 'test@email.com'
+      const isRoot = false
+      const organisationId = 'organisationId'
+      const user = {
+        email,
+        isRoot,
+        organisationId
+      }
       const expectedActions = [
         {
           type: USER_NEW_ID_REQUEST,
@@ -302,7 +331,7 @@ describe('user actions', () => {
       })
 
       // Then
-      return store.dispatch(actions.createUser(email))
+      return store.dispatch(actions.createUser(user))
         .then(() => {
           new Error('This fail case test passed')
         })

@@ -262,19 +262,27 @@ paramService.getBreadcrumb = ({
 paramService.enumGroups = {
   ROOT: {
     id: 3,
-    label: 'ROOT'
+    label: 'ROOT',
+    labelKey: 'group-root-label',
+    value: 'ROOT'
   },
   ADMIN: {
     id: 2,
-    label: 'ADMIN'
+    label: 'ADMIN',
+    labelKey: 'group-admin-label',
+    value: 'ADMIN'
   },
   TEAM_LEADER: {
     id: 1,
-    label: 'TEAM_LEADER'
+    label: 'TEAM_LEADER',
+    labelKey: 'group-team-leader-label',
+    value: 'TEAM_LEADER'
   },
   USER: {
     id: 0,
-    label: 'USER'
+    label: 'USER',
+    labelKey: 'group-user-label',
+    value: 'USER'
   }
 }
 
@@ -285,6 +293,13 @@ paramService.getGroupById = (id) => (
 paramService.getGroupByLabel = (label) => (
   find(paramService.enumGroups, { label }) || undefined
 )
+
+// TODO UT
+paramService.getGroups = (userGroup) => {
+  const group = paramService.getGroupByLabel(userGroup)
+  const groupId = group ? group.id : -1
+  return Object.values(paramService.enumGroups).filter(groupItem => (groupItem.id <= groupId) && groupId !== 0)
+}
 
 // public API
 export const enumStatus = paramService.enumStatus
@@ -298,6 +313,7 @@ export const getBreadcrumbItemProject = paramService.getBreadcrumbItemProjects
 export const getBreadcrumbItemFromPath = paramService.getBreadcrumbItemFromPath
 export const breadcrumbItemFactory = paramService.breadcrumbItemFactory
 export const enumGroups = paramService.enumGroups
+export const getGroups = paramService.getGroups
 export const getGroupById = paramService.getGroupById
 export const getGroupByLabel = paramService.getGroupByLabel
 

@@ -216,7 +216,9 @@ describe('mapping service', () => {
         userName: 'userName',
         email: 'test@email.com',
         sshKeyPublic: 'ssh-key Public',
-        password: 'password'
+        password: 'password',
+        group: 'USER',
+        organisationId: 'organisationId'
       }
 
       // When
@@ -231,7 +233,9 @@ describe('mapping service', () => {
         username: 'userName',
         email: 'test@email.com',
         sshPublicKey: 'ssh-key Public',
-        password: 'password'
+        password: 'password',
+        isRoot: false,
+        organisationId: 'organisationId'
       })
     })
   })

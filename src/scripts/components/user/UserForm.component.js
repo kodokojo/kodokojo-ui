@@ -19,7 +19,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { Field, reduxForm, SubmissionError, propTypes } from 'redux-form'
+import { change, Field, reduxForm, SubmissionError, propTypes, getFormValues } from 'redux-form'
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
 import classNames from 'classnames'
 
@@ -29,11 +29,15 @@ import Avatar from 'kodokojo-ui-commons/src/scripts/components/avatar/Avatar.com
 import Button from 'kodokojo-ui-commons/src/scripts/components/button/Button.component'
 import Input from 'kodokojo-ui-commons/src/scripts/components/input/Input.component'
 import IconButton from 'kodokojo-ui-commons/src/scripts/components/button/IconButton.component'
+import Dropdown from 'kodokojo-ui-commons/src/scripts/components/dropdown/Dropdown.component'
+import DropdownItemDefault from 'kodokojo-ui-commons/src/scripts/components/dropdown/DropdownItem.component'
 import CloseIcon from 'kodokojo-ui-commons/src/scripts/components/icons/CloseIcon.component'
 
 // Component
 import userValidator from './user.validator'
 import userTheme from './user.scss'
+import { mapUserOutput } from '../../services/mapping.service'
+import { getGroups } from '../../services/param.service'
 import { returnErrorKey } from '../../services/error.service'
 import { getUserFromId } from '../../commons/reducers'
 
@@ -46,6 +50,7 @@ export class UserForm extends React.Component {
 
   static propTypes = {
     aggregatedStackStatus: React.PropTypes.object,
+    change: React.PropTypes.func,
     checked: React.PropTypes.bool,
     creation: React.PropTypes.bool,
     disabled: React.PropTypes.bool,
@@ -56,6 +61,7 @@ export class UserForm extends React.Component {
     onSubmitUserForm: React.PropTypes.func.isRequired,
     onSubmitUserSuccess: React.PropTypes.func.isRequired,
     onUserEditCancel: React.PropTypes.func.isRequired,
+    organisationId: React.PropTypes.string,
     theme: React.PropTypes.object,
     user: React.PropTypes.object,
     userId: React.PropTypes.string,
@@ -71,8 +77,17 @@ export class UserForm extends React.Component {
     super(props)
     this.state = {
       checked: this.props.checked || false,
-      edited: true
+      edited: true,
+      group: undefined
     }
+  }
+
+  handleGroupChange = (value) => {
+    const { change, formValues } = this.props
+    this.setState({
+      group: value
+    })
+    change('group', value)
   }
 
   handleUserEditCancel = () => {
@@ -92,19 +107,21 @@ export class UserForm extends React.Component {
     reset()
   }
 
-  handleUserEditSubmit = ({email, firstName, lastName, password, sshKeyPublic}) => {
+  handleUserEditSubmit = ({email, firstName, lastName, group, password, sshKeyPublic}) => {
     const {
-      user, onSubmitUserForm, onSubmitUserSuccess, onSubmitUserFailure
+      user, organisationId, onSubmitUserForm, onSubmitUserSuccess, onSubmitUserFailure
     } = this.props // eslint-disable-line no-shadow
 
-    const nextUser = {
+    const nextUser = mapUserOutput({
       id: user ? user.id : '',
       email: email ? email.trim() : '',
       firstName: firstName ? firstName.trim() : '',
       lastName: lastName ? lastName.trim() : '',
       password: password ? password.trim() : '',
-      sshKeyPublic: sshKeyPublic ? sshKeyPublic.trim() : '' 
-    }
+      sshKeyPublic: sshKeyPublic ? sshKeyPublic.trim() : '',
+      group,
+      organisationId
+    })
 
     return onSubmitUserForm(nextUser)
       .then(() => {
@@ -125,9 +142,16 @@ export class UserForm extends React.Component {
 
   render() {
     const {
-      disabled, handleSubmit, pristine, reset, submitting, edition, creation, user
+      disabled, handleSubmit, pristine, reset, submitting, edition, creation,
+      user, userGroup
     } = this.props // eslint-disable-line no-shadow
     const { formatMessage } = this.props.intl
+    const groups = getGroups(userGroup).map(group => {
+      if (group.labelKey) {
+        group.labelText = formatMessage({ id: group.labelKey })
+      }
+      return group
+    })
 
     return (
       <form
@@ -182,11 +206,22 @@ export class UserForm extends React.Component {
               />
             </div>
             <div className={ userTheme['user-group--form'] }>
-              { /* TODO change this by a dropdown */ }
-              <span
-                style={{ display: 'flex', flex: '1 1 auto', position: 'relative', height: '50px', justifyContent: 'left', color: '#75757F' }}>
-                admin
-              </span>
+              <div style={{ display: 'flex', flex: '1 1 auto', marginTop: '-28px', marginRight: '7px' }}>
+                <Field
+                  component={ Dropdown }
+                  id="group"
+                  name="group"
+                  props={{
+                    disabled: (userGroup === 'USER'),
+                    onChange: this.handleGroupChange,
+                    required: true,
+                    source: groups,
+                    template: DropdownItemDefault,
+                    value: (this.state.group || groups[0].value)
+                  }}
+                  type="text"
+                />
+              </div>
             </div>
             <div className={ userTheme['user-email--form'] }>
               <Field
@@ -262,14 +297,18 @@ export class UserForm extends React.Component {
 // UserForm container
 const mapStateProps = (state, ownProps) => {
   const user = getUserFromId(ownProps.userId, state)
+  const groups = getGroups(state.context.user.group)
   return {
     user,
+    userGroup: state.context.user.group,
+    organisationId: state.context.organisation.id,
     initialValues: {
       firstName: user ? user.firstName : '',
       lastName: user ? user.lastName : '',
       userName: user ? user.userName : '',
       email: user ? user.email : '',
-      sshKeyPublic: user ? user.sshKeyPublic : ''
+      sshKeyPublic: user ? user.sshKeyPublic : '',
+      group: groups ? groups[0].value : 'USER'
     }
   }
 }
@@ -277,7 +316,9 @@ const mapStateProps = (state, ownProps) => {
 const UserFormContainer = compose(
   connect(
     mapStateProps,
-    {}
+    {
+      change
+    }
   ),
   injectIntl
 )(reduxForm(

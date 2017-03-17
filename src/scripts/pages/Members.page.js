@@ -17,7 +17,7 @@
  */
 
 import React from 'react'
-import { connect } from 'react-redux'
+import { connect, change } from 'react-redux'
 import { compose } from 'redux'
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
 import classNames from 'classnames'
@@ -48,6 +48,7 @@ import {
 } from '../components/projectConfig/projectConfig.actions'
 import { updateUser } from '../components/user/user.actions'
 import { getAggregatedStackStatus } from '../commons/reducers'
+import authService from '../services/auth.service'
 import { filterCheckedMembers } from '../services/stateUpdater.service'
 
 // TODO UT
@@ -165,10 +166,10 @@ export class MembersPage extends React.Component {
       })
   }
 
-  handleMemberAdd = ({ email }) => {
+  handleMemberAdd = (user) => {
     const { addUserToProjectConfig, projectConfigId } = this.props // eslint-disable-line no-shadow
 
-    return addUserToProjectConfig(projectConfigId, email)
+    return addUserToProjectConfig(projectConfigId, user)
   }
 
   handleMemberUpdate = (user) => {
@@ -191,7 +192,8 @@ export class MembersPage extends React.Component {
         <Action>
           { !this.state.isUserFormAddActive &&
           <div>
-            { aggregatedStackStatus && aggregatedStackStatus.label !== 'RUNNING' &&
+            { aggregatedStackStatus &&
+              aggregatedStackStatus.label !== 'RUNNING' &&
             <div className={ messageTheme['message--info'] }>
               <Status
                 state={ aggregatedStackStatus ? aggregatedStackStatus.label : undefined }
@@ -199,14 +201,16 @@ export class MembersPage extends React.Component {
               <FormattedMessage id={'members-disabled-add-label'} />
             </div>
             }
-            <UserAddButton
-              disabled={
-                (aggregatedStackStatus && aggregatedStackStatus.label !== 'RUNNING' ||
-                this.state.isUserFormEditActive)
-              }
-              label={ formatMessage({ id: 'add-member-label' }) }
-              onToggleForm={ this.handleToggleMemberAdd }
-            />
+            { authService.hasRights('TEAM_LEADER') &&
+              <UserAddButton
+                disabled={
+                  (aggregatedStackStatus && aggregatedStackStatus.label !== 'RUNNING' ||
+                  this.state.isUserFormEditActive)
+                }
+                label={ formatMessage({ id: 'add-member-label' }) }
+                onToggleForm={ this.handleToggleMemberAdd }
+              />
+            }
           </div>
           }
           { this.state.isUserFormAddActive &&

@@ -143,12 +143,15 @@
   div[data-react-toolbox="input"] {
     width: 95%;
   }
+  div[data-react-toolbox="dropdown"] {
+    width: 95%;
+  }
 }
 
 $user-flex: 1 1 27%;
 $username-flex: 1 1 20%;
-$group-flex: 1 1 10%;
-$email-flex: 1 1 27%;
+$group-flex: 1 1 15%;
+$email-flex: 1 1 24%;
 $select-flex: 1 1 7%;
 $edit-flex: 1 1 7%;
 
@@ -177,7 +180,7 @@ $edit-min-width: 58px;
 .user-select {
   @extend %user-column;
   flex: $select-flex;
-  justify-content: center;
+  justify-content: flex-start;
   min-width: $select-min-width;
 }
 .user-edit {

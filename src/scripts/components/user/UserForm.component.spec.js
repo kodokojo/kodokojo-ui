@@ -39,13 +39,14 @@ import { createStore, combineReducers } from 'redux'
 import { IntlProvider } from 'react-intl'
 
 // component
-import { UserForm } from './UserForm.component'
+import { UserForm, __RewireAPI__ as UserFormRewire } from './UserForm.component'
 import userValidator from './user.validator'
 import userTheme from './user.scss'
 
 describe('<UserForm> component', () => {
   let props
   let intlProvider
+  let getGroupsSpy
 
   beforeEach(() => {
     props = {
@@ -65,6 +66,14 @@ describe('<UserForm> component', () => {
       ...getIntlPropsMock()
     }
     intlProvider = new IntlProvider({ locale: 'en' }, {})
+    getGroupsSpy = sinon.stub().returns([
+      { value: 'GROUP' }
+    ])
+    UserFormRewire.__Rewire__('getGroups', getGroupsSpy)
+  })
+
+  afterEach(() => {
+    UserFormRewire.__ResetDependency__('getGroups')
   })
 
   describe('state', () => {
@@ -215,12 +224,21 @@ describe('<UserForm> component', () => {
   describe('event handlers', () => {
     let store
     let DecoratedUserForm
+    let mapUserOutputSpy
 
     beforeEach(() => {
       store = createStore(combineReducers({
         form: formReducer
       }))
       DecoratedUserForm = reduxForm({ form: 'userForm', userValidator })(UserForm)
+      mapUserOutputSpy = sinon.stub().returns({
+        user: 'user'
+      })
+      UserFormRewire.__Rewire__('mapUserOutput', mapUserOutputSpy)
+    })
+
+    afterEach(() => {
+      UserFormRewire.__ResetDependency__('mapUserOutput')
     })
 
     it('should handle creation submit', () => {
@@ -250,22 +268,29 @@ describe('<UserForm> component', () => {
 
       // Then
       expect(fieldEmail).to.have.value(email)
-      expect(nextProps.onSubmitUserForm).to.have.callCount(1)
-      expect(nextProps.onSubmitUserForm).to.have.been.calledWith({
+      expect(mapUserOutputSpy).to.have.callCount(1)
+      expect(mapUserOutputSpy).to.have.been.calledWith({
         id: '',
         email: email,
         firstName: '',
         lastName: '',
         password: '',
         sshKeyPublic: '',
+        group: undefined,
+        organisationId: undefined
+      })
+      expect(nextProps.onSubmitUserForm).to.have.callCount(1)
+      expect(nextProps.onSubmitUserForm).to.have.been.calledWith({
+        user: 'user'
       })
     })
 
-    it('should handle edition submit', () => {
+    it('should handle full edition submit', () => {
       // Given
       const firstName = 'firstName'
       const lastName = 'lastName'
       const email = 'email@user.com'
+      const group = 'USER'
       const sshKey = 'sshKeyPublic'
       const password = 'password'
       const nextProps = {
@@ -297,6 +322,8 @@ describe('<UserForm> component', () => {
       fieldLastName.simulate('change', { target: { value: lastName } })
       const fieldEmail = component.find('input[name="email"]')
       fieldEmail.simulate('change', { target: { value: email } })
+      const fieldGroup = component.find('input[name="group"]')
+      fieldGroup.simulate('change', { target: { value: group } })
       const fieldSshKeyPublic = component.find('textarea[name="sshKeyPublic"]')
       fieldSshKeyPublic.simulate('change', { target: { value: sshKey } })
       const fieldPassword = component.find('input[name="password"]')
@@ -311,14 +338,20 @@ describe('<UserForm> component', () => {
       expect(fieldLastName).to.have.value(lastName)
       expect(fieldSshKeyPublic).to.have.value(sshKey)
       expect(fieldPassword).to.have.value(password)
-      expect(nextProps.onSubmitUserForm).to.have.callCount(1)
-      expect(nextProps.onSubmitUserForm).to.have.been.calledWith({
+      expect(mapUserOutputSpy).to.have.callCount(1)
+      expect(mapUserOutputSpy).to.have.been.calledWith({
         id: '1',
         email: email,
         firstName: firstName,
         lastName: lastName,
         sshKeyPublic: sshKey,
-        password: password
+        password: password,
+        group: 'USER',
+        organisationId: undefined
+      })
+      expect(nextProps.onSubmitUserForm).to.have.callCount(1)
+      expect(nextProps.onSubmitUserForm).to.have.been.calledWith({
+        user: 'user'
       })
     })
 
@@ -358,14 +391,20 @@ describe('<UserForm> component', () => {
       // Then
       expect(fieldEmail).to.have.value(email)
       expect(fieldSshKeyPublic).to.have.value(sshKey)
-      expect(nextProps.onSubmitUserForm).to.have.callCount(1)
-      expect(nextProps.onSubmitUserForm).to.have.been.calledWith({
+      expect(mapUserOutputSpy).to.have.callCount(1)
+      expect(mapUserOutputSpy).to.have.been.calledWith({
         id: '1',
         email: email,
         firstName: '',
         lastName: '',
         sshKeyPublic: sshKey,
         password: '',
+        group: undefined,
+        organisationId: undefined
+      })
+      expect(nextProps.onSubmitUserForm).to.have.callCount(1)
+      expect(nextProps.onSubmitUserForm).to.have.been.calledWith({
+        user: 'user'
       })
     })
 

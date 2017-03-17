@@ -69,13 +69,16 @@ export class Signup extends React.Component {
 
   handleSubmitSignup = (values) => {
     const { createAccount, resetCaptcha, reCaptchaKey } = this.props // eslint-disable-line no-shadow
-    
+
     const nextEmail = values.email ? values.email.trim() : '' 
 
     // optional feature
     const nextCaptcha = reCaptchaKey ? values.captcha : undefined
 
-    return createAccount(nextEmail, nextCaptcha)
+    return createAccount({
+      email: nextEmail,
+      isRoot: false
+    }, nextCaptcha)
       .then(data => {
         if (data && data.status) {
           this.handleAccountAccepted()

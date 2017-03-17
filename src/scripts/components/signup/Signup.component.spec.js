@@ -173,7 +173,7 @@ describe('<Signup> component', () => {
 
       // Then
       expect(nextProps.createAccount).to.have.callCount(1)
-      expect(nextProps.createAccount).to.have.been.calledWith('email@test.com')
+      expect(nextProps.createAccount).to.have.been.calledWith({ email: 'email@test.com', isRoot: false })
     })
   })
 })

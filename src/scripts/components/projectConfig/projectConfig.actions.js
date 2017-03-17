@@ -197,9 +197,9 @@ export function requestAddUserToProjectConfig(projectConfigId, userId) {
   }
 }
 
-export function addUserToProjectConfig(projectConfigId, email) {
+export function addUserToProjectConfig(projectConfigId, user) {
   // TODO search user and if does not exist, create it
-  return dispatch => dispatch(createUser(email))
+  return dispatch => dispatch(createUser(user))
     .then(data => {
       if (!data.error) {
         return dispatch(requestAddUserToProjectConfig(projectConfigId, data.payload.account.id))

@@ -73,7 +73,8 @@ export function requestNewUserId(email) {
 }
 
 // TODO update UT
-export function requestNewUser(email, userId, captcha, prefs) {
+export function requestNewUser(user , captcha, prefs) {
+  const {email, userId, isRoot, organisationId} = user
   return {
     [CALL_API]: {
       method: 'POST',
@@ -92,7 +93,9 @@ export function requestNewUser(email, userId, captcha, prefs) {
         return getHeaders(headers)
       },
       body: JSON.stringify({
-        email
+        email,
+        isRoot,
+        organisationId
       }),
       types: [
         USER_NEW_REQUEST,
@@ -123,13 +126,21 @@ export function requestNewUser(email, userId, captcha, prefs) {
   }
 }
 
-export function createUser(email, captcha) {
+export function createUser({ email, isRoot, organisationId }, captcha) {
   return (dispatch, getState) => dispatch(requestNewUserId(email))
     .then(data => {
       if (!data.error && data.payload.account && data.payload.account.id) {
         const userId = data.payload.account.id
         const { prefs } = getState()
-        return dispatch(requestNewUser(email, userId, captcha, prefs))
+        return dispatch(requestNewUser({
+          email,
+          userId,
+          isRoot,
+          organisationId
+        },
+        captcha,
+        prefs
+        ))
       }
       throw new Error(data.payload.status)
     })

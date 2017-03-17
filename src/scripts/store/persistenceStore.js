@@ -34,7 +34,11 @@ export default function persistenceHandler(next) {
             storageService.put('theme', storeState.prefs.theme)
             storageService.put('navigation', storeState.prefs.navigation)
           }
-          if (storeState.context && storeState.context.organisation.id) {
+          if (
+            storeState.context &&
+            storeState.context.organisation &&
+            storeState.context.organisation.id
+          ) {
             const organisationId = storeState.context.organisation.id
             const organisationName = storeState.context.organisation.name
             if (organisationId) {

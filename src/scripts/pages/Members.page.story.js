@@ -36,6 +36,18 @@ const initialState = {
     },
     isAuthenticated: true
   },
+  context: {
+    projectConfig: {
+      id: '1',
+      name: 'MyProject'
+    },
+    project: {
+      id: '1'
+    },
+    user: {
+      group: 'ADMIN'
+    }
+  },
   prefs: {
     version: {
       api: {

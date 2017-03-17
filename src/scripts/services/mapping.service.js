@@ -111,7 +111,9 @@ mappingService.mapUserOutput = (data) => (
     username: data.userName,
     email: data.email,
     password: data.password,
-    sshPublicKey: data.sshKeyPublic
+    sshPublicKey: data.sshKeyPublic,
+    isRoot: data.group ? data.group === 'ROOT' : false,
+    organisationId: data.organisationId || ''
   }
 )
 
