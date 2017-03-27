@@ -63,17 +63,17 @@ describe('login actions', () => {
   describe('login', () => {
     let mapAccountSpy
     let getProjectConfigAndProjectSpy
-    let eventRequestSpy
+    let eventInitSpy
 
     beforeEach(() => {
       getProjectConfigAndProjectSpy = sinon.stub().returns({
         type: 'MOCKED_GET_PROJECTCONFIG_PROJECT'
       })
       actionsRewireApi.__Rewire__('getProjectConfigAndProject', getProjectConfigAndProjectSpy)
-      eventRequestSpy = sinon.stub().returns({
+      eventInitSpy = sinon.stub().returns({
         type: 'MOCKED_EVENT_REQUEST'
       })
-      actionsRewireApi.__Rewire__('eventRequest', eventRequestSpy)
+      actionsRewireApi.__Rewire__('eventInit', eventInitSpy)
     })
 
     afterEach(() => {
@@ -84,7 +84,7 @@ describe('login actions', () => {
       actionsRewireApi.__ResetDependency__('getProjectConfigAndProject')
       actionsRewireApi.__ResetDependency__('putAuth')
       actionsRewireApi.__ResetDependency__('requestAuthentication')
-      actionsRewireApi.__ResetDependency__('eventRequest')
+      actionsRewireApi.__ResetDependency__('eventInit')
     })
 
     it('should request auth', () => {
@@ -161,7 +161,7 @@ describe('login actions', () => {
         expect(getProjectConfigAndProjectSpy).to.have.callCount(1)
         expect(historyPushSpy).to.have.callCount(1)
         expect(historyPushSpy).to.have.been.calledWith('/stacks')
-        expect(eventRequestSpy).to.have.callCount(1)
+        expect(eventInitSpy).to.have.callCount(1)
       })
     })
 
@@ -216,7 +216,7 @@ describe('login actions', () => {
         expect(requestAuthenticationSpy).to.have.callCount(1)
         expect(historyPushSpy).to.have.callCount(1)
         expect(historyPushSpy).to.have.been.calledWith('/firstProject')
-        expect(eventRequestSpy).to.have.callCount(1)
+        expect(eventInitSpy).to.have.callCount(1)
       })
     })
 
@@ -274,7 +274,7 @@ describe('login actions', () => {
         expect(getProjectConfigAndProjectSpy).to.have.callCount(0)
         expect(historyPushSpy).to.have.callCount(1)
         expect(historyPushSpy).to.have.been.calledWith('/someprotectedurl')
-        expect(eventRequestSpy).to.have.callCount(1)
+        expect(eventInitSpy).to.have.callCount(1)
       })
     })
 
@@ -331,7 +331,7 @@ describe('login actions', () => {
           expect(setAuthSpy).to.have.been.calledWith(username, password)
           expect(putAuthSpy).to.have.callCount(0)
           expect(getHeadersSpy).to.have.callCount(1)
-          expect(eventRequestSpy).to.have.callCount(0)
+          expect(eventInitSpy).to.have.callCount(0)
         })
     })
   })

@@ -172,6 +172,7 @@ export class ProjectConfigForm extends React.Component {
                     <div style={{ width: '50%' }}>
                       <Field
                         component={ Input }
+                        disabled={ submitting }
                         errorKey="project-name-label"
                         label={ formatMessage({ id: 'project-name-label' }) }
                         name="projectName"
@@ -264,7 +265,7 @@ export class ProjectConfigForm extends React.Component {
                                       this.state.brickList[`brick${brickTypeIndex}-${brickIndex}`].checked :
                                       false
                                     }
-                                    disabled={ isEmpty(this.state.brickList) }
+                                    disabled={ submitting || isEmpty(this.state.brickList) }
                                     label={
                                       <span style={{ display: 'flex', flex: '1 1 auto', flexFlow: 'row', alignItems: 'center' }}>
                                         { getBrickLogo(brick.name).image &&

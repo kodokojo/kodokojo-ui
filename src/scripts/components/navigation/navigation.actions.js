@@ -16,24 +16,24 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { browserHistory } from 'react-router'
 import Promise from 'bluebird'
 import isEmpty from 'lodash/isEmpty'
 
 import { initMenu, updateMenuPath } from '../menu/menu.actions'
+import { eventInit } from '../event/event.actions'
+import { getProjectConfigAndProject } from '../projectConfig/projectConfig.actions'
 import { initBreadcrumb, updateBreadcrumbPath } from '../breadcrumb/breadcrumb.actions'
 
 export function updateNavigation(location, state) {
   return dispatch => {
     const prevMenu = state.menu
     const prevBreadcrumb = state.breadcrumb
+    dispatch(requestBreadcrumb(location, prevBreadcrumb))
     if (isEmpty(prevMenu)) {
-      return dispatch(initMenu(location))
-        .then(data => {
-          return dispatch(requestBreadcrumb(location, prevBreadcrumb))
-        })
+      dispatch(initMenu(location))
     } else {
-      return dispatch(updateMenuPath(location))
-        .then(() => dispatch(requestBreadcrumb(location, prevBreadcrumb)))
+      dispatch(updateMenuPath(location))
     }
   }
 }
@@ -41,9 +41,40 @@ export function updateNavigation(location, state) {
 export function requestBreadcrumb(location, prevBreadcrumb) {
   return dispatch => {
     if (isEmpty(prevBreadcrumb)) {
-      return dispatch(initBreadcrumb(location))
+      dispatch(initBreadcrumb(location))
     } else {
-      return dispatch(updateBreadcrumbPath(location))
+      dispatch(updateBreadcrumbPath(location))
     }
+  }
+}
+
+export function routeToContext(routing, context) {
+  return dispatch => {
+    // if route exist before accessing login, reroute to it
+    if (
+      routing && routing.locationBeforeTransitions &&
+      routing.locationBeforeTransitions.state && routing.locationBeforeTransitions.state.nextPathname
+    ) {
+      return dispatch(eventInit())
+        .then(() => Promise.resolve(browserHistory.push(routing.locationBeforeTransitions.state.nextPathname)))
+    } else if (
+      context.projectConfig &&
+      context.projectConfig.id
+    ) {
+      if (context.project && context.project.id) {
+        // get project config and project and redirect to project
+        return dispatch(
+          getProjectConfigAndProject(context.projectConfig.id, context.project.id))
+          .then(dispatch(eventInit()))
+          .then(() => Promise.resolve(browserHistory.push('/stacks')))
+      } else {
+        // TODO second case, project config has no project id
+        // must redirect to project config stack, with a button to start it
+        return dispatch(eventInit())
+      }
+    }
+    // if no ids, redirect to first project
+    return dispatch(eventInit())
+      .then(() => Promise.resolve(browserHistory.push('/firstProject')))
   }
 }

@@ -21,11 +21,12 @@ import { routerReducer } from 'react-router-redux'
 import { reducer as formReducer } from 'redux-form'
 
 import alerts from '../components/alert/alert.reducer'
-import auth from '../components/auth/auth.reducer'
+import auth, * as fromAuth from '../components/auth/auth.reducer'
 import context from '../components/context/context.reducer'
 import breadcrumb from '../components/breadcrumb/breadcrumb.reducer'
 import bricks from '../components/brick/brick.reducer'
 import menu from '../components/menu/menu.reducer'
+import organisation from '../components/organisation/organisation.reducer'
 import db from '../components/db/db.reducer'
 import prefs, * as fromPrefs from '../components/app/app.reducer'
 import projectConfig, * as fromProjectConfig from '../components/projectConfig/projectConfig.reducer'
@@ -40,6 +41,7 @@ const rootReducer = combineReducers({
   context,
   db,
   menu,
+  organisation,
   prefs,
   projectConfig,
   event,
@@ -54,6 +56,9 @@ export default rootReducer
 
 // TODO UT
 // selectors
+// auth
+export const getAuthUserOrganisations = (state) => fromAuth.getAuthUserOrganisations(state.auth)
+
 // users
 export const getUserFromId = (userId, state) => fromUser.getUserFromId(userId, state.users)
 

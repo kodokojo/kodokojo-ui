@@ -45,6 +45,7 @@ import App from './components/app/App.component'
 import SignupPage from './pages/Signup.page'
 import LoginPage from './pages/Login.page'
 import FirstProjectPage from './pages/FirstProject.page'
+import OrganisationsPage from './pages/Organisations.page'
 import StacksPage from './pages/Stacks.page'
 import MembersPage from './pages/Members.page'
 import NotFoundPage from './pages/NotFound.page'
@@ -91,30 +92,28 @@ const initApp = () => {
             {/* User routes */}
             <Route
               component={FirstProjectPage}
-              // TODO change method to checkRightsUser when groups are implemented
-              // onEnter={authService.checkRightsUser}
-              onEnter={authService.checkAuth}
+              onEnter={authService.checkRightsUser}
               path="firstProject"
             />
             <Route
+              component={OrganisationsPage}
+              onEnter={authService.checkRightsUser}
+              path="organisations"
+            />
+            <Route
               component={StacksPage}
-              // TODO change method to checkRightsUser when groups are implemented
-              // onEnter={authService.checkRightsUser}
-              onEnter={authService.checkAuth}
+              onEnter={authService.checkRightsUser}
               path="stacks"
             />
             <Route
               component={MembersPage}
-              // TODO change method to checkRightsUser when groups are implemented
-              // onEnter={authService.checkRightsUser}
-              onEnter={authService.checkAuth}
+              onEnter={authService.checkRightsUser}
               path="members"
             />
             {/* Root routes */}
             <Route
               component={DbPage}
-              // onEnter={authService.checkRightsRoot}
-              onEnter={authService.checkAuth}
+              onEnter={authService.checkRightsRoot}
               path="db"
             />
             {/* Generic routes */}

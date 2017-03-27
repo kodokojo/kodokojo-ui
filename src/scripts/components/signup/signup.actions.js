@@ -19,7 +19,7 @@
 import { browserHistory } from 'react-router'
 
 import { setAuth, putAuth } from '../../services/auth.service'
-import { eventRequest } from '../event/event.actions'
+import { eventInit } from '../event/event.actions'
 import { createUser } from '../user/user.actions'
 import {
   ACCOUNT_NEW_REQUEST,
@@ -88,7 +88,7 @@ export function createAccount(email, captcha) {
         }
 
         // init event source and go to first project
-        return dispatch(eventRequest())
+        return dispatch(eventInit())
           .then(() => Promise.resolve(browserHistory.push('/firstProject')))
       }
       throw new Error(data.payload.status)

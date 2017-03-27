@@ -1,0 +1,104 @@
+/**
+ * Kodo Kojo - Software factory done right
+ * Copyright © 2017 Kodo Kojo (infos@kodokojo.io)
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+@import '../../../styles/meta';
+
+.organisation-container {
+  display: flex;
+  flex: 1 1 auto;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+
+.organisation {
+  display: flex;
+  flex: 0 1 220px;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+  height: 110px;
+  border-radius: $radius-standard;
+  background: $color-primary-3;
+  font-size: $font-size-larger;
+  color: $color-font-5;
+  cursor: pointer;
+  margin-bottom: $spacing-smaller;
+  margin-right: $spacing-smaller;
+  &:hover {
+    background: $color-primary-4;
+  }
+  .organisation-icon {
+    font-size: $font-size-medium;
+    margin-right: 1rem;
+  }
+}
+
+.organisation--selected {
+  background: $color-primary-4;
+}
+
+.organisation-container--form {
+  flex: 0 1 240px !important;
+}
+
+.organisation-form {
+  @extend .organisation;
+  padding: 1rem 0 0 1rem;
+  margin-bottom: 0;
+  &:hover {
+    background: $color-primary-3;
+  }
+}
+
+.organisation-actions {
+  display: flex;
+  flex-flow: row;
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  margin-top: $spacing-atomic;
+  text-align: right;
+  button {
+    &:not(:last-of-type) {
+      margin-right: $spacing-atomic;
+    }
+    &:last-of-type {
+      margin-left: 0;
+      margin-right: $spacing-smaller;
+      margin-bottom: $spacing-smaller;
+    }
+  }
+}
+
+.organisation-button {
+  @extend .organisation;
+  flex: 0 1 120px;
+  flex-flow: row wrap;
+  justify-content: center;
+  font-size: $font-size-small;
+  color: $color-font-3;
+  &:hover {
+    color: $color-font-4;
+  }
+  .organisation-icon {
+    font-size: $font-size-xlarge;
+    margin-right: 0;
+    margin-bottom: $spacing-atomic / 2;
+  }
+}
+

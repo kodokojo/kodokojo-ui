@@ -22,10 +22,8 @@ import eventSourceFactory from './eventSource.factory'
 import { mapBrickEvent } from '../services/mapping.service'
 import { updateProject } from '../components/project/project.actions'
 import {
-  eventRequest,
   eventSuccess,
-  eventFailure,
-  eventStop
+  eventFailure
 } from '../components/event/event.actions'
 import {
   EVENT_REQUEST,

@@ -76,14 +76,14 @@ describe('signup actions', () => {
       requestEventSpy = sinon.stub().returns({
         type: 'MOCKED_EVENT_REQUEST'
       })
-      actionsRewireApi.__Rewire__('eventRequest', requestEventSpy)
+      actionsRewireApi.__Rewire__('eventInit', requestEventSpy)
     })
 
     afterEach(() => {
       actionsRewireApi.__ResetDependency__('browserHistory')
       actionsRewireApi.__ResetDependency__('setAuth')
       actionsRewireApi.__ResetDependency__('putAuth')
-      actionsRewireApi.__ResetDependency__('eventRequest')
+      actionsRewireApi.__ResetDependency__('eventInit')
       actionsRewireApi.__ResetDependency__('createUser')
     })
 

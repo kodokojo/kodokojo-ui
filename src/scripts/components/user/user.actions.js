@@ -132,15 +132,13 @@ export function createUser({ email, isRoot, organisationId }, captcha) {
       if (!data.error && data.payload.account && data.payload.account.id) {
         const userId = data.payload.account.id
         const { prefs } = getState()
-        return dispatch(requestNewUser({
+        const newUser = {
           email,
           userId,
           isRoot,
           organisationId
-        },
-        captcha,
-        prefs
-        ))
+        }
+        return dispatch(requestNewUser(newUser, captcha, prefs))
       }
       throw new Error(data.payload.status)
     })

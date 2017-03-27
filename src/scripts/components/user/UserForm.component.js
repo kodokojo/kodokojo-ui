@@ -19,8 +19,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { change, Field, reduxForm, SubmissionError, propTypes, getFormValues } from 'redux-form'
-import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
+import { change, Field, reduxForm, SubmissionError, propTypes } from 'redux-form'
+import { intlShape, injectIntl } from 'react-intl'
 import classNames from 'classnames'
 
 // Component commons
@@ -177,7 +177,7 @@ export class UserForm extends React.Component {
               <div style={{ display: 'flex', flexFlow: 'column wrap', justifyContent: 'flex-start', width: '100%' }}>
                 <Field
                   component={ Input }
-                  disabled={ creation }
+                  disabled={ creation || submitting }
                   errorKey="firstname-input-label"
                   label={ formatMessage({ id: 'name-first-label' }) }
                   name="firstName"
@@ -186,7 +186,7 @@ export class UserForm extends React.Component {
                 />
                 <Field
                   component={ Input }
-                  disabled={ creation }
+                  disabled={ creation || submitting }
                   errorKey="lastname-input-label"
                   label={ formatMessage({ id: 'name-last-label' }) }
                   name="lastName"
@@ -209,6 +209,7 @@ export class UserForm extends React.Component {
               <div style={{ display: 'flex', flex: '1 1 auto', marginTop: '-28px', marginRight: '7px' }}>
                 <Field
                   component={ Dropdown }
+                  disabled={ submitting }
                   id="group"
                   name="group"
                   props={{
@@ -226,6 +227,7 @@ export class UserForm extends React.Component {
             <div className={ userTheme['user-email--form'] }>
               <Field
                 component={ Input }
+                disabled={ submitting }
                 errorKey="email-input-label"
                 hint={ formatMessage({ id: 'email-hint-label' }) }
                 label={ formatMessage({ id: 'email-label' }) }
@@ -238,7 +240,7 @@ export class UserForm extends React.Component {
             <div className={ userTheme['user-edit--form']}>
               <IconButton
                 className="iconButton"
-                disabled={ disabled }
+                disabled={ disabled || submitting }
                 icon={ <CloseIcon/> }
                 onMouseUp={ this.handleUserEditCancel }
               />
@@ -250,6 +252,7 @@ export class UserForm extends React.Component {
             <div className={ userTheme['user-sshkey--form'] }>
               <Field
                 component={ Input }
+                disabled={ submitting }
                 errorKey="sshkey-public-input-label"
                 label={ formatMessage({ id: 'sshkey-public-label' }) }
                 multiline
@@ -262,12 +265,14 @@ export class UserForm extends React.Component {
               <div style={{ display: 'flex', flexFlow: 'column wrap', justifyContent: 'flex-start', width: '100%' }}>
                 <Field
                   component={ Input }
+                  disabled={ submitting }
                   label={ formatMessage({ id: 'password-label' }) }
                   name="password"
                   type="password"
                 />
                 <Field
                   component={ Input }
+                  disabled={ submitting }
                   label={ formatMessage({ id: 'password-confirm-label' }) }
                   name="passwordConfirm"
                   type="password"

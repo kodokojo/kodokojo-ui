@@ -23,6 +23,7 @@ import {
   ACCOUNT_NEW_SUCCESS,
   AUTH_SUCCESS,
   AUTH_RESET,
+  ORGANISATION_CHANGE,
   PROJECT_CONFIG_SUCCESS,
   PROJECT_CONFIG_NEW_SUCCESS,
   PROJECT_SUCCESS,
@@ -57,6 +58,7 @@ export function contextReducerInit() {
   }
 }
 
+// TODO UT
 export default function context(state = contextReducerInit(), action) {
   if (action.type === PROJECT_CONFIG_NEW_SUCCESS || action.type === PROJECT_CONFIG_SUCCESS) {
     return {
@@ -79,6 +81,15 @@ export default function context(state = contextReducerInit(), action) {
 
   if (action.type === ACCOUNT_NEW_SUCCESS || action.type === AUTH_SUCCESS) {
     const nextContext = getNextContext(state, action.payload.account)
+
+    return {
+      ...state,
+      ...nextContext
+    }
+  }
+
+  if (action.type === ORGANISATION_CHANGE) {
+    const nextContext = getNextContext(action.prevContext, action.nextContext)
 
     return {
       ...state,

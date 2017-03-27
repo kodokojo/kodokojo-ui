@@ -40,7 +40,7 @@ mappingService.mapAccount = (data) => (
     isRoot: data.isRoot || false,
     organisations: data.organisations ?
       data.organisations.map(organisation => mappingService.mapOrganisation(organisation)) :
-      undefined
+      []
   }
 )
 
@@ -57,7 +57,7 @@ mappingService.mapOrganisation = (data) => (
     group: data.right,
     projectConfigs: data.projectConfigurations ?
       data.projectConfigurations.map((projectConfig) => mappingService.mapOrganisationProjectConfig(projectConfig)) :
-      undefined
+      []
   }
 )
 

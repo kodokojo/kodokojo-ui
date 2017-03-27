@@ -16,16 +16,36 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import api from './api.versions'
+import React from 'react'
 
-export default {
-  brick: `${api.v1}/brick`,
-  db: `${api.v1}/db`,
-  event: `${api.v1}/event`,
-  organisation: `${api.v1}/organisation`,
-  project: `${api.v1}/project`,
-  projectConfig: `${api.v1}/projectconfig`,
-  projectConfigUser: '/user',
-  user: `${api.v1}/user`,
-  version: `${api.v1}`
+// Component commons
+import FontIcon from 'kodokojo-ui-commons/src/scripts/components/fontIcon/FontIcon.component'
+
+// Component
+import organisationTheme from './organisation.scss'
+
+const OrganisationAddButton = ({
+  label,
+  onToggleForm,
+  title
+}) => (
+  <div
+    className={ organisationTheme['organisation-button'] }
+    onClick={ onToggleForm }
+    title={ title }
+  >
+    <FontIcon
+      className={ organisationTheme['organisation-icon'] }
+      value="add_circle_outline"
+    />
+    { label }
+  </div>
+)
+
+OrganisationAddButton.propTypes = {
+  label: React.PropTypes.string,
+  onToggleForm: React.PropTypes.func,
+  title: React.PropTypes.string,
 }
+
+export default OrganisationAddButton

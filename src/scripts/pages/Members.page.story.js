@@ -37,16 +37,18 @@ const initialState = {
     isAuthenticated: true
   },
   context: {
+    user: {
+      id: 'b9a7bb60b67dbfa08c95b44f5de6866d35cc493b',
+      group: 'ADMIN'
+    },
+    organisation: {
+      id: '07cf31e60e27c025a31b4db9d0118a77a0cd1008',
+      name: 'root'
+    },
     projectConfig: {
-      id: '1',
       name: 'MyProject'
     },
-    project: {
-      id: '1'
-    },
-    user: {
-      group: 'ADMIN'
-    }
+    project: {}
   },
   prefs: {
     version: {

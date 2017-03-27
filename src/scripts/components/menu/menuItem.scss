@@ -32,6 +32,9 @@ a.menu-item:link {
   user-select: none;
   cursor: pointer;
   background: $color-primary-3;
+  &:hover {
+    background: $color-primary-2;
+  }
   &.menu-item--disabled {
     pointer-events: none !important;
     cursor: default;
@@ -53,6 +56,9 @@ a.menu-item:link {
   }
   &.menu-0 {
     background: $color-primary-4;
+    &:hover {
+      background: $color-primary-5;
+    }
     .menu-label {
       color: $color-font-1;
     }

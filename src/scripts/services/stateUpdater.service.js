@@ -103,6 +103,7 @@ stateUpdaterService.filterCheckedMembers = (members) => map(members, (user, key)
   return null
 }).filter((item) => item !== null)
 
+// TODO UT
 /**
  * Return next context
  *
@@ -112,21 +113,33 @@ stateUpdaterService.filterCheckedMembers = (members) => map(members, (user, key)
  */
 stateUpdaterService.getNextContext = (prevContext, nextContext) => {
   // organisation
-  let nextOrganisation = find(nextContext.organisations, { id: prevContext.organisation.id })
+  let nextOrganisation
+  if (prevContext.organisation) {
+    nextOrganisation = find(nextContext.organisations, { id: prevContext.organisation.id })
+  }
 
   // if the saved organisation id is not in the organisations list,
   // take the first organisation in the list
-  if (!nextOrganisation && nextContext.organisations.length > 0) {
+  if (!nextOrganisation && nextContext.organisations && nextContext.organisations.length > 0) {
     nextOrganisation = nextContext.organisations[0]
   }
 
   // projectConfig
-  let nextProjectConfig = find(nextOrganisation.projectConfigs, { id: prevContext.projectConfig.id })
+  let nextProjectConfig
+  if (prevContext.projectConfigs) {
+    nextProjectConfig = find(nextOrganisation.projectConfigs, { id: prevContext.projectConfig.id })
+  }
 
   // if the saved projectConfig id is not in the projectConfigs list,
   // take the first projectConfig in the list
-  if (!nextProjectConfig) {
+  if (!nextProjectConfig && nextOrganisation.projectConfigs && nextOrganisation.projectConfigs.length > 0) {
     nextProjectConfig = nextOrganisation.projectConfigs[0]
+  }
+
+  // user
+  const nextUser = {
+    id: nextContext.id ? nextContext.id : prevContext.id,
+    name: nextContext.name ? nextContext.name : prevContext.name
   }
 
   // user group
@@ -145,8 +158,8 @@ stateUpdaterService.getNextContext = (prevContext, nextContext) => {
 
   return   {
     user: {
-      id: nextContext.id,
-      name: nextContext.name,
+      id: nextUser.id ? nextUser.id : undefined,
+      name: nextUser.name ? nextUser.name : undefined,
       group: nextUserGroup.label
     },
     organisation: {

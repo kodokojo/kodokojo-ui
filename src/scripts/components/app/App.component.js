@@ -20,6 +20,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { themr } from 'react-css-themr'
 import isEmpty from 'lodash/isEmpty'
+import isArray from 'lodash/isArray'
 
 // Component commons
 import 'kodokojo-ui-commons/src/styles/_commons.less'
@@ -38,7 +39,7 @@ import Menu from '../menu/Menu.component'
 import { getHelpEmail } from '../../commons/reducers'
 import { logout } from '../login/login.actions'
 import { nextAlert } from '../alert/alert.actions'
-import { eventRequest } from '../event/event.actions'
+import { eventInit } from '../event/event.actions'
 import {
   getApiVersion,
   getUiConfiguration,
@@ -60,14 +61,17 @@ class App extends React.Component {
       React.PropTypes.string,
       React.PropTypes.node
     ]),
-    eventRequest: React.PropTypes.func.isRequired,
+    eventInit: React.PropTypes.func.isRequired,
     getApiVersion: React.PropTypes.func.isRequired,
     getUiConfiguration: React.PropTypes.func.isRequired,
     help: React.PropTypes.string,
     isAuthenticated: React.PropTypes.bool.isRequired,
     locale: React.PropTypes.string.isRequired,
     logout: React.PropTypes.func.isRequired,
-    menu: React.PropTypes.object,
+    menu: React.PropTypes.oneOfType([
+      React.PropTypes.array,
+      React.PropTypes.object
+    ]),
     navigation: React.PropTypes.bool,
     nextAlert: React.PropTypes.func,
     setLocale: React.PropTypes.func.isRequired,
@@ -88,10 +92,10 @@ class App extends React.Component {
   }
 
   componentWillMount = () => {
-    const { isAuthenticated, eventRequest, getApiVersion, getUiConfiguration } = this.props // eslint-disable-line no-shadow
+    const { isAuthenticated, eventInit, getApiVersion, getUiConfiguration } = this.props // eslint-disable-line no-shadow
 
     if (isAuthenticated) {
-      eventRequest()
+      eventInit()
     }
 
     getApiVersion()
@@ -153,7 +157,7 @@ class App extends React.Component {
             active={ navigation }
           >
             <Menu
-              menu={ menu }
+              menu={ isArray(menu) ? menu : Object.values(menu) }
             />
           </Nav>
           <Content>
@@ -200,7 +204,7 @@ export default themr(APP)(connect(
     getUiConfiguration,
     logout,
     nextAlert,
-    eventRequest,
+    eventInit,
     setTheme,
     setLocale,
     setNavVisibility

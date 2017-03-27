@@ -63,7 +63,10 @@ export default function auth(state = authReducerInit(), action) {
   }
 
   // TODO delete password / sshKeys from state after rendering
-  if (action.type === ACCOUNT_NEW_SUCCESS || action.type === AUTH_SUCCESS) {
+  if (
+    action.type === ACCOUNT_NEW_SUCCESS ||
+    action.type === AUTH_SUCCESS
+  ) {
     return {
       ...state,
       account: action.payload.account,
@@ -141,4 +144,11 @@ export default function auth(state = authReducerInit(), action) {
   }
 
   return state
+}
+
+export const getAuthUserOrganisations = (state) => {
+  if (state.account && state.account.organisations) {
+    return state.account.organisations
+  }
+  return []
 }

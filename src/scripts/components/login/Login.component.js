@@ -91,18 +91,20 @@ export class Login extends React.Component {
                 onSubmit={ handleSubmit(this.handleSubmitLogin) }
           >
             <Field
-                component={ Input }
-                errorKey="username-label"
-                hint={ formatMessage({ id: 'username-hint-label' }) }
-                icon="account_box"
-                id="username"
-                label={ formatMessage({ id: 'username-label' }) }
-                name="username"
-                required
-                type="text"
+              component={ Input }
+              disabled={ submitting }
+              errorKey="username-label"
+              hint={ formatMessage({ id: 'username-hint-label' }) }
+              icon="account_box"
+              id="username"
+              label={ formatMessage({ id: 'username-label' }) }
+              name="username"
+              required
+              type="text"
             />
             <Field
               component={ Input }
+              disabled={ submitting }
               errorKey="password-label"
               icon="lock_open"
               id="password"
@@ -112,11 +114,11 @@ export class Login extends React.Component {
               type="password"
             />
             <Button
-                disabled={ submitting }
-                label={ formatMessage({ id: 'login-label' }) }
-                primary
-                title={ formatMessage({ id: 'login-label' }) }
-                type="submit"
+              disabled={ submitting }
+              label={ formatMessage({ id: 'login-label' }) }
+              primary
+              title={ formatMessage({ id: 'login-label' }) }
+              type="submit"
             />
           </form>
         }

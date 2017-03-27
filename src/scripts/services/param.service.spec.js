@@ -258,7 +258,7 @@ describe('param service', () => {
           const menu = paramService.getMenu()
 
           // Then
-          expect(Object.keys(menu).length).to.equal(4)
+          expect(Object.keys(menu).length).to.equal(5)
         })
       })
 

@@ -107,10 +107,16 @@ paramService.getBrickLogo = (name) => (
 // menu params
 paramService.getMenu = () => (
   {
+    // organisations menu
+    organisations: {
+      labelKey: 'organisations-label',
+      level: 0,
+      route: '/organisations',
+      titleText: 'organisations-title-label'
+    },
     // projects menu
-    0: {
+    projects: {
       disabled: true,
-      index: 0,
       labelKey: 'projects-label',
       level: 0,
       // TODO change to real route when page is done
@@ -118,25 +124,22 @@ paramService.getMenu = () => (
       titleText: 'disabled because projects page does not exist'
     },
     // current project name
-    1: {
-      index: 1,
+    project: {
       disabled: true,
       labelText: '',
       titleText: ''
     },
     // current project stacks menu
-    2: {
+    stacks: {
       active: false,
-      index: 2,
       labelKey: 'stacks-label',
       level: 1,
       route: '/stacks',
       titleKey: 'stacks-label'
     },
     // current project members menu
-    3: {
+    members: {
       active: false,
-      index: 3,
       labelKey: 'members-label',
       level: 2,
       route: '/members',
@@ -159,6 +162,13 @@ paramService.enumBreadcrumb = {
   signup: {
     route: '/signup',
     hidden: true
+  },
+  organisations: {
+    route: '/organisations',
+    root: true,
+    labelKey: 'organisations-label',
+    titleKey: 'organisations-label',
+    disabled: true
   },
   projects: {
     labelKey: 'projects-label',
@@ -248,6 +258,14 @@ paramService.getBreadcrumb = ({
   if (breadcrumb.menu && breadcrumb.menu.hidden) {
     return []
   }
+
+  // if the organisation is root, return only the organisation
+  if (breadcrumb.menu && breadcrumb.menu.root) {
+    return [
+      paramService.enumBreadcrumb['organisations']
+    ]
+  }
+
   // else filter empty items
   return filter([
     breadcrumb.organisation,

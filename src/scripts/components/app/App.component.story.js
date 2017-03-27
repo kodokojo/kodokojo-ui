@@ -49,15 +49,15 @@ const initialState = {
       }
     }
   },
-  menu: {
-    0: {
+  menu: [
+    {
       index: 0,
       labelKey: 'projects-label',
       level: 0,
       route: '#projects',
       titleKey: 'projects-label'
     }
-  }
+  ]
 }
 
 const initialStateNoNav = initialState

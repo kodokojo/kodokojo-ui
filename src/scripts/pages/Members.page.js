@@ -66,7 +66,8 @@ export class MembersPage extends React.Component {
     projectConfigId: React.PropTypes.string,
     projectId: React.PropTypes.string,
     setNavVisibility: React.PropTypes.func.isRequired,
-    updateUser: React.PropTypes.func.isRequired
+    updateUser: React.PropTypes.func.isRequired,
+    userGroup: React.PropTypes.string
   }
 
   constructor(props) {
@@ -103,7 +104,6 @@ export class MembersPage extends React.Component {
     // NB this method triggers false react setState warnings on dev mode due to webpack dev server
     // but fortunately, this warnings are not thrown in production mode
     this.setState({
-      ...this.state,
       isUserFormAddActive: !this.state.isUserFormAddActive
     })
   }
@@ -179,7 +179,7 @@ export class MembersPage extends React.Component {
   }
 
   render() {
-    const { aggregatedStackStatus, members } = this.props // eslint-disable-line no-shadow
+    const { aggregatedStackStatus, members, userGroup } = this.props // eslint-disable-line no-shadow
     const { formatMessage } = this.props.intl
 
     const userClasses = classNames(userTheme.user, userTheme['user-header'])
@@ -201,13 +201,13 @@ export class MembersPage extends React.Component {
               <FormattedMessage id={'members-disabled-add-label'} />
             </div>
             }
-            { authService.hasRights('TEAM_LEADER') &&
+            { authService.hasRights('TEAM_LEADER', userGroup) &&
               <UserAddButton
                 disabled={
                   (aggregatedStackStatus && aggregatedStackStatus.label !== 'RUNNING' ||
                   this.state.isUserFormEditActive)
                 }
-                label={ formatMessage({ id: 'add-member-label' }) }
+                label={ formatMessage({ id: 'member-add-label' }) }
                 onToggleForm={ this.handleToggleMemberAdd }
               />
             }
@@ -325,7 +325,8 @@ const mapStateProps = (state) => (
     projectConfigId: state.context.projectConfig.id,
     projectId: state.context.project.id,
     members: state.projectConfig.users,
-    aggregatedStackStatus: getAggregatedStackStatus(state)
+    aggregatedStackStatus: getAggregatedStackStatus(state),
+    userGroup: state.context.user.group
   }
 )
 

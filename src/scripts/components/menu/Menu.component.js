@@ -30,7 +30,7 @@ import MenuItem from './MenuItem.component'
 export class Menu extends React.Component {
 
   static propTypes = {
-    menu: React.PropTypes.object
+    menu: React.PropTypes.array
   }
 
   render() {
@@ -38,12 +38,11 @@ export class Menu extends React.Component {
 
     return (
       <nav role="navigation">
-        { Object.keys(menu).length > 0 &&
-          sortBy(menu, ['index']).map((menuItem, index) => (
+        { menu.length > 0 &&
+          menu.map((menuItem, index) => (
             <MenuItem
               active={ menuItem.active }
               disabled={ menuItem.disabled }
-              index={ menuItem.index }
               key={ index }
               labelKey={ menuItem.labelKey }
               labelText={ menuItem.labelText }

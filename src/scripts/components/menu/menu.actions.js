@@ -16,7 +16,7 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import find from 'lodash/find'
+import findKey from 'lodash/findKey'
 import filter from 'lodash/filter'
 import cloneDeep from 'lodash/cloneDeep'
 import {
@@ -37,15 +37,15 @@ export function updateMenuProject(projectName) {
   return (dispatch, getState) => {
     const nextMenu = cloneDeep(getState().menu)
 
-    nextMenu[1].labelText = projectName
-    nextMenu[1].titleText = projectName
+    nextMenu['project'].labelText = projectName
+    nextMenu['project'].titleText = projectName
     return dispatch(updateMenu(nextMenu))
   }
 }
 
 export function updateMenuPath(path) {
   return (dispatch, getState) => {
-    const nextMenu = getState().menu
+    let nextMenu = getState().menu
 
     // inactive all menu items
     const menuItems = Object.keys(nextMenu)
@@ -56,13 +56,14 @@ export function updateMenuPath(path) {
     })
 
     // active menu item
-    const selectedSubMenu = find(nextMenu, { route: path })
-    if (selectedSubMenu) {
-      nextMenu[selectedSubMenu.index].active = true
+    const selectedKey = findKey(nextMenu, { route: path })
+    if (selectedKey) {
+      const nextMenuSelectedItem = nextMenu[selectedKey]
+      nextMenuSelectedItem.active = true
 
-      // if selected menu is root, remove all other menu items
-      if (selectedSubMenu.index === 0) {
-        filter(nextMenu, (menuItem) => menuItem.index === 0)
+      // if selected menu is level 0, remove all other menu items
+      if (nextMenuSelectedItem.level === 0) {
+        nextMenu = filter(nextMenu, (menuItem) => menuItem.level === 0)
       }
     }
 

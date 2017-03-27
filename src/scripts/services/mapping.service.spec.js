@@ -64,7 +64,7 @@ describe('mapping service', () => {
         sshKeyPublic: 'sshPublicKey',
         sshKeyPrivate: 'privateKey',
         isRoot: false,
-        organisations: undefined
+        organisations: []
       })
       expect(mapOrganisationSpy).to.have.callCount(0)
     })
@@ -123,7 +123,7 @@ describe('mapping service', () => {
         id: 'identifier',
         name: 'name',
         group: 'RIGHT',
-        projectConfigs: undefined
+        projectConfigs: []
       })
       expect(mapOrganisationProjectConfigSpy).to.have.callCount(0)
     })

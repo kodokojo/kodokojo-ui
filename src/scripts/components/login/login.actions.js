@@ -27,7 +27,7 @@ import storageService from '../../services/storage.service'
 import ioService from '../../services/io.service'
 import { mapAccount } from '../../services/mapping.service'
 import { getProjectConfigAndProject } from '../projectConfig/projectConfig.actions'
-import { eventRequest, eventStop } from '../event/event.actions'
+import { eventInit, eventStop } from '../event/event.actions'
 import { newAlert } from '../alert/alert.actions'
 import crispService from '../../services/crisp.service'
 import {
@@ -70,26 +70,29 @@ export function login(username, password) {
   return (dispatch, getState) => dispatch(requestAuthentication())
     .then(data => {
       if (!data.error) {
-        const { prefs, routing } = getState()
+        const { prefs, routing, context } = getState()
 
         // put auth
         authService.putAuth(data.payload.account)
 
         // TODO UT
         // optional feature
-        if (prefs && prefs.configuration && prefs.configuration.ui && prefs.configuration.ui.CRISP) {
+        if (
+          prefs &&
+          prefs.configuration &&
+          prefs.configuration.ui &&
+          prefs.configuration.ui.CRISP
+        ) {
           // put user in scrip
           crispService.putUser(data.payload.account)
         }
-
-        const context = getState().context
 
         // if route exist before accessing login, reroute to it
         if (
           routing && routing.locationBeforeTransitions &&
           routing.locationBeforeTransitions.state && routing.locationBeforeTransitions.state.nextPathname
         ) {
-          return dispatch(eventRequest())
+          return dispatch(eventInit())
             .then(() => Promise.resolve(browserHistory.push(routing.locationBeforeTransitions.state.nextPathname)))
         } else if (
           context.projectConfig &&
@@ -99,16 +102,16 @@ export function login(username, password) {
             // get project config and project and redirect to project
             return dispatch(
               getProjectConfigAndProject(context.projectConfig.id, context.project.id))
-                .then(dispatch(eventRequest()))
+                .then(dispatch(eventInit()))
                 .then(() => Promise.resolve(browserHistory.push('/stacks')))
           } else {
             // TODO second case, project config has no project id
             // must redirect to project config stack, with a button to start it
-            return dispatch(eventRequest())
+            return dispatch(eventInit())
           }
         }
         // if no ids, redirect to first project
-        return dispatch(eventRequest())
+        return dispatch(eventInit())
           .then(() => Promise.resolve(browserHistory.push('/firstProject')))
       }
       throw new Error(data.payload.status)

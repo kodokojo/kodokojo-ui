@@ -32,8 +32,12 @@ storageService.clear = (scope = 'local') => window[`${scope}Storage`].clear()
 
 // TODO UT
 storageService.clean = () => {
+  storageService.remove('organisationId', 'local')
+  storageService.remove('organisationName', 'local')
   storageService.remove('projectConfigId', 'local')
+  storageService.remove('projectConfigName', 'local')
   storageService.remove('projectId', 'local')
+  storageService.remove('projectName', 'local')
 }
 
 // public API

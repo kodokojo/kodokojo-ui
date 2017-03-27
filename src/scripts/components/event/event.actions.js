@@ -29,6 +29,17 @@ export function eventRequest() {
   }
 }
 
+export function eventInit() {
+  return dispatch => dispatch(eventRequest())
+    .then(data => {
+      if (!data.error) {
+        // ok
+      } else {
+        // if 401, stop event
+      }
+    })
+}
+
 export function eventSuccess() {
   return {
     type: EVENT_SUCCESS
