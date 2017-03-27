@@ -40,7 +40,8 @@ The UI is tested on Firefox and Chrome
 
 | [<img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/firefox.png" alt="Firefox" width="16px" height="16px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/chrome.png" alt="Chrome" width="16px" height="16px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/godban/browsers-support-badges/master/src/images/safari.png" alt="Safari" width="16px" height="16px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
 | --------- | --------- | --------- |
-| last version| last version| last version
+| last version| last version| last version    
+
 <sub><sub>thanks to @godban for the badge generator</sup></sub>
 
 ## Configuration
