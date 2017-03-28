@@ -48,6 +48,7 @@ export function requestBreadcrumb(location, prevBreadcrumb) {
   }
 }
 
+// TODO UT
 export function routeToContext(routing, context) {
   return dispatch => {
     // if route exist before accessing login, reroute to it

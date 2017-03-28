@@ -26,9 +26,9 @@ import authService from '../../services/auth.service'
 import storageService from '../../services/storage.service'
 import ioService from '../../services/io.service'
 import { mapAccount } from '../../services/mapping.service'
-import { getProjectConfigAndProject } from '../projectConfig/projectConfig.actions'
-import { eventInit, eventStop } from '../event/event.actions'
+import { eventStop } from '../event/event.actions'
 import { newAlert } from '../alert/alert.actions'
+import { routeToContext } from '../navigation/navigation.actions'
 import crispService from '../../services/crisp.service'
 import {
   AUTH_REQUEST,
@@ -87,32 +87,8 @@ export function login(username, password) {
           crispService.putUser(data.payload.account)
         }
 
-        // if route exist before accessing login, reroute to it
-        if (
-          routing && routing.locationBeforeTransitions &&
-          routing.locationBeforeTransitions.state && routing.locationBeforeTransitions.state.nextPathname
-        ) {
-          return dispatch(eventInit())
-            .then(() => Promise.resolve(browserHistory.push(routing.locationBeforeTransitions.state.nextPathname)))
-        } else if (
-          context.projectConfig &&
-          context.projectConfig.id
-        ) {
-          if (context.project && context.project.id) {
-            // get project config and project and redirect to project
-            return dispatch(
-              getProjectConfigAndProject(context.projectConfig.id, context.project.id))
-                .then(dispatch(eventInit()))
-                .then(() => Promise.resolve(browserHistory.push('/stacks')))
-          } else {
-            // TODO second case, project config has no project id
-            // must redirect to project config stack, with a button to start it
-            return dispatch(eventInit())
-          }
-        }
-        // if no ids, redirect to first project
-        return dispatch(eventInit())
-          .then(() => Promise.resolve(browserHistory.push('/firstProject')))
+        // route user depending of context
+        return dispatch(routeToContext(routing, context))
       }
       throw new Error(data.payload.status)
     })

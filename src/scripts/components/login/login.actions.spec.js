@@ -62,18 +62,13 @@ describe('login actions', () => {
 
   describe('login', () => {
     let mapAccountSpy
-    let getProjectConfigAndProjectSpy
-    let eventInitSpy
+    let routeToContextSpy
 
     beforeEach(() => {
-      getProjectConfigAndProjectSpy = sinon.stub().returns({
-        type: 'MOCKED_GET_PROJECTCONFIG_PROJECT'
+      routeToContextSpy = sinon.stub().returns({
+        type: 'MOCKED_ROUTE_CONTEXT_EVENT'
       })
-      actionsRewireApi.__Rewire__('getProjectConfigAndProject', getProjectConfigAndProjectSpy)
-      eventInitSpy = sinon.stub().returns({
-        type: 'MOCKED_EVENT_REQUEST'
-      })
-      actionsRewireApi.__Rewire__('eventInit', eventInitSpy)
+      actionsRewireApi.__Rewire__('routeToContext', routeToContextSpy)
     })
 
     afterEach(() => {
@@ -84,7 +79,7 @@ describe('login actions', () => {
       actionsRewireApi.__ResetDependency__('getProjectConfigAndProject')
       actionsRewireApi.__ResetDependency__('putAuth')
       actionsRewireApi.__ResetDependency__('requestAuthentication')
-      actionsRewireApi.__ResetDependency__('eventInit')
+      actionsRewireApi.__ResetDependency__('routeToContext')
     })
 
     it('should request auth', () => {
@@ -115,10 +110,7 @@ describe('login actions', () => {
           meta: undefined
         },
         {
-          type: 'MOCKED_GET_PROJECTCONFIG_PROJECT'
-        },
-        {
-          type: 'MOCKED_EVENT_REQUEST'
+          type: 'MOCKED_ROUTE_CONTEXT_EVENT'
         }
       ]
       const headers = {
@@ -158,10 +150,7 @@ describe('login actions', () => {
         expect(putAuthSpy).to.have.callCount(1)
         expect(putAuthSpy).to.have.been.calledWith(account)
         expect(getHeadersSpy).to.have.callCount(1)
-        expect(getProjectConfigAndProjectSpy).to.have.callCount(1)
-        expect(historyPushSpy).to.have.callCount(1)
-        expect(historyPushSpy).to.have.been.calledWith('/stacks')
-        expect(eventInitSpy).to.have.callCount(1)
+        expect(routeToContextSpy).to.have.callCount(1)
       })
     })
 
@@ -192,7 +181,7 @@ describe('login actions', () => {
           }
         },
         {
-          type: 'MOCKED_EVENT_REQUEST'
+          type: 'MOCKED_ROUTE_CONTEXT_EVENT'
         }
       ]
 
@@ -214,9 +203,7 @@ describe('login actions', () => {
         expect(putAuthSpy).to.have.been.calledWith(account)
         expect(getHeadersSpy).to.have.not.been.called
         expect(requestAuthenticationSpy).to.have.callCount(1)
-        expect(historyPushSpy).to.have.callCount(1)
-        expect(historyPushSpy).to.have.been.calledWith('/firstProject')
-        expect(eventInitSpy).to.have.callCount(1)
+        expect(routeToContextSpy).to.have.callCount(1)
       })
     })
 
@@ -247,7 +234,7 @@ describe('login actions', () => {
           }
         },
         {
-          type: 'MOCKED_EVENT_REQUEST'
+          type: 'MOCKED_ROUTE_CONTEXT_EVENT'
         }
       ]
 
@@ -271,10 +258,7 @@ describe('login actions', () => {
         expect(putAuthSpy).to.have.been.calledWith(account)
         expect(getHeadersSpy).to.have.not.been.called
         expect(requestAuthenticationSpy).to.have.callCount(1)
-        expect(getProjectConfigAndProjectSpy).to.have.callCount(0)
-        expect(historyPushSpy).to.have.callCount(1)
-        expect(historyPushSpy).to.have.been.calledWith('/someprotectedurl')
-        expect(eventInitSpy).to.have.callCount(1)
+        expect(routeToContextSpy).to.have.callCount(1)
       })
     })
 
@@ -331,7 +315,7 @@ describe('login actions', () => {
           expect(setAuthSpy).to.have.been.calledWith(username, password)
           expect(putAuthSpy).to.have.callCount(0)
           expect(getHeadersSpy).to.have.callCount(1)
-          expect(eventInitSpy).to.have.callCount(0)
+          expect(routeToContextSpy).to.have.callCount(0)
         })
     })
   })
