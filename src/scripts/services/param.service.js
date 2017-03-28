@@ -21,10 +21,14 @@ import filter from 'lodash/filter'
 import isEmpty from 'lodash/isEmpty'
 
 // status
-// import statusDefault from 'kodokojo-ui-commons/src/images/status-default-small.svg'
-import statusStarting from 'kodokojo-ui-commons/src/images/status-starting-small.gif'
-import statusRunning from 'kodokojo-ui-commons/src/images/status-running-small.svg'
-import statusFailure from 'kodokojo-ui-commons/src/images/status-failure-small.svg'
+// import statusDefaultSmall from 'kodokojo-ui-commons/src/images/status-default-small.svg'
+import statusStartingSmall from 'kodokojo-ui-commons/src/images/status-starting-small.gif'
+import statusRunningSmall from 'kodokojo-ui-commons/src/images/status-running-small.svg'
+import statusFailureSmall from 'kodokojo-ui-commons/src/images/status-failure-small.svg'
+// import statusDefaultBig from 'kodokojo-ui-commons/src/images/status-default-big.svg'
+import statusStartingBig from 'kodokojo-ui-commons/src/images/status-starting-big.svg'
+import statusRunningBig from 'kodokojo-ui-commons/src/images/status-running-big.svg'
+import statusFailureBig from 'kodokojo-ui-commons/src/images/status-failure-big.svg'
 
 // bricks
 import brickGitlab from 'kodokojo-ui-commons/src/images/brick-gitlab.svg'
@@ -39,28 +43,43 @@ paramService.enumStatus = {
   FAILURE: {
     order: 0,
     label: 'ONFAILURE',
-    image: statusFailure
+    image: {
+      small: statusFailureSmall,
+      big: statusFailureBig
+    }
   },
   UNKNOWN: {
     order: 1,
     label: 'UNKNOWN',
     // FIXME to prove that something is running, default status as been replace by starting until best idea
-    image: statusStarting
+    image: {
+      small: statusStartingSmall,
+      big: statusStartingBig
+    }
   },
   STARTING: {
     order: 2,
     label: 'STARTING',
-    image: statusStarting
+    image: {
+      small: statusStartingSmall,
+      big: statusStartingBig
+    }
   },
   CONFIGURING: {
     order: 3,
     label: 'CONFIGURING',
-    image: statusStarting
+    image: {
+      small: statusStartingSmall,
+      big: statusStartingBig
+    }
   },
   RUNNING: {
     order: 4,
     label: 'RUNNING',
-    image: statusRunning
+    image: {
+      small: statusRunningSmall,
+      big: statusRunningBig
+    }
   }
   // ALLREADYEXIST: {
   //   label: 'exist',

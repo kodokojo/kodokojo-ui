@@ -1,0 +1,100 @@
+@import '../../../styles/meta';
+
+.projectConfig-container {
+  display: flex;
+  flex: 1 1 auto;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+
+.projectConfig {
+  display: flex;
+  flex: 1 0 220px;
+  flex-flow: column nowrap;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 170px;
+  border-radius: $radius-standard;
+  background: $color-primary-3;
+  cursor: pointer;
+  margin-bottom: $spacing-smaller;
+  margin-right: $spacing-smaller;
+  &:hover {
+    background: $color-primary-4;
+    .projectConfig-info {
+      background: $color-primary-3;
+      .info-users {
+        .users-icon {
+          color: $color-primary-4;
+        }
+      }
+    }
+  }
+
+  .projectConfig-header {
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: row wrap;
+    align-items: flex-end;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 90px;
+    padding: 1rem;
+    font-size: $font-size-larger;
+    color: $color-font-5;
+  }
+
+  .projectConfig-info {
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    min-height: 50px;
+    width: 100%;
+    padding: 1rem;
+    background: $color-primary-2;
+
+    .info-status {
+      display: flex;
+      flex: 1 1 auto;
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+
+    .info-users {
+      display: flex;
+      flex: 1 1 auto;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: $font-size-larger;
+      font-weight: $font-weight-bold;
+      color: $color-font-3;
+
+      .users-icon {
+        font-size: $font-size-larger;
+        color: $color-primary-3;
+      }
+    }
+  }
+
+  .projectConfig-footer {
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    width: 100%;
+    height: 50px;
+    min-height: 50px;
+    font-size: $font-size-normal;
+    color: $color-font-5;
+  }
+
+  .projectConfig--selected {
+    background: $color-primary-4;
+  }
+
+}

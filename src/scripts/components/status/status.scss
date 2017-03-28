@@ -18,12 +18,22 @@
 
 @import '../../../styles/meta';
 
-img.status {
-  width: 26px;
-  height: 17px;
+%status {
   opacity: 0;
   transition: opacity .7s ease-out;
   vertical-align: sub;
+}
+
+img.status--small {
+  @extend %status;
+  width: 26px;
+  height: 17px;
+}
+
+img.status--big {
+  @extend %status;
+  width: 40px;
+  height: 40px;
 }
 
 img.status--loaded {

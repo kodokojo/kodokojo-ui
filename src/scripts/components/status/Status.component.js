@@ -27,20 +27,26 @@ export class Status extends React.Component {
 
   static propTypes = {
     intl: intlShape.isRequired,
-    state: React.PropTypes.string
+    size: React.PropTypes.oneOf(['small', 'big']),
+    state: React.PropTypes.oneOf(['UNKNOWN', 'STARTING', 'CONFIGURING', 'ONFAILURE', 'RUNNING'])
+  }
+
+  static defaultProps = {
+    size: 'small',
+    state: 'UNKNOWN'
   }
 
   render() {
-    const { state } = this.props
+    const { state, size } = this.props
     const { formatMessage } = this.props.intl
 
     const status = getStatusByState(state)
 
     return (
       <img
-        className={ statusTheme.status }
+        className={ statusTheme[`status--${size}`] }
         onLoad={ (e) => e.target.classList.add(statusTheme['status--loaded']) }
-        src={ status.image }
+        src={ status.image[size] }
         title={ formatMessage({ id: `status-${status.label}-label` }) }
       />
     )
