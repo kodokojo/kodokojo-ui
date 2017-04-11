@@ -24,6 +24,7 @@ import { getHeaders } from '../../services/io.service'
 import { mapProject } from '../../services/mapping.service'
 import { newAlert } from '../alert/alert.actions'
 import {
+  PROJECT_CHANGE,
   PROJECT_REQUEST,
   PROJECT_SUCCESS,
   PROJECT_FAILURE,
@@ -63,6 +64,7 @@ export function getProject(projectId) {
   return dispatch => dispatch(fetchProject(projectId))
     .then(data => {
       if (!data.error) {
+        dispatch(updateProjectContext(data.payload.project))
         return Promise.resolve(data)
       }
       throw new Error(data.payload.status)
@@ -100,7 +102,7 @@ export function requestNewProject(projectConfigId) {
 }
 
 export function createProject(projectConfigId) {
-  return dispatch => dispatch(requestNewProject(projectConfigId))
+  return (dispatch, getState) => dispatch(requestNewProject(projectConfigId))
     .then(data => {
       if (!data.error) {
         // TODO update UT
@@ -128,3 +130,24 @@ export function updateProject(event) {
     payload: event
   }
 }
+
+export function changeProject(project) {
+  return {
+    type: PROJECT_CHANGE,
+    project
+  }
+}
+
+export function updateProjectContext(project) {
+  return (dispatch, getState) => dispatch(changeProject(project))
+    .then(data => {
+      if (!data.error) {
+        return Promise.resolve(data)
+      }
+      throw new Error(data.payload.status)
+    })
+    .catch(error => {
+      throw new Error(error.message || error)
+    })
+}
+

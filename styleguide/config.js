@@ -11,6 +11,7 @@ function loadStories() {
   require('../src/scripts/components/projectConfig/ProjectConfig.component.story')
   require('../src/scripts/pages/FirstProject.page.story')
   require('../src/scripts/pages/Organisations.page.story')
+  require('../src/scripts/pages/ProjectConfigs.page.story')
   require('../src/scripts/pages/Signup.page.story')
   require('../src/scripts/pages/Login.page.story')
   require('../src/scripts/pages/Members.page.story')

@@ -20,7 +20,6 @@ import findKey from 'lodash/findKey'
 import filter from 'lodash/filter'
 import cloneDeep from 'lodash/cloneDeep'
 import {
-  MENU_INIT,
   MENU_UPDATE
 } from '../../commons/constants'
 
@@ -37,15 +36,22 @@ export function updateMenuProject(projectName) {
   return (dispatch, getState) => {
     const nextMenu = cloneDeep(getState().menu)
 
-    nextMenu['project'].labelText = projectName
-    nextMenu['project'].titleText = projectName
-    return dispatch(updateMenu(nextMenu))
+    if (nextMenu['project']) {
+      nextMenu['project'].labelText = projectName
+      nextMenu['project'].titleText = projectName
+      return dispatch(updateMenu(nextMenu))
+    }
+
+    return Promise.resolve()
   }
 }
 
 export function updateMenuPath(path) {
-  return (dispatch, getState) => {
-    let nextMenu = getState().menu
+  return dispatch => {
+    let nextMenu = cloneDeep(getMenu())
+
+    // active menu item
+    const selectedKey = findKey(nextMenu, { route: path })
 
     // inactive all menu items
     const menuItems = Object.keys(nextMenu)
@@ -55,8 +61,6 @@ export function updateMenuPath(path) {
       }
     })
 
-    // active menu item
-    const selectedKey = findKey(nextMenu, { route: path })
     if (selectedKey) {
       const nextMenuSelectedItem = nextMenu[selectedKey]
       nextMenuSelectedItem.active = true
@@ -69,21 +73,4 @@ export function updateMenuPath(path) {
 
     return dispatch(updateMenu(nextMenu))
   }
-}
-
-export function initMenuDefault() {
-  return {
-    type: MENU_INIT,
-    menu: getMenu()
-  }
-}
-
-export function initMenu(location) {
-  return dispatch => dispatch(initMenuDefault())
-    .then(data => {
-      if (location) {
-        return dispatch(updateMenuPath(location))
-      }
-      return Promise.resolve(data)
-    })
 }

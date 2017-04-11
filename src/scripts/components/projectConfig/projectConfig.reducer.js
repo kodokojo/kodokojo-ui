@@ -16,10 +16,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import findIndex from 'lodash/findIndex'
+
 import storageService from '../../services/storage.service'
 import { updateBricks, computeAggregatedStackStatus, removeUsers } from '../../services/stateUpdater.service'
 import {
   AUTH_RESET,
+  ORGANISATION_CHANGE,
   PROJECT_CONFIG_REQUEST,
   PROJECT_CONFIG_SUCCESS,
   PROJECT_CONFIG_FAILURE,
@@ -37,37 +40,60 @@ import {
 } from '../../commons/constants'
 
 export function projectConfigReducerInit() {
-  const initialState = {
-    id: storageService.get('projectConfigId'),
-    isFetching: false
+  let initialState
+  const initialProjectConfig = {
+    id: storageService.get('projectConfigId')
   }
   const project = {
     id: storageService.get('projectId')
   }
   if (project.id) {
-    initialState.project = project
+    initialProjectConfig.project = project
   }
-
-  return initialState
+  if (initialProjectConfig && initialProjectConfig.id) {
+    initialState = {
+      [initialProjectConfig.id]: initialProjectConfig
+    }
+  }
+  return {
+    list: {
+      ...initialState
+    },
+    isFetching: false
+  }
 }
 
 export default function projectConfig(state = projectConfigReducerInit(), action) {
-  if (action.type === PROJECT_CONFIG_NEW_REQUEST || action.type === PROJECT_CONFIG_REQUEST) {
+  if (
+    action.type === PROJECT_CONFIG_NEW_REQUEST ||
+    action.type === PROJECT_CONFIG_REQUEST
+  ) {
     return {
       ...state,
       isFetching: true
     }
   }
 
-  if (action.type === PROJECT_CONFIG_NEW_SUCCESS || action.type === PROJECT_CONFIG_SUCCESS) {
+  if (
+    action.type === PROJECT_CONFIG_NEW_SUCCESS ||
+    action.type === PROJECT_CONFIG_SUCCESS
+  ) {
+    const projectConfig = action.payload.projectConfig
+
     return {
       ...state,
-      ...action.payload.projectConfig,
+      list: {
+        ...state.list,
+        [projectConfig.id]: projectConfig
+      },
       isFetching: false
     }
   }
 
-  if (action.type === PROJECT_CONFIG_NEW_FAILURE || action.type === PROJECT_CONFIG_FAILURE) {
+  if (
+    action.type === PROJECT_CONFIG_NEW_FAILURE ||
+    action.type === PROJECT_CONFIG_FAILURE
+  ) {
     // TODO
     return {
       ...state,
@@ -106,12 +132,21 @@ export default function projectConfig(state = projectConfigReducerInit(), action
 
   if (action.type === PROJECT_CONFIG_DELETE_USERS_SUCCESS) {
     let users
-    if (state && state.users) {
-      users = removeUsers(state.users, action.payload.usersToDelete)
+    const projectConfig = state.list[action.payload.projectConfigId]
+
+    if (projectConfig && projectConfig.users) {
+      users = removeUsers(projectConfig.users, action.payload.usersToDelete)
     }
+
     return {
       ...state,
-      users,
+      list: {
+        ...state.list,
+        [projectConfig.id]: {
+          ...projectConfig,
+          users
+        }
+      },
       isFetching: false
     }
   }
@@ -126,65 +161,121 @@ export default function projectConfig(state = projectConfigReducerInit(), action
 
   if (action.type === PROJECT_SUCCESS) {
     let bricks
-    if (action.payload.project && action.payload.project.stacks && action.payload.project.stacks[0] && action.payload.project.stacks[0].bricks) {
-      bricks = updateBricks(state.stacks[0].bricks, action.payload.project.stacks[0].bricks)
+    const projectConfig = state.list[action.payload.project.projectConfigId]
+
+    if (
+      projectConfig &&
+      action.payload.project &&
+      action.payload.project.stacks &&
+      action.payload.project.stacks[0] &&
+      action.payload.project.stacks[0].bricks
+    ) {
+      bricks = updateBricks(projectConfig.stacks[0].bricks, action.payload.project.stacks[0].bricks)
     }
+
     return {
       ...state,
-      project: {
-        id: action.payload.project.id,
-        updateDate: action.payload.project.updateDate
-      },
-      stacks: [
-        {
-          bricks
+      list: {
+        ...state.list,
+        [projectConfig.id]: {
+          ...projectConfig,
+          project: {
+            id: action.payload.project.id,
+            updateDate: action.payload.project.updateDate
+          },
+          stacks: [
+            {
+              bricks
+            }
+          ]
         }
-      ],
+      },
       isFetching: false
     }
   }
 
-  if (action.type === PROJECT_UPDATE && action.payload.brick.type !== 'LOADBALANCER') {
-    const bricks = updateBricks(state.stacks[0].bricks, [action.payload.brick])
+  if (
+    action.type === PROJECT_UPDATE &&
+    action.payload.brick.type !== 'LOADBALANCER'
+  ) {
+    let bricks
+    const projectConfigId = action.payload.brick.projectConfigId
+    const projectConfig = state.list[projectConfigId]
+
+    if (projectConfig && projectConfig.stacks && projectConfig.stacks[0]) {
+      bricks = updateBricks(projectConfig.stacks[0].bricks, [action.payload.brick])
+    }
+
     return {
       ...state,
-      stacks: [
-        {
-          bricks
+      list: {
+        ...state.list,
+        [projectConfigId]: {
+          ...state.list[projectConfigId],
+          stacks: [
+            {
+              ...state.list[projectConfigId].stacks[0],
+              bricks
+            }
+          ]
         }
-      ],
+      },
       isFetching: false
+    }
+  }
+
+  if (action.type === ORGANISATION_CHANGE) {
+    return {
+      ...state,
+      list: {}
     }
   }
 
   // TODO refactor and DRY this
   // TODO UT
-  if (action.type === AUTH_RESET) {
-    const nextProjectConfig = {}
-    if (state.id) {
-      nextProjectConfig.id = state.id
-    }
-    if (state.project) {
-      nextProjectConfig.project = {
-        id: state.project.id
-      }
-    }
-    return nextProjectConfig
-  }
+  // if (action.type === AUTH_RESET) {
+  //   const nextProjectConfig = {}
+  //   if (state.id) {
+  //     nextProjectConfig.id = state.id
+  //   }
+  //   if (state.project) {
+  //     nextProjectConfig.project = {
+  //       id: state.project.id
+  //     }
+  //   }
+  //   return nextProjectConfig
+  // }
 
   return state
 }
 
-export const getAggregatedStackStatus = (state) => {
-  if (state && state.stacks && state.stacks[0] && state.stacks[0].bricks) {
-    return computeAggregatedStackStatus(state.stacks[0].bricks)
+export const getAggregatedStackStatus = (state, projectConfigId) => {
+  const projectConfig = state.list[projectConfigId]
+
+  if (projectConfig && projectConfig.stacks && projectConfig.stacks[0] && projectConfig.stacks[0].bricks) {
+    return computeAggregatedStackStatus(projectConfig.stacks[0].bricks)
   }
   return {}
 }
 
-export const getProjectConfigName = (state) => {
-  if (state && state.name) {
-    return state.name
+export const getProjectConfigUsers = (state, projectConfigId) => {
+  const projectConfig = state.list[projectConfigId]
+
+  if (projectConfig) {
+    return projectConfig.users
   }
-  return ''
+  return []
+}
+
+export const getProjectConfigStacks = (state, projectConfigId) => {
+  const projectConfig = state.list[projectConfigId]
+
+  if (projectConfig) {
+    return projectConfig.stacks
+  }
+  return []
+}
+
+export const getProjectConfigs = (state) => {
+  return Object.values(state.list)
 }

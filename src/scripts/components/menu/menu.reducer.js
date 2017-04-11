@@ -18,7 +18,6 @@
 
 import {
   AUTH_RESET,
-  MENU_INIT,
   MENU_UPDATE
 } from '../../commons/constants'
 import { updateMenu } from '../../services/stateUpdater.service'
@@ -27,7 +26,7 @@ const stateDefault = {}
 
 // TODO UT
 export default function menu(state = stateDefault, action) {
-  if (action.type === MENU_INIT || action.type === MENU_UPDATE) {
+  if (action.type === MENU_UPDATE) {
     return action.menu
   }
 

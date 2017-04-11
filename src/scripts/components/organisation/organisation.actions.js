@@ -20,7 +20,7 @@ import { CALL_API } from 'redux-api-middleware'
 import Promise from 'bluebird'
 
 import api from '../../commons/config'
-import { requestAuthentication, logout } from '../login/login.actions'
+import { fetchAuthentication } from '../auth/auth.actions'
 import { getHeaders } from '../../services/io.service'
 import { mapOrganisation } from '../../services/mapping.service'
 import {
@@ -65,24 +65,7 @@ export function getOrganisationList() {
   return (dispatch, getState) => dispatch(fetchOrganisationList())
     .then(data => {
       if (!data.error) {
-        const state = getState()
-        if (
-          state.auth && state.auth.account && 
-          ( !state.auth.organisations || state.auth.organisations.length <= 0 ) 
-        ) {
-          return dispatch(requestAuthentication())
-        }
-        return Promise.resolve(data)
-      }
-      throw new Error(data.payload.status)
-    })
-    .then(data => {
-      if (!data.error) {
-        return Promise.resolve(data)
-      }
-      // TODO put this to error service?
-      if (data.error && data.payload.status && data.payload.status === 401) {
-        dispatch(logout())
+        return dispatch(fetchAuthentication())
       }
       throw new Error(data.payload.status)
     })
@@ -124,7 +107,7 @@ export function changeOrganisation(prevContext, nextContext) {
   }
 }
 
-export function updateOrganisation(organisationId) {
+export function updateOrganisationContext(organisationId) {
   return (dispatch, getState) => dispatch(fetchOrganisation(organisationId))
     .then(data => {
       if (!data.error) {
@@ -169,17 +152,7 @@ export function createOrganisation(name) {
   return dispatch => dispatch(requestNewOrganisation(name))
     .then(data => {
       if (!data.error) {
-        return dispatch(requestAuthentication())
-      }
-      throw new Error(data.payload.status)
-    })
-    .then(data => {
-      if (!data.error) {
-        return Promise.resolve(data)
-      }
-      // TODO put this to error service?
-      if (data.error && data.payload.status && data.payload.status === 401) {
-        dispatch(logout())
+        return dispatch(fetchAuthentication())
       }
       throw new Error(data.payload.status)
     })

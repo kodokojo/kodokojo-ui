@@ -47,7 +47,8 @@ import {
   deleteUsersFromProjectConfig
 } from '../components/projectConfig/projectConfig.actions'
 import { updateUser } from '../components/user/user.actions'
-import { getAggregatedStackStatus } from '../commons/reducers'
+import { fetchAuthentication } from '../components/auth/auth.actions'
+import { getProjectConfigUsers, getAggregatedStackStatus } from '../commons/reducers'
 import authService from '../services/auth.service'
 import { filterCheckedMembers } from '../services/stateUpdater.service'
 
@@ -58,12 +59,13 @@ export class MembersPage extends React.Component {
   static propTypes = {
     addUserToProjectConfig: React.PropTypes.func,
     aggregatedStackStatus: React.PropTypes.object,
+    contextProjectConfigId: React.PropTypes.string,
     deleteUsersFromProjectConfig: React.PropTypes.func.isRequired,
+    fetchAuthentication: React.PropTypes.func.isRequired,
     getProjectConfig: React.PropTypes.func,
     getProjectConfigAndProject: React.PropTypes.func,
     intl: intlShape.isRequired,
     members: React.PropTypes.array,
-    projectConfigId: React.PropTypes.string,
     projectId: React.PropTypes.string,
     setNavVisibility: React.PropTypes.func.isRequired,
     updateUser: React.PropTypes.func.isRequired,
@@ -81,17 +83,21 @@ export class MembersPage extends React.Component {
   }
 
   componentWillMount() {
-    const { getProjectConfig, getProjectConfigAndProject, members, projectConfigId, projectId } = this.props // eslint-disable-line no-shadow
+    const { fetchAuthentication, getProjectConfig, getProjectConfigAndProject, members, contextProjectConfigId, projectId } = this.props // eslint-disable-line no-shadow
 
     this.initNav()
 
-    if (!members && projectConfigId && !projectId) {
-      getProjectConfig(projectConfigId)
-    } else if (!members && projectConfigId && projectId) {
-      getProjectConfigAndProject(projectConfigId, projectId)
-    } else if (!projectConfigId) {
-      // TODO no projectConfigId case
-    }
+    fetchAuthentication()
+      .then(()=> {
+        const hasMembers = members && members.length && members.length > 0
+        if (!hasMembers && contextProjectConfigId && !projectId) {
+          getProjectConfig(contextProjectConfigId)
+        } else if (!hasMembers && contextProjectConfigId && projectId) {
+          getProjectConfigAndProject(contextProjectConfigId, projectId)
+        } else if (!contextProjectConfigId) {
+          // TODO no contextProjectConfigId case
+        }
+      })
   }
 
   initNav = () => {
@@ -149,9 +155,9 @@ export class MembersPage extends React.Component {
   }
 
   handleConfirmDelete = () => {
-    const { deleteUsersFromProjectConfig, projectConfigId } = this.props // eslint-disable-line no-shadow
+    const { deleteUsersFromProjectConfig, contextProjectConfigId } = this.props // eslint-disable-line no-shadow
     const membersToDelete = filterCheckedMembers(this.state.memberList)
-    deleteUsersFromProjectConfig(projectConfigId, membersToDelete)
+    deleteUsersFromProjectConfig(contextProjectConfigId, membersToDelete)
       .then(() => {
         this.setState({
           isUserFormAddActive: false,
@@ -167,14 +173,14 @@ export class MembersPage extends React.Component {
   }
 
   handleMemberAdd = (user) => {
-    const { addUserToProjectConfig, projectConfigId } = this.props // eslint-disable-line no-shadow
+    const { addUserToProjectConfig, contextProjectConfigId } = this.props // eslint-disable-line no-shadow
 
-    return addUserToProjectConfig(projectConfigId, user)
+    return addUserToProjectConfig(contextProjectConfigId, user)
   }
 
   handleMemberUpdate = (user) => {
     const { updateUser } = this.props
-    
+
     return updateUser(user)
   }
 
@@ -322,10 +328,10 @@ export class MembersPage extends React.Component {
 // StacksPage container
 const mapStateProps = (state) => (
   {
-    projectConfigId: state.context.projectConfig.id,
+    contextProjectConfigId: state.context.projectConfig.id,
     projectId: state.context.project.id,
-    members: state.projectConfig.users,
-    aggregatedStackStatus: getAggregatedStackStatus(state),
+    members: getProjectConfigUsers(state, state.context.projectConfig.id),
+    aggregatedStackStatus: getAggregatedStackStatus(state, state.context.projectConfig.id),
     userGroup: state.context.user.group
   }
 )
@@ -336,6 +342,7 @@ const MembersPageContainer = compose(
     {
       addUserToProjectConfig,
       deleteUsersFromProjectConfig,
+      fetchAuthentication,
       getProjectConfig,
       getProjectConfigAndProject,
       setNavVisibility,

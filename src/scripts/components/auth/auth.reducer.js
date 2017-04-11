@@ -16,6 +16,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import flatMap from 'lodash/flatMap'
+import findIndex from 'lodash/findIndex'
+
 import authService from '../../services/auth.service'
 import {
   ACCOUNT_NEW_REQUEST,
@@ -149,6 +152,16 @@ export default function auth(state = authReducerInit(), action) {
 export const getAuthUserOrganisations = (state) => {
   if (state.account && state.account.organisations) {
     return state.account.organisations
+  }
+  return []
+}
+
+export const getAuthUserProjectConfigs = (state, organisationId = 0) => {
+  // TODO implement case when organisationId is not in organisations from auth
+  if (state.account && state.account.organisations) {
+    const organisationIndex = findIndex(state.account.organisations, { id: organisationId })
+
+    return state.account.organisations[organisationIndex] ? state.account.organisations[organisationIndex].projectConfigs : []
   }
   return []
 }

@@ -131,8 +131,8 @@ const mapStateProps = (state, ownProps) => (
   {
     isAuthenticated: state.auth.isAuthenticated,
     location: ownProps.location,
-    projectConfigId: state.projectConfig ? state.projectConfig.id : '',
-    projectId: state.projectConfig && state.projectConfig.project ? state.projectConfig.project.id : '',
+    projectConfigId: state.context.projectConfig.id,
+    projectId: state.context.project.id,
     signup: getSignup(state),
     waitingList: getWaitingList(state)
   }

@@ -58,13 +58,17 @@ export default rootReducer
 // selectors
 // auth
 export const getAuthUserOrganisations = (state) => fromAuth.getAuthUserOrganisations(state.auth)
+export const getAuthUserProjectConfigs = (state, organisationId) => fromAuth.getAuthUserProjectConfigs(state.auth, organisationId)
 
 // users
 export const getUserFromId = (userId, state) => fromUser.getUserFromId(userId, state.users)
 
 // projectConfig
-export const getProjectConfigName = (state) => fromProjectConfig.getProjectConfigName(state.projectConfig)
-export const getAggregatedStackStatus = (state) => fromProjectConfig.getAggregatedStackStatus(state.projectConfig)
+export const getProjectConfigUsers = (state, projectConfigId) => fromProjectConfig.getProjectConfigUsers(state.projectConfig, projectConfigId)
+export const getProjectConfigStacks = (state, projectConfigId) => fromProjectConfig.getProjectConfigStacks(state.projectConfig, projectConfigId)
+export const getAggregatedStackStatus = (state, projectConfigId) => fromProjectConfig.getAggregatedStackStatus(state.projectConfig, projectConfigId)
+export const getProjectConfigs = (state) => fromProjectConfig.getProjectConfigs(state.projectConfig)
+
 
 // prefs
 export const getCrispKey = (state) => fromPrefs.getCrispKey(state.prefs)

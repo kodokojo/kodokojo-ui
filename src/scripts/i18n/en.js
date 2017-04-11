@@ -99,6 +99,7 @@ export default {
   'project-name-error-pattern':
     'Name must have between 4 and 20 non space, non special, unaccented characters',
   'projects-label': 'Projects',
+  'projects-title-label': 'See all your projects',
   'register-label': 'Register',
   'register-waiting-list-label': 'sign on our waiting list',
   'report-label': 'Report',

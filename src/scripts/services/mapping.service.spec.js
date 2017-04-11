@@ -174,6 +174,29 @@ describe('mapping service', () => {
         isTeamLeader: true
       })
     })
+    it('should map organisation project config alternate keys', () => {
+      // Given
+      const organisationProjectConfigFromApi = {
+        identifier: 'id',
+        name: 'name',
+        projectId: 'projectId',
+        isTeamLeader: true
+      }
+
+      // When
+      const returns = mappingService.mapOrganisationProjectConfig(organisationProjectConfigFromApi)
+
+      // Then
+      expect(returns).to.deep.equal({
+        id: 'id',
+        name: 'name',
+        project:{
+          id: 'projectId'
+        },
+        isTeamLeader: true
+      })
+    })
+
   })
 
   describe('map user', () => {
@@ -396,7 +419,10 @@ describe('mapping service', () => {
         name: 'name',
         state: 'state',
         url: 'url',
-        version: 'version'
+        version: 'version',
+        message: undefined,
+        projectConfigId: undefined,
+        stackName: undefined
       })
     })
 
@@ -419,7 +445,10 @@ describe('mapping service', () => {
         name: 'name',
         state: 'state',
         url: 'url',
-        version: 'version'
+        version: 'version',
+        message: undefined,
+        projectConfigId: undefined,
+        stackName: undefined
       })
     })
 
@@ -604,7 +633,10 @@ describe('mapping service', () => {
           type: undefined,
           state: 'newState',
           url: 'url',
-          version: undefined
+          version: undefined,
+          message: undefined,
+          projectConfigId: undefined,
+          stackName: undefined
         }
       })
     })

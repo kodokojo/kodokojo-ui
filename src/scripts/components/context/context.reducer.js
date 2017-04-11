@@ -24,9 +24,8 @@ import {
   AUTH_SUCCESS,
   AUTH_RESET,
   ORGANISATION_CHANGE,
-  PROJECT_CONFIG_SUCCESS,
-  PROJECT_CONFIG_NEW_SUCCESS,
-  PROJECT_SUCCESS,
+  PROJECT_CONFIG_CHANGE,
+  PROJECT_CHANGE
 } from '../../commons/constants'
 
 export function contextReducerInit() {
@@ -58,28 +57,50 @@ export function contextReducerInit() {
   }
 }
 
+const initialState = {
+  user: {
+    id: undefined,
+    name: undefined,
+    group: 'USER'
+  },
+  organisation: {
+    id: undefined,
+    name: ''
+  },
+  projectConfig: {
+    id: undefined,
+    name: ''
+  },
+  project: {
+    id: undefined
+  }
+}
+
 // TODO UT
 export default function context(state = contextReducerInit(), action) {
-  if (action.type === PROJECT_CONFIG_NEW_SUCCESS || action.type === PROJECT_CONFIG_SUCCESS) {
+  if (action.type === PROJECT_CONFIG_CHANGE) {
     return {
       ...state,
       projectConfig: {
-        id: action.payload.projectConfig.id,
-        name: action.payload.projectConfig.name
+        id: action.projectConfig.id,
+        name: action.projectConfig.name
       }
     }
   }
 
-  if (action.type === PROJECT_SUCCESS) {
+  if (action.type === PROJECT_CHANGE) {
     return {
       ...state,
       project: {
-        id: action.payload.project.id
+        id: action.project.id
       }
     }
   }
 
-  if (action.type === ACCOUNT_NEW_SUCCESS || action.type === AUTH_SUCCESS) {
+  if (
+    action.type === ACCOUNT_NEW_SUCCESS ||
+    action.type === AUTH_SUCCESS
+  ) {
     const nextContext = getNextContext(state, action.payload.account)
 
     return {
@@ -87,6 +108,11 @@ export default function context(state = contextReducerInit(), action) {
       ...nextContext
     }
   }
+
+  if (action.type === AUTH_RESET) {
+    return initialState
+  }
+
 
   if (action.type === ORGANISATION_CHANGE) {
     const nextContext = getNextContext(action.prevContext, action.nextContext)

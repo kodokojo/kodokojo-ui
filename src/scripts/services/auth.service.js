@@ -202,9 +202,14 @@ authService.getAccount = () => (
  */
 authService.hasRights = (groupLabel, userGroupLabel) => {
   const targetGroup = getGroupByLabel(groupLabel)
-  if (targetGroup && targetGroup.id !== undefined) {
-    const userGroup = authService.getGroup() || userGroupLabel
-    return  getGroupByLabel(userGroup).id >= targetGroup.id
+  const userGroup = getGroupByLabel(authService.getGroup() || userGroupLabel)
+  if (
+    targetGroup &&
+    targetGroup.id !== undefined &&
+    userGroup &&
+    userGroup
+  ) {
+    return userGroup.id >= targetGroup.id
   }
   return false
 }

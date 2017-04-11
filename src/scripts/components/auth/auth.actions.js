@@ -16,12 +16,81 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+import { CALL_API } from 'redux-api-middleware'
+import Promise from 'bluebird'
+import { change, stopSubmit } from 'redux-form'
+
+import api from '../../commons/config'
+import ioService from '../../services/io.service'
+import { mapAccount } from '../../services/mapping.service'
 import {
+  AUTH_REQUEST,
+  AUTH_SUCCESS,
+  AUTH_FAILURE,
+  AUTH_RESET,
   CAPTCHA_INIT,
   CAPTCHA_UPDATE,
   CAPTCHA_RESET
 } from '../../commons/constants'
-import { change, stopSubmit } from 'redux-form'
+import { logout } from '../login/login.actions'
+
+export function requestAuthentication() {
+  return {
+    [CALL_API]: {
+      method: 'GET',
+      endpoint:
+      `${window.location.protocol || 'http:'}//` +
+      `${window.location.host || 'localhost'}${api.user}`,
+      headers: ioService.getHeaders(),
+      types: [
+        AUTH_REQUEST,
+        {
+          type: AUTH_SUCCESS,
+          payload: (action, state, res) => res.json()
+            .then(account => (
+              {
+                account: mapAccount(account)
+              }
+            ))
+        },
+        AUTH_FAILURE
+      ]
+      // schema: user
+    }
+  }
+}
+
+// TODO UT
+export function fetchAuthentication() {
+  return (dispatch, getState) => {
+    const { auth } = getState()
+    if (
+      auth && auth.account &&
+      ( !auth.account.organisations || auth.account.organisations.length <= 0 )
+    ) {
+      return dispatch(requestAuthentication())
+        .then(data => {
+          if (!data.error) {
+            return Promise.resolve(data)
+          }
+          if (data.error && data.payload.status && data.payload.status === 401) {
+            dispatch(logout())
+          }
+          throw new Error(data.payload.status)
+        })
+        .catch(error => {
+          throw new Error(error.message || error)
+        })
+    }
+    return Promise.resolve()
+  }
+}
+
+export function resetAuthentication() {
+  return {
+    type: AUTH_RESET
+  }
+}
 
 // TODO UT
 export function initCaptchaComponent() {

@@ -5,6 +5,7 @@
   flex: 1 1 auto;
   flex-flow: row wrap;
   justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .projectConfig {
@@ -14,12 +15,14 @@
   align-items: center;
   justify-content: flex-start;
   min-height: 170px;
+  max-width: 220px;
   border-radius: $radius-standard;
   background: $color-primary-3;
   cursor: pointer;
   margin-bottom: $spacing-smaller;
   margin-right: $spacing-smaller;
-  &:hover {
+  &:hover,
+  &.projectConfig--selected {
     background: $color-primary-4;
     .projectConfig-info {
       background: $color-primary-3;
@@ -53,7 +56,7 @@
     height: 50px;
     min-height: 50px;
     width: 100%;
-    padding: 1rem;
+    padding: 1rem 1.2rem 1rem .5rem;
     background: $color-primary-2;
 
     .info-status {
@@ -92,9 +95,4 @@
     font-size: $font-size-normal;
     color: $color-font-5;
   }
-
-  .projectConfig--selected {
-    background: $color-primary-4;
-  }
-
 }

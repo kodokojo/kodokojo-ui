@@ -16,7 +16,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import find from 'lodash/find'
 import cloneDeep from 'lodash/cloneDeep'
 
 import {
@@ -39,15 +38,13 @@ export function updateBreadcrumb(breadcrumb) {
 
 export function updateBreadcrumbProject(projectName) {
   return (dispatch, getState) => {
-    const breadcrumb = cloneDeep(getState().breadcrumb)
-    const nextBreadcrumb = getBreadcrumb({
-      organisation: find(breadcrumb, { type: 'organisation' }),
-      project: breadcrumbItemFactory({
+    const nextBreadcrumb = cloneDeep(getState().breadcrumb)
+    if (nextBreadcrumb.project) {
+      nextBreadcrumb.project = breadcrumbItemFactory({
         labelText: projectName,
         type: 'project'
-      }),
-      menu: find(breadcrumb, { type: 'menu' })
-    })
+      })
+    }
 
     return dispatch(updateBreadcrumb(nextBreadcrumb))
   }
@@ -55,17 +52,28 @@ export function updateBreadcrumbProject(projectName) {
 
 export function updateBreadcrumbPath(path) {
   return (dispatch, getState) => {
-    const state = getState()
+    const { context } = getState()
+
+    let project
+    let menu
+    const breadcrumbLevelItem = getBreadcrumbItemFromPath(path) || {}
 
     const organisation = breadcrumbItemFactory({
-      labelText: state.context.organisation.name || '',
+      labelText: context.organisation.name || '',
       type: 'organisation'
     })
-    const project = breadcrumbItemFactory({
-      labelText: state.context.projectConfig.name || '',
-      type: 'project'
-    })
-    const menu = getBreadcrumbItemFromPath(path)
+
+    if (breadcrumbLevelItem.type === 'project' || breadcrumbLevelItem.type === 'menu') {
+      project = breadcrumbItemFactory({
+        labelText: context.projectConfig.name || '',
+        type: 'project'
+      })
+    }
+
+    if (breadcrumbLevelItem.type === 'menu') {
+      menu = breadcrumbLevelItem
+    }
+
     const nextBreadcrumb = getBreadcrumb({
       organisation,
       project,

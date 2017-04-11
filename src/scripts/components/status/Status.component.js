@@ -27,8 +27,17 @@ export class Status extends React.Component {
 
   static propTypes = {
     intl: intlShape.isRequired,
-    size: React.PropTypes.oneOf(['small', 'big']),
-    state: React.PropTypes.oneOf(['UNKNOWN', 'STARTING', 'CONFIGURING', 'ONFAILURE', 'RUNNING'])
+    size: React.PropTypes.oneOf([
+      'small',
+      'big'
+    ]),
+    state: React.PropTypes.oneOf([
+      'UNKNOWN',
+      'STARTING',
+      'CONFIGURING',
+      'ONFAILURE',
+      'RUNNING'
+    ])
   }
 
   static defaultProps = {

@@ -56,6 +56,7 @@ describe('project config actions', () => {
   let historyPushSpy
   let getHeadersSpy
   let mapProjectConfigSpy
+  let updateProjectConfigContextSpy
 
   beforeEach(() => {
     historyPushSpy = sinon.spy()
@@ -66,12 +67,17 @@ describe('project config actions', () => {
     actionsRewireApi.__Rewire__('getHeaders', getHeadersSpy)
     mapProjectConfigSpy = sinon.stub()
     actionsRewireApi.__Rewire__('mapProjectConfig', mapProjectConfigSpy)
+    updateProjectConfigContextSpy = sinon.stub().returns({
+      type: 'MOCKED_UPDATE_PROJECT_CONTEXT'
+    })
+    actionsRewireApi.__Rewire__('updateProjectConfigContext', updateProjectConfigContextSpy)
   })
 
   afterEach(() => {
     actionsRewireApi.__ResetDependency__('getHeaders')
     actionsRewireApi.__ResetDependency__('browserHistory')
     actionsRewireApi.__ResetDependency__('mapProjectConfig')
+    actionsRewireApi.__ResetDependency__('updateProjectConfigContext')
     nock.cleanAll()
   })
 
@@ -119,6 +125,9 @@ describe('project config actions', () => {
           meta: undefined
         },
         {
+          type: 'MOCKED_UPDATE_PROJECT_CONTEXT'
+        },
+        {
           type: 'MOCKED_GET_PROJECT_CONFIG'
         },
         {
@@ -131,8 +140,10 @@ describe('project config actions', () => {
 
       // When
       const store = mockStore({
-        projectConfig: {
-          id: projectConfig.id
+        context: {
+          projectConfig: {
+            id: projectConfig.id
+          }
         }
       })
 
@@ -142,6 +153,10 @@ describe('project config actions', () => {
         .then(() => {
           expect(store.getActions()).to.deep.equal(expectedActions)
           expect(getHeadersSpy).to.have.callCount(1)
+          expect(updateProjectConfigContextSpy).to.have.callCount(1)
+          expect(updateProjectConfigContextSpy).to.have.calledWith({
+            id: projectConfig.id
+          })
           expect(mapProjectConfigSpy).to.have.callCount(0)
           expect(getProjectConfigSpy).to.have.callCount(1)
           expect(getProjectConfigSpy).to.have.been.calledWith(projectConfig.id)
@@ -156,28 +171,16 @@ describe('project config actions', () => {
   // TODO failure UT
   describe('get project config', () => {
     let getUserSpy
-    let updateMenuProjectSpy
-    let updateBreadcrumbProjectSpy
 
     beforeEach(() => {
       getUserSpy = sinon.stub().returns({
         type: 'MOCKED_ACTION_USER_GET'
       })
       actionsRewireApi.__Rewire__('getUser', getUserSpy)
-      updateMenuProjectSpy = sinon.stub().returns({
-        type: 'MOCKED_ACTION_UPDATE_MENU_PROJECT'
-      })
-      actionsRewireApi.__Rewire__('updateMenuProject', updateMenuProjectSpy)
-      updateBreadcrumbProjectSpy = sinon.stub().returns({
-        type: 'MOCKED_ACTION_UPDATE_BREADCRUMB_PROJECT'
-      })
-      actionsRewireApi.__Rewire__('updateBreadcrumbProject', updateBreadcrumbProjectSpy)
     })
 
     afterEach(() => {
       actionsRewireApi.__ResetDependency__('getUserFromId')
-      actionsRewireApi.__ResetDependency__('updateMenuProject')
-      actionsRewireApi.__ResetDependency__('updateBreadcrumbProject')
       actionsRewireApi.__ResetDependency__('mapProjectConfig')
     })
 
@@ -212,13 +215,10 @@ describe('project config actions', () => {
           meta: undefined
         },
         {
+          type: 'MOCKED_UPDATE_PROJECT_CONTEXT'
+        },
+        {
           type: 'MOCKED_ACTION_USER_GET'
-        },
-        {
-          type: 'MOCKED_ACTION_UPDATE_MENU_PROJECT'
-        },
-        {
-          type: 'MOCKED_ACTION_UPDATE_BREADCRUMB_PROJECT'
         }
       ]
       nock('http://localhost')
@@ -231,7 +231,11 @@ describe('project config actions', () => {
 
       // When
       const store = mockStore({
-        projectConfig
+        projectConfig: {
+          list: {
+            [projectConfig.id]: projectConfig
+          }
+        }
       })
 
       // Then
@@ -245,8 +249,6 @@ describe('project config actions', () => {
           })
           expect(getUserSpy).to.have.callCount(1)
           expect(getUserSpy).to.have.calledWith('otherUserId')
-          expect(updateMenuProjectSpy).to.have.callCount(1)
-          expect(updateMenuProjectSpy).to.have.calledWith('Acme')
         })
     })
   })

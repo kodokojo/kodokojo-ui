@@ -19,6 +19,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
+import { browserHistory } from 'react-router'
 import { intlShape, injectIntl, FormattedMessage } from 'react-intl'
 import sortBy from 'lodash/sortBy'
 
@@ -34,20 +35,19 @@ import OrganisationAddButton from '../components/organisation/OrganisationAddBut
 import OrganisationForm from '../components/organisation/OrganisationForm.component'
 import Organisation from '../components/organisation/Organisation.component'
 import { setNavVisibility } from '../components/app/app.actions'
-import { createOrganisation, getOrganisationList, updateOrganisation } from '../components/organisation/organisation.actions'
-
+import { createOrganisation, getOrganisationList, updateOrganisationContext } from '../components/organisation/organisation.actions'
 
 export class OrganisationsPage extends React.Component {
 
   static propTypes = {
+    contextOrganisationId: React.PropTypes.string,
     createOrganisation: React.PropTypes.func,
     getOrganisationList: React.PropTypes.func,
     intl: intlShape.isRequired,
     isFetching: React.PropTypes.bool,
-    organisationId: React.PropTypes.string,
     organisations: React.PropTypes.object,
     setNavVisibility: React.PropTypes.func.isRequired,
-    updateOrganisation: React.PropTypes.func.isRequired
+    updateOrganisationContext: React.PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -83,14 +83,15 @@ export class OrganisationsPage extends React.Component {
     return createOrganisation(name)
   }
 
-  handleSelectOrganisation = (organisationId) => {
-    const { updateOrganisation } = this.props
+  handleSelectOrganisation = (contextOrganisationId) => {
+    const { updateOrganisationContext } = this.props
 
-    return updateOrganisation(organisationId)
+    return updateOrganisationContext(contextOrganisationId)
+      .then(() => browserHistory.push('/projects'))
   }
 
   render() {
-    const { isFetching, organisationId, organisations } = this.props // eslint-disable-line no-shadow
+    const { isFetching, contextOrganisationId, organisations } = this.props // eslint-disable-line no-shadow
     const { formatMessage } = this.props.intl
 
     return (
@@ -125,8 +126,8 @@ export class OrganisationsPage extends React.Component {
                   id={ organisation.id }
                   key={ organisation.id }
                   name={ organisation.name }
-                  onSelectOrganisation={ (organisationId) => this.handleSelectOrganisation(organisationId) }
-                  selected={ organisationId === organisation.id }
+                  onSelectOrganisation={ (contextOrganisationId) => this.handleSelectOrganisation(contextOrganisationId) }
+                  selected={ contextOrganisationId === organisation.id }
                 />
             ))
           }
@@ -141,7 +142,7 @@ export class OrganisationsPage extends React.Component {
 const mapStateProps = (state, ownProps) => (
   {
     location: ownProps.location,
-    organisationId: state.context.organisation.id,
+    contextOrganisationId: state.context.organisation.id,
     organisations: state.organisation.list,
     isFetching: state.organisation.isFetching
   }
@@ -154,7 +155,7 @@ const OrganisationsPageContainer = compose(
       createOrganisation,
       getOrganisationList,
       setNavVisibility,
-      updateOrganisation
+      updateOrganisationContext
     }
   ),
   injectIntl

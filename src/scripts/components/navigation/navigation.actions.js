@@ -20,30 +20,39 @@ import { browserHistory } from 'react-router'
 import Promise from 'bluebird'
 import isEmpty from 'lodash/isEmpty'
 
-import { initMenu, updateMenuPath } from '../menu/menu.actions'
 import { eventInit } from '../event/event.actions'
 import { getProjectConfigAndProject } from '../projectConfig/projectConfig.actions'
-import { initBreadcrumb, updateBreadcrumbPath } from '../breadcrumb/breadcrumb.actions'
+import { initMenu, updateMenuPath, updateMenuProject } from '../menu/menu.actions'
+import { initBreadcrumb, updateBreadcrumbPath, updateBreadcrumbProject } from '../breadcrumb/breadcrumb.actions'
 
 export function updateNavigation(location, state) {
-  return dispatch => {
+  return (dispatch, getState) => {
     const prevMenu = state.menu
     const prevBreadcrumb = state.breadcrumb
     dispatch(requestBreadcrumb(location, prevBreadcrumb))
-    if (isEmpty(prevMenu)) {
-      dispatch(initMenu(location))
-    } else {
-      dispatch(updateMenuPath(location))
-    }
+    dispatch(updateMenuPath(location))
+    dispatch(updateNavigationProject())
   }
 }
 
 export function requestBreadcrumb(location, prevBreadcrumb) {
   return dispatch => {
     if (isEmpty(prevBreadcrumb)) {
-      dispatch(initBreadcrumb(location))
+      return dispatch(initBreadcrumb(location))
     } else {
-      dispatch(updateBreadcrumbPath(location))
+      return dispatch(updateBreadcrumbPath(location))
+    }
+  }
+}
+
+export function updateNavigationProject() {
+  return (dispatch, getState) => {
+    const projectConfigState = getState().context.projectConfig
+    if (projectConfigState && projectConfigState.name) {
+      return Promise.all([
+        dispatch(updateMenuProject(projectConfigState.name)),
+        dispatch(updateBreadcrumbProject(projectConfigState.name))
+      ])
     }
   }
 }

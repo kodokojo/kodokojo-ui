@@ -45,6 +45,7 @@ import App from './components/app/App.component'
 import SignupPage from './pages/Signup.page'
 import LoginPage from './pages/Login.page'
 import FirstProjectPage from './pages/FirstProject.page'
+import ProjectConfigsPage from './pages/ProjectConfigs.page'
 import OrganisationsPage from './pages/Organisations.page'
 import StacksPage from './pages/Stacks.page'
 import MembersPage from './pages/Members.page'
@@ -99,6 +100,11 @@ const initApp = () => {
               component={OrganisationsPage}
               onEnter={authService.checkRightsUser}
               path="organisations"
+            />
+            <Route
+              component={ProjectConfigsPage}
+              onEnter={authService.checkRightsUser}
+              path="projects"
             />
             <Route
               component={StacksPage}

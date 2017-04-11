@@ -131,16 +131,14 @@ paramService.getMenu = () => (
       labelKey: 'organisations-label',
       level: 0,
       route: '/organisations',
-      titleText: 'organisations-title-label'
+      titleKey: 'organisations-title-label'
     },
     // projects menu
     projects: {
-      disabled: true,
       labelKey: 'projects-label',
       level: 0,
-      // TODO change to real route when page is done
-      route: '#projects',
-      titleText: 'disabled because projects page does not exist'
+      route: '/projects',
+      titleKey: 'organisations-title-label'
     },
     // current project name
     project: {
@@ -172,14 +170,17 @@ paramService.getMenu = () => (
 paramService.enumBreadcrumb = {
   root: {
     route: '/',
+    type: 'menu',
     hidden: true
   },
   login: {
     route: '/login',
+    type: 'menu',
     hidden: true
   },
   signup: {
     route: '/signup',
+    type: 'menu',
     hidden: true
   },
   organisations: {
@@ -190,36 +191,36 @@ paramService.enumBreadcrumb = {
     disabled: true
   },
   projects: {
+    route: '/projects',
     labelKey: 'projects-label',
     titleKey: 'projects-label',
-    // TODO change to real route when page is done
-    route: '#projects',
     type: 'project',
     disabled: true
   },
   stacks: {
+    route: '/stacks',
     variant: 0,
     labelKey: 'stacks-label',
     titleKey: 'stacks-label',
-    route: '/stacks',
     type: 'menu',
     disabled: true
   },
   members: {
+    route: '/members',
     variant: 1,
     labelKey: 'members-label',
     titleKey: 'members-label',
-    route: '/members',
     type: 'menu',
     disabled: true
   }
 }
 
-// breadcrumb projects item (if no current project is selected)
+paramService.getBreadcrumbItemOrganisations = () => paramService.enumBreadcrumb['organisations']
+
 paramService.getBreadcrumbItemProjects = () => paramService.enumBreadcrumb['projects']
 
 paramService.getBreadcrumbItemFromPath = (path) => {
-  return find(paramService.enumBreadcrumb, { route: path})
+  return find(paramService.enumBreadcrumb, { route: path })
 }
 
 // TODO UT
@@ -256,43 +257,48 @@ paramService.breadcrumbItemFactory = ({
  */
 paramService.getBreadcrumb = ({
   organisation,
-  project = paramService.getBreadcrumbItemProjects(),
+  project,
   menu
 }) => {
-  const breadcrumb = {
-    organisation: {
-      ...organisation,
-      disabled: false
-    },
-    project: {
-      ...project,
-      disabled: true
-    },
-    menu: {
-      ...menu,
-      disabled: true
-    }
-  }
+  const organisationDefault = paramService.getBreadcrumbItemOrganisations()
+  // const projectDefault = paramService.getBreadcrumbItemProjects()
+
   // if the route is a menu that have hidden prop, clear breadcrumb
-  if (breadcrumb.menu && breadcrumb.menu.hidden) {
+  if (menu && menu.hidden) {
     return []
-  }
+  } else {
+    const breadcrumb = {
+      organisation: {
+        ...organisationDefault,
+        ...organisation,
+        disabled: true
+      }
+    }
 
-  // if the organisation is root, return only the organisation
-  if (breadcrumb.menu && breadcrumb.menu.root) {
-    return [
-      paramService.enumBreadcrumb['organisations']
-    ]
-  }
+    if (project) {
+      breadcrumb.organisation = {
+        ...breadcrumb.organisation,
+        disabled: false
+      }
+      breadcrumb.project = {
+        ...project,
+        disabled: true
+      }
+    }
 
-  // else filter empty items
-  return filter([
-    breadcrumb.organisation,
-    breadcrumb.project,
-    breadcrumb.menu
-  ], o => {
-    return !(isEmpty(o.labelKey) && isEmpty(o.labelText))
-  })
+    if (menu) {
+      breadcrumb.project ={
+        ...breadcrumb.project,
+        disabled: false
+      }
+      breadcrumb.menu = {
+        ...menu,
+        disabled: false
+      }
+    }
+
+    return Object.values(breadcrumb)
+  }
 }
 
 // groups params

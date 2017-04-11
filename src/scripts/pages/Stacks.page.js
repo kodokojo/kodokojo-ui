@@ -32,33 +32,38 @@ import Paragraph from 'kodokojo-ui-commons/src/scripts/components/page/Paragraph
 import brickTheme from '../components/brick/brick.scss'
 import Brick from '../components/brick/Brick.component'
 import { setNavVisibility } from '../components/app/app.actions'
-// import { updateProject } from '../components/project/project.actions'
+import { fetchAuthentication } from '../components/auth/auth.actions'
 import { getProjectConfig, getProjectConfigAndProject } from '../components/projectConfig/projectConfig.actions'
+import { getProjectConfigStacks } from '../commons/reducers'
 
 export class StacksPage extends React.Component {
 
   static propTypes = {
+    contextProjectConfigId: React.PropTypes.string,
+    contextProjectId: React.PropTypes.string,
+    fetchAuthentication: React.PropTypes.func.isRequired,
     getProjectConfig: React.PropTypes.func,
     getProjectConfigAndProject: React.PropTypes.func,
     intl: intlShape.isRequired,
-    projectConfigId: React.PropTypes.string,
-    projectId: React.PropTypes.string,
     setNavVisibility: React.PropTypes.func.isRequired,
     stacks: React.PropTypes.array
   }
 
   componentWillMount = () => {
-    const { getProjectConfig, getProjectConfigAndProject, projectConfigId, projectId } = this.props // eslint-disable-line no-shadow
+    const { fetchAuthentication, getProjectConfig, getProjectConfigAndProject, contextProjectConfigId, contextProjectId } = this.props // eslint-disable-line no-shadow
 
     this.initNav()
 
-    if (projectConfigId && !projectId) {
-      getProjectConfig(projectConfigId)
-    } else if (projectConfigId && projectId) {
-      getProjectConfigAndProject(projectConfigId, projectId)
-    } else if (!projectConfigId) {
-      // TODO no projectConfigId case
-    }
+    fetchAuthentication()
+      .then(()=> {
+        if (contextProjectConfigId && !contextProjectId) {
+          getProjectConfig(contextProjectConfigId)
+        } else if (contextProjectConfigId && contextProjectId) {
+          getProjectConfigAndProject(contextProjectConfigId, contextProjectId)
+        } else if (!contextProjectConfigId) {
+          // TODO no contextProjectConfigId case
+        }
+      })
   }
 
   initNav = () => {
@@ -109,9 +114,10 @@ export class StacksPage extends React.Component {
 const mapStateProps = (state, ownProps) => (
   {
     location: ownProps.location,
-    projectConfigId: state.context.projectConfig.id,
-    projectId: state.context.project.id,
-    stacks: state.projectConfig.stacks
+    contextProjectConfigId: state.context.projectConfig.id,
+    contextProjectId: state.context.project.id,
+    stacks: getProjectConfigStacks(state, state.context.projectConfig.id)
+    // stacks: state.projectConfig.stacks
   }
 )
 
@@ -119,6 +125,7 @@ const StacksPageContainer = compose(
   connect(
     mapStateProps,
     {
+      fetchAuthentication,
       getProjectConfig,
       getProjectConfigAndProject,
       setNavVisibility

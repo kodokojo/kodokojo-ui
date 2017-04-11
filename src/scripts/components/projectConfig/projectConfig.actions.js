@@ -26,10 +26,10 @@ import { mapProjectConfig, mapProjectConfigOutput } from '../../services/mapping
 import { logout } from '../login/login.actions'
 import { createUser, getUser } from '../user/user.actions'
 import { createProject, getProject } from '../project/project.actions'
-import { updateMenuProject } from '../menu/menu.actions'
-import { updateBreadcrumbProject } from '../breadcrumb/breadcrumb.actions'
 import { newAlert } from '../alert/alert.actions'
+import { getAuthUserProjectConfigs } from '../../commons/reducers'
 import {
+  PROJECT_CONFIG_CHANGE,
   PROJECT_CONFIG_REQUEST,
   PROJECT_CONFIG_SUCCESS,
   PROJECT_CONFIG_FAILURE,
@@ -73,14 +73,7 @@ export function getProjectConfig(projectConfigId) {
   return (dispatch, getState) => dispatch(fetchProjectConfig(projectConfigId))
     .then(data => {
       if (!data.error) {
-        const promises = []
-        if (data.payload.projectConfig && data.payload.projectConfig.users) {
-          data.payload.projectConfig.users.forEach((userId) => {
-            promises.push(dispatch(getUser(userId)))
-          })
-          return Promise.all(promises)
-        }
-        return Promise.resolve(data)
+        return dispatch(updateProjectConfigContext(data.payload.projectConfig))
       }
       // TODO put this to error service?
       if (data.error && data.payload.status && data.payload.status === 401) {
@@ -88,22 +81,43 @@ export function getProjectConfig(projectConfigId) {
       }
       throw new Error(data.payload.status)
     })
-    .then(data => {
-      if (!data.error) {
-        const projectConfigState = getState().projectConfig
-        if (projectConfigState && projectConfigState.name) {
-          return Promise.all([
-            dispatch(updateMenuProject(projectConfigState.name)),
-            dispatch(updateBreadcrumbProject(projectConfigState.name))
-          ])
-        }
-        return Promise.resolve(data)
+    .then(() => {
+      const promises = []
+      const { projectConfig } = getState()
+      const contextProjectConfig = projectConfig.list[projectConfigId]
+      if (contextProjectConfig && contextProjectConfig.users) {
+        contextProjectConfig.users.forEach((userId) => {
+          promises.push(dispatch(getUser(userId)))
+        })
+        return Promise.all(promises)
       }
-      throw new Error(data.payload.status)
+      return Promise.resolve()
     })
     .catch(error => {
       throw new Error(error.message || error)
     })
+}
+
+export function getProjectConfigList(organisationId) {
+  return (dispatch, getState) => {
+    const projectConfigs = getAuthUserProjectConfigs(getState(), organisationId)
+
+    if (projectConfigs && projectConfigs.length && projectConfigs.length > 0) {
+      projectConfigs.forEach(projectConfig => {
+        return dispatch(fetchProjectConfig(projectConfig.id))
+          .then(data => {
+            if (!data.error && projectConfig.project && projectConfig.project.id) {
+              return dispatch(getProject(projectConfig.project.id))
+            }
+
+            throw new Error(data.payload.status)
+          })
+          .catch(error => {
+            throw new Error(error.message || error)
+          })
+      })
+    }
+  }
 }
 
 // TODO UT
@@ -158,19 +172,48 @@ export function createProjectConfig(projectConfig) {
   return (dispatch, getState) => dispatch(requestProjectConfig(projectConfig))
     .then(data => {
       if (!data.error) {
-        return dispatch(getProjectConfig(data.payload.projectConfig.id))
+        return dispatch(updateProjectConfigContext(data.payload.projectConfig))
       }
       throw new Error(data.payload.status)
     })
     .then(data => {
+      const { context } = getState()
       if (!data.error) {
-        return dispatch(createProject(getState().projectConfig.id))
+        return dispatch(getProjectConfig(context.projectConfig.id))
+      }
+      throw new Error(data.payload.status)
+    })
+    .then(data => {
+      const { context } = getState()
+      if (!data.error) {
+        return dispatch(createProject(context.projectConfig.id))
       }
       throw new Error(data.payload.status)
     })
     .then(data => {
       if (!data.error) {
         return Promise.resolve(browserHistory.push('/stacks'))
+      }
+      throw new Error(data.payload.status)
+    })
+    .catch(error => {
+      throw new Error(error.message || error)
+    })
+}
+
+export function changeProjectConfig(projectConfig) {
+  return {
+    type: PROJECT_CONFIG_CHANGE,
+    projectConfig
+  }
+}
+
+// TODO UT
+export function updateProjectConfigContext(projectConfig) {
+  return (dispatch) => dispatch(changeProjectConfig(projectConfig))
+    .then(data => {
+      if (!data.error) {
+        return Promise.resolve(data)
       }
       throw new Error(data.payload.status)
     })
@@ -240,6 +283,7 @@ export function requestDeleteMembers(projectConfigId, userIdList) {
         {
           type: PROJECT_CONFIG_DELETE_USERS_SUCCESS,
           payload: {
+            projectConfigId,
             usersToDelete: userIdList
           }
         },

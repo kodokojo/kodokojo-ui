@@ -70,7 +70,7 @@ mappingService.mapOrganisation = (data) => (
 mappingService.mapOrganisationProjectConfig = (data) => (
   {
     id: data.identifier,
-    name: data.projectName || '',
+    name: data.projectName || data.name || '',
     project: {
       id: data.projectId || undefined,
     },
@@ -141,7 +141,10 @@ mappingService.mapStack = (data) => {
 mappingService.mapBrick = (data) => {
   if (data.type !== 'LOADBALANCER') {
     return {
+      projectConfigId: data.projectConfigurationIdentifier,
+      stackName: data.stackName,
       type: data.type || data.brickType,
+      message: data.message,
       name: data.name || data.brickName,
       state: data.state || data.newState,
       version: data.version,
@@ -187,7 +190,7 @@ mappingService.mapProjectConfigOutput = (data) => (
     stackConfigs: [
       data.stackConfiguration
     ],
-    entityIdentifier: data.organisationId // TODO implement in projectconfigform
+    organisationIdentifier: data.organisationId // TODO implement in projectconfigform
   }
 )
 

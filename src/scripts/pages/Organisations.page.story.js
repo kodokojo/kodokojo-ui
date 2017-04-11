@@ -59,11 +59,11 @@ const initialState = {
   },
   context: {
     user: {
-      id: 'b9a7bb60b67dbfa08c95b44f5de6866d35cc493b',
+      id: 'b9a7bb60b67dbfa08c95b44f5',
       group: 'ROOT'
     },
     organisation: {
-      id: '07cf31e60e27c025a31b4db9d0118a77a0cd1008',
+      id: '07cf31e60e27c025a31b4db9d011',
       name: 'root'
     },
     projectConfig: {
