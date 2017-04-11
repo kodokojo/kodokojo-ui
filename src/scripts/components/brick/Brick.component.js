@@ -45,6 +45,8 @@ export class Brick extends React.Component {
 
     const status = getStatusByState(brick && brick.state ? brick.state : undefined)
     const brickClasses = classNames(theme.brick, theme['brick-item'])
+    const baseUrl = brick.url ? brick.url : ''
+    const url = baseUrl.match(/^http/) ? baseUrl : `${document.location.protocol}//${baseUrl}`
 
     return (
       <div className={ brickClasses }>
@@ -63,8 +65,8 @@ export class Brick extends React.Component {
           { brick ? brick.version : '-' }
         </div>
         <div className={ theme['brick-link'] }>
-          { brick && brick.url && status.label === enumStatus.RUNNING.label ?
-            <a href={ brick.url } target="_blank">{ brick.url }</a> :
+          { url && status.label === enumStatus.RUNNING.label ?
+            <a href={ url } target="_blank">{ url }</a> :
             '-'
           }
         </div>
