@@ -10,12 +10,11 @@
 
 .projectConfig {
   display: flex;
-  flex: 1 0 220px;
+  flex: 0 1 220px;
   flex-flow: column nowrap;
   align-items: center;
   justify-content: flex-start;
   min-height: 170px;
-  max-width: 220px;
   border-radius: $radius-standard;
   background: $color-primary-3;
   cursor: pointer;
