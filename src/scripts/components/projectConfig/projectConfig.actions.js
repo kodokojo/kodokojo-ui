@@ -41,7 +41,8 @@ import {
   PROJECT_CONFIG_ADD_USER_FAILURE,
   PROJECT_CONFIG_DELETE_USERS_REQUEST,
   PROJECT_CONFIG_DELETE_USERS_SUCCESS,
-  PROJECT_CONFIG_DELETE_USERS_FAILURE
+  PROJECT_CONFIG_DELETE_USERS_FAILURE,
+  PROJECT_CONFIG_LIST_RESET
 } from '../../commons/constants'
 
 export function fetchProjectConfig(projectConfigId) {
@@ -99,24 +100,33 @@ export function getProjectConfig(projectConfigId) {
 }
 
 export function getProjectConfigList(organisationId) {
-  return (dispatch, getState) => {
-    const projectConfigs = getAuthUserProjectConfigs(getState(), organisationId)
+  return (dispatch, getState) => dispatch(resetProjectConfigList())
+    .then(() => {
+      const projectConfigs = getAuthUserProjectConfigs(getState(), organisationId)
 
-    if (projectConfigs && projectConfigs.length && projectConfigs.length > 0) {
-      projectConfigs.forEach(projectConfig => {
-        return dispatch(fetchProjectConfig(projectConfig.id))
-          .then(data => {
-            if (!data.error && projectConfig.project && projectConfig.project.id) {
-              return dispatch(getProject(projectConfig.project.id))
-            }
+      if (projectConfigs && projectConfigs.length && projectConfigs.length > 0) {
+        projectConfigs.forEach(projectConfig => {
+          return dispatch(fetchProjectConfig(projectConfig.id))
+            .then(data => {
+              if (!data.error && projectConfig.project && projectConfig.project.id) {
+                return dispatch(getProject(projectConfig.project.id))
+              }
 
-            throw new Error(data.payload.status)
-          })
-          .catch(error => {
-            throw new Error(error.message || error)
-          })
-      })
-    }
+              throw new Error(data.payload.status)
+            })
+            .catch(error => {
+              throw new Error(error.message || error)
+            })
+        })
+      }
+
+      return Promise.resolve()
+    })
+}
+
+export function resetProjectConfigList() {
+  return {
+    type: PROJECT_CONFIG_LIST_RESET
   }
 }
 

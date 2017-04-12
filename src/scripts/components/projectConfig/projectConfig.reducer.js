@@ -35,6 +35,7 @@ import {
   PROJECT_CONFIG_DELETE_USERS_REQUEST,
   PROJECT_CONFIG_DELETE_USERS_SUCCESS,
   PROJECT_CONFIG_DELETE_USERS_FAILURE,
+  PROJECT_CONFIG_LIST_RESET,
   PROJECT_SUCCESS,
   PROJECT_UPDATE
 } from '../../commons/constants'
@@ -224,7 +225,10 @@ export default function projectConfig(state = projectConfigReducerInit(), action
     }
   }
 
-  if (action.type === ORGANISATION_CHANGE) {
+  if (
+    action.type === ORGANISATION_CHANGE ||
+    action.type === PROJECT_CONFIG_LIST_RESET
+  ) {
     return {
       ...state,
       list: {}

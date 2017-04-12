@@ -59,10 +59,7 @@ export default function organisation(state = organisationReducerInit(), action) 
     )
 
     return {
-      list: {
-        ...organisations,
-        ...state.list
-      }, 
+      list: organisations,
       isFetching: false
     }
   }
