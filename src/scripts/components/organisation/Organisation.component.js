@@ -23,26 +23,49 @@ import classNames from 'classnames'
 import FontIcon from 'kodokojo-ui-commons/src/scripts/components/fontIcon/FontIcon.component'
 
 // Component
-import organisationTheme from './organisation.scss'
+import theme from './organisation.scss'
 
 const Organisation = ({
   id,
   name,
   onSelectOrganisation,
-  selected
+  projectConfigsNumber,
+  selected,
+  usersNumber
 }) => (
   <div
-    className={ classNames(organisationTheme['organisation'], {
-      [organisationTheme['organisation--selected']]: selected
+    className={ classNames(theme['organisation'], {
+      [theme['organisation--selected']]: selected
     }) }
     onClick={ () => onSelectOrganisation(id) }
     title={ name }
   >
-    <FontIcon
-      className={ organisationTheme['organisation-icon'] }
-      value="domain"
-    />
-    { name }
+    <div className={ theme['organisation-header']}>
+      <FontIcon
+        className={ theme['organisation-icon'] }
+        value="domain"
+      />
+      { name }
+    </div>
+    <div className={ theme['organisation-info']}>
+      <div className={ theme['info-projects']}>
+        <FontIcon
+          className={ theme['info-icon'] }
+          value="layers"
+        />
+        { usersNumber }
+      </div>
+      <div className={ theme['info-users']}>
+        <FontIcon
+          className={ theme['info-icon'] }
+          value="person"
+        />
+        { usersNumber }
+      </div>
+    </div>
+    <div className={ theme['organisation-footer']}>
+      { ' ' }
+    </div>
   </div>
 )
 
@@ -50,7 +73,9 @@ Organisation.propTypes = {
   id: React.PropTypes.string,
   name: React.PropTypes.string,
   onSelectOrganisation: React.PropTypes.func,
-  selected: React.PropTypes.bool
+  projectConfigsNumber: React.PropTypes.number,
+  selected: React.PropTypes.bool,
+  usersNumber: React.PropTypes.number
 }
 
 export default Organisation

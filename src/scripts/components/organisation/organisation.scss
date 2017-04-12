@@ -28,11 +28,10 @@
 .organisation {
   display: flex;
   flex: 0 1 220px;
-  flex-flow: row nowrap;
+  flex-flow: column nowrap;
   align-items: center;
   justify-content: flex-start;
-  padding: 1rem;
-  height: 110px;
+  height: 170px;
   border-radius: $radius-standard;
   background: $color-primary-3;
   font-size: $font-size-larger;
@@ -40,12 +39,96 @@
   cursor: pointer;
   margin-bottom: $spacing-smaller;
   margin-right: $spacing-smaller;
-  &:hover {
+  &:hover,
+  &.projectConfig--selected {
     background: $color-primary-4;
+    .organisation-info {
+      background: $color-primary-3;
+      .info-projects,
+      .info-users {
+        .info-icon {
+          color: $color-primary-4;
+        }
+      }
+    }
   }
-  .organisation-icon {
-    font-size: $font-size-medium;
-    margin-right: 1rem;
+
+  .organisation-header {
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    min-height: 90px;
+    padding: 1rem;
+    font-size: $font-size-larger;
+    color: $color-font-5;
+
+    .organisation-icon {
+      margin-right: 1rem;
+    }
+
+  }
+
+  .organisation-info {
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
+    min-height: 50px;
+    width: 100%;
+    padding: 1rem 1.2rem 1rem .5rem;
+    background: $color-primary-2;
+
+    .info-projects {
+      display: flex;
+      flex: 1 1 auto;
+      align-items: center;
+      justify-content: flex-start;
+      font-size: $font-size-larger;
+      font-weight: $font-weight-bold;
+      color: $color-font-3;
+
+      .info-icon {
+        font-size: $font-size-larger;
+        color: $color-primary-3;
+        margin-right: .2rem;
+      }
+
+    }
+
+    .info-users {
+      display: flex;
+      flex: 1 1 auto;
+      align-items: center;
+      justify-content: flex-end;
+      font-size: $font-size-larger;
+      font-weight: $font-weight-bold;
+      color: $color-font-3;
+
+      .info-icon {
+        font-size: $font-size-larger;
+        color: $color-primary-3;
+      }
+    }
+
+  }
+
+  .organisation-footer {
+    display: flex;
+    flex: 1 1 auto;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    width: 100%;
+    height: 50px;
+    min-height: 50px;
+    font-size: $font-size-normal;
+    color: $color-font-5;
   }
 }
 

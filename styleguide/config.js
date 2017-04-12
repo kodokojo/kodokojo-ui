@@ -8,6 +8,7 @@ function loadStories() {
   require('../src/scripts/components/brick/Brick.component.story')
   require('../src/scripts/components/menu/MenuItem.component.story')
   require('../src/scripts/components/menu/Menu.component.story')
+  require('../src/scripts/components/organisation/Organisation.component.story')
   require('../src/scripts/components/projectConfig/ProjectConfig.component.story')
   require('../src/scripts/pages/FirstProject.page.story')
   require('../src/scripts/pages/Organisations.page.story')
