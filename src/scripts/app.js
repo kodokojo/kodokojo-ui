@@ -44,7 +44,7 @@ import configureStore from './store/configureStore'
 import App from './components/app/App.component'
 import SignupPage from './pages/Signup.page'
 import LoginPage from './pages/Login.page'
-import FirstProjectPage from './pages/FirstProject.page'
+import NewProjectPage from './pages/NewProject.page'
 import ProjectConfigsPage from './pages/ProjectConfigs.page'
 import OrganisationsPage from './pages/Organisations.page'
 import StacksPage from './pages/Stacks.page'
@@ -92,11 +92,6 @@ const initApp = () => {
             />
             {/* User routes */}
             <Route
-              component={FirstProjectPage}
-              onEnter={authService.checkRightsUser}
-              path="firstProject"
-            />
-            <Route
               component={OrganisationsPage}
               onEnter={authService.checkRightsUser}
               path="organisations"
@@ -115,6 +110,12 @@ const initApp = () => {
               component={MembersPage}
               onEnter={authService.checkRightsUser}
               path="members"
+            />
+            {/* Admin routes */ }
+            <Route
+              component={NewProjectPage}
+              onEnter={authService.checkRightsAdmin}
+              path="newProject"
             />
             {/* Root routes */}
             <Route

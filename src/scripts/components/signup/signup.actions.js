@@ -89,7 +89,7 @@ export function createAccount(email, captcha) {
 
         // init event source and go to first project
         return dispatch(eventInit())
-          .then(() => Promise.resolve(browserHistory.push('/firstProject')))
+          .then(() => Promise.resolve(browserHistory.push('/projects')))
       }
       throw new Error(data.payload.status)
     })

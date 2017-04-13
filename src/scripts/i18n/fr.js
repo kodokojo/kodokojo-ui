@@ -95,6 +95,8 @@ export default {
   'project-create-label': 'Create Project',
   'project-config-intro-text': 'Create your very first projectConfig!',
   'project-config-owner-label': 'Created by',
+  'project-config-add-label': 'Add project',
+  'project-config-add-title-label': 'Create new project',
   'project-name-label': 'Project name',
   'project-name-error-pattern':
     'Name must have between 4 and 20 non space, non special, unaccented characters',

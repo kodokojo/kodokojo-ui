@@ -87,7 +87,7 @@ describe('signup actions', () => {
       actionsRewireApi.__ResetDependency__('createUser')
     })
 
-    it('should create auth navigate to firstProject page', () => {
+    it('should create auth navigate to newProject page', () => {
       // Given
       createUserSpy = sinon.stub().returns({
         type: 'MOCKED_CREATE_USER',
@@ -130,7 +130,7 @@ describe('signup actions', () => {
           expect(createUserSpy).to.have.callCount(1)
           expect(createUserSpy).to.have.been.calledWith(account.email)
           expect(pushHistorySpy).to.have.callCount(1)
-          expect(pushHistorySpy).to.have.been.calledWith('/firstProject')
+          expect(pushHistorySpy).to.have.been.calledWith('/projects')
           expect(setAuthSpy).to.have.callCount(1)
           expect(setAuthSpy).to.have.been.calledWith(account.userName, account.password)
           expect(putAuthSpy).to.have.callCount(1)

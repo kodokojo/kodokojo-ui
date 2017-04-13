@@ -85,6 +85,6 @@ export function routeToContext(routing, context) {
     }
     // if no ids, redirect to first project
     return dispatch(eventInit())
-      .then(() => Promise.resolve(browserHistory.push('/firstProject')))
+      .then(() => Promise.resolve(browserHistory.push('/projects')))
   }
 }

@@ -9,6 +9,7 @@ import 'kodokojo-ui-commons/src/styles/_commons.less'
 import utilsTheme from 'kodokojo-ui-commons/src/styles/_utils.scss'
 import Page from 'kodokojo-ui-commons/src/scripts/components/page/Page.component'
 import Paragraph from 'kodokojo-ui-commons/src/scripts/components/page/Paragraph.component'
+import FontIcon from 'kodokojo-ui-commons/src/scripts/components/fontIcon/FontIcon.component'
 
 // Component
 import projectConfigTheme from '../components/projectConfig/projectConfig.scss'
@@ -55,6 +56,7 @@ export class ProjectConfigsPage extends React.Component {
 
   render() {
     const { contextProjectConfigId, projectConfigs } = this.props // eslint-disable-line no-shadow
+    const { formatMessage } = this.props.intl
 
     return (
       <Page>
@@ -63,18 +65,29 @@ export class ProjectConfigsPage extends React.Component {
         </h1>
         <Paragraph >
           <div className={ projectConfigTheme['projectConfig-container'] }>
-          { projectConfigs && projectConfigs.length > 0 &&
-            projectConfigs.map(projectConfig => (
-              <ProjectConfig
-                id={ projectConfig.id }
-                key={ projectConfig.id }
-                name={ projectConfig.name }
-                onSelectProjectConfig={ () => this.handleSelectProjectConfig(projectConfig) }
-                selected={ projectConfig.id === contextProjectConfigId }
-                usersNumber={  projectConfig.users ? projectConfig.users.length : 0 }
+            <div
+              className={ projectConfigTheme['projectConfig-button'] }
+              onClick={ () => browserHistory.push('/newProject') }
+              title={ formatMessage({ id: 'project-config-add-title-label' }) }
+            >
+              <FontIcon
+                className={ projectConfigTheme['projectConfig-icon'] }
+                value="add_circle_outline"
               />
-            ))
-          }
+              <FormattedMessage id={ 'project-config-add-label' }/>
+            </div>
+            { projectConfigs && projectConfigs.length > 0 &&
+              projectConfigs.map(projectConfig => (
+                <ProjectConfig
+                  id={ projectConfig.id }
+                  key={ projectConfig.id }
+                  name={ projectConfig.name }
+                  onSelectProjectConfig={ () => this.handleSelectProjectConfig(projectConfig) }
+                  selected={ projectConfig.id === contextProjectConfigId }
+                  usersNumber={  projectConfig.users ? projectConfig.users.length : 0 }
+                />
+              ))
+            }
           </div>
         </Paragraph>
       </Page>

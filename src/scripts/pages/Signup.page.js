@@ -60,7 +60,7 @@ class SignupPage extends React.Component {
 
     if (isAuthenticated) {
       if (projectConfigId && !projectId) {
-        browserHistory.push('/firstProject')
+        browserHistory.push('/projects')
       } else if (projectConfigId && projectId) {
         browserHistory.push('/stacks')
       } else if (!projectConfigId) {

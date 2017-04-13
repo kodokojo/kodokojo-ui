@@ -27,7 +27,7 @@ import en from '../i18n/en'
 
 // component to story
 import App from '../components/app/App.component'
-import FirstProjectPage from './FirstProject.page'
+import FirstProjectPage from './NewProject.page'
 
 const initialState = {
   auth: {

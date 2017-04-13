@@ -83,17 +83,6 @@ export class FirstProjectPage extends React.Component {
         <FormattedMessage id={'project-create-label'} />
       </h1>
       <Paragraph>
-        <Dialog
-          actions={[
-            { label: formatMessage({ id: 'close-label' }), onClick: this.handleClose }
-          ]}
-          active={ this.state.isAccountActive }
-          onEscKeyDown={ this.handleClose }
-          onOverlayClick={ this.handleClose }
-          title={ formatMessage({ id: 'account-label' }) }
-        >
-          <Account />
-        </Dialog>
         <ProjectConfigForm />
       </Paragraph>
     </Page>
