@@ -36,6 +36,31 @@ import {
   ORGANISATION_LIST_FAILURE
 } from '../../commons/constants'
 
+export function fetchOrganisation(organisationId) {
+  return {
+    [CALL_API]: {
+      method: 'GET',
+      endpoint:
+      `${window.location.protocol || 'http:'}//` +
+      `${window.location.host || 'localhost'}${api.organisation}/${organisationId}`,
+      headers: getHeaders(),
+      types: [
+        ORGANISATION_REQUEST,
+        {
+          type: ORGANISATION_SUCCESS,
+          payload: (action, state, res) => res.json()
+            .then(organisation => (
+              {
+                organisation: mapOrganisation(organisation)
+              }
+            ))
+        },
+        ORGANISATION_FAILURE
+      ]
+    }
+  }
+}
+
 export function fetchOrganisationList() {
   return {
     [CALL_API]: {
@@ -65,38 +90,21 @@ export function getOrganisationList() {
   return (dispatch, getState) => dispatch(fetchOrganisationList())
     .then(data => {
       if (!data.error) {
-        return dispatch(fetchAuthentication())
+        const organisations = data.payload.organisations
+        const promises = []
+        if (organisations && organisations.length && organisations.length > 0) {
+          organisations.forEach(organisation => {
+            promises.push(dispatch(fetchOrganisation(organisation.id)))
+          })
+        }
+        return Promise.all(promises)
       }
       throw new Error(data.payload.status)
     })
+    .then(() => dispatch(fetchAuthentication()))
     .catch(error => {
       throw new Error(error.message || error)
     })
-}
-
-export function fetchOrganisation(organisationId) {
-  return {
-    [CALL_API]: {
-      method: 'GET',
-      endpoint:
-      `${window.location.protocol || 'http:'}//` +
-      `${window.location.host || 'localhost'}${api.organisation}/${organisationId}`,
-      headers: getHeaders(),
-      types: [
-        ORGANISATION_REQUEST,
-        {
-          type: ORGANISATION_SUCCESS,
-          payload: (action, state, res) => res.json()
-            .then(organisation => (
-              {
-                organisation: mapOrganisation(organisation)
-              }
-            ))
-        },
-        ORGANISATION_FAILURE
-      ]
-    }
-  }
 }
 
 export function changeOrganisation(prevContext, nextContext) {

@@ -55,6 +55,8 @@ mappingService.mapOrganisation = (data) => (
     id: data.identifier,
     name: data.name,
     group: data.right,
+    usersNumber: data.nbUserTotal,
+    projectConfigsNumber: data.nbProjectTotal,
     projectConfigs: data.projectConfigurations ?
       data.projectConfigurations.map((projectConfig) => mappingService.mapOrganisationProjectConfig(projectConfig)) :
       []

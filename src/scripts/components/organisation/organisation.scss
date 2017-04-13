@@ -18,6 +18,7 @@
 
 @import '../../../styles/meta';
 
+// TODO DRY this, some duplication with projectConfig.scss
 .organisation-container {
   display: flex;
   flex: 1 1 auto;
@@ -40,7 +41,7 @@
   margin-bottom: $spacing-smaller;
   margin-right: $spacing-smaller;
   &:hover,
-  &.projectConfig--selected {
+  &.organisation--selected {
     background: $color-primary-4;
     .organisation-info {
       background: $color-primary-3;
@@ -56,7 +57,7 @@
   .organisation-header {
     display: flex;
     flex: 1 1 auto;
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
     align-items: center;
     justify-content: flex-start;
     width: 100%;
@@ -142,6 +143,7 @@
 
 .organisation-form {
   @extend .organisation;
+  flex-flow: row nowrap;
   padding: 1rem 0 0 1rem;
   margin-bottom: 0;
   &:hover {
@@ -171,7 +173,7 @@
 .organisation-button {
   @extend .organisation;
   flex: 0 1 120px;
-  flex-flow: row wrap;
+  flex-flow: column wrap;
   justify-content: center;
   font-size: $font-size-small;
   color: $color-font-3;

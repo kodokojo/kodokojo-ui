@@ -127,7 +127,9 @@ export class OrganisationsPage extends React.Component {
                   key={ organisation.id }
                   name={ organisation.name }
                   onSelectOrganisation={ (contextOrganisationId) => this.handleSelectOrganisation(contextOrganisationId) }
+                  projectConfigsNumber={ organisation.projectConfigsNumber }
                   selected={ contextOrganisationId === organisation.id }
+                  usersNumber={ organisation.usersNumber }
                 />
             ))
           }
