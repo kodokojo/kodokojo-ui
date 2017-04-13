@@ -24,10 +24,12 @@ import isEmpty from 'lodash/isEmpty'
 // import statusDefaultSmall from 'kodokojo-ui-commons/src/images/status-default-small.svg'
 import statusStartingSmall from 'kodokojo-ui-commons/src/images/status-starting-small.gif'
 import statusRunningSmall from 'kodokojo-ui-commons/src/images/status-running-small.svg'
+import statusStoppedSmall from 'kodokojo-ui-commons/src/images/status-stopped-small.svg'
 import statusFailureSmall from 'kodokojo-ui-commons/src/images/status-failure-small.svg'
 // import statusDefaultBig from 'kodokojo-ui-commons/src/images/status-default-big.svg'
 import statusStartingBig from 'kodokojo-ui-commons/src/images/status-starting-big.svg'
 import statusRunningBig from 'kodokojo-ui-commons/src/images/status-running-big.svg'
+import statusStoppedBig from 'kodokojo-ui-commons/src/images/status-stopped-big.svg'
 import statusFailureBig from 'kodokojo-ui-commons/src/images/status-failure-big.svg'
 
 // bricks
@@ -57,8 +59,16 @@ paramService.enumStatus = {
       big: statusStartingBig
     }
   },
-  STARTING: {
+  STOPPED: {
     order: 2,
+    label: 'STOPPED',
+    image: {
+      small: statusStoppedSmall,
+      big: statusStoppedBig
+    }
+  },
+  STARTING: {
+    order: 3,
     label: 'STARTING',
     image: {
       small: statusStartingSmall,
@@ -66,7 +76,7 @@ paramService.enumStatus = {
     }
   },
   CONFIGURING: {
-    order: 3,
+    order: 4,
     label: 'CONFIGURING',
     image: {
       small: statusStartingSmall,
@@ -74,7 +84,7 @@ paramService.enumStatus = {
     }
   },
   RUNNING: {
-    order: 4,
+    order: 5,
     label: 'RUNNING',
     image: {
       small: statusRunningSmall,
@@ -83,10 +93,6 @@ paramService.enumStatus = {
   }
   // ALLREADYEXIST: {
   //   label: 'exist',
-  //   image: ''
-  // },
-  // STOPPED: {
-  //   label: 'stopped',
   //   image: ''
   // }
 }

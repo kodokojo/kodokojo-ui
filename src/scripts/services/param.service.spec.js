@@ -32,7 +32,7 @@ describe('param service', () => {
         const enumElements = Object.keys(paramService.enumStatus)
 
         // Then
-        expect(enumElements.length).to.equal(5)
+        expect(enumElements.length).to.equal(6)
       })
     })
 
@@ -61,6 +61,18 @@ describe('param service', () => {
         expect(returned.order).to.equal(0)
       })
 
+      it('should return STOPPED status', () => {
+        // Given
+        const stateLabel = 'STOPPED'
+
+        // When
+        const returned = paramService.getStatusByState(stateLabel)
+
+        // Then
+        expect(returned.label).to.equal('STOPPED')
+        expect(returned.order).to.equal(2)
+      })
+
       it('should return UNKNOWN status', () => {
         // Given
         const stateLabel = 'UNKNOWN'
@@ -82,7 +94,7 @@ describe('param service', () => {
 
         // Then
         expect(returned.label).to.equal('STARTING')
-        expect(returned.order).to.equal(2)
+        expect(returned.order).to.equal(3)
       })
 
       it('should return CONFIGURING status', () => {
@@ -94,7 +106,7 @@ describe('param service', () => {
 
         // Then
         expect(returned.label).to.equal('CONFIGURING')
-        expect(returned.order).to.equal(3)
+        expect(returned.order).to.equal(4)
       })
 
       it('should return RUNNING status', () => {
@@ -106,7 +118,7 @@ describe('param service', () => {
 
         // Then
         expect(returned.label).to.equal('RUNNING')
-        expect(returned.order).to.equal(4)
+        expect(returned.order).to.equal(5)
       })
     })
 
@@ -135,6 +147,18 @@ describe('param service', () => {
         expect(returned.order).to.equal(0)
       })
 
+      it('should return STOPPED status', () => {
+        // Given
+        const stateOrder = 2
+
+        // When
+        const returned = paramService.getStatusByOrder(stateOrder)
+
+        // Then
+        expect(returned.label).to.equal('STOPPED')
+        expect(returned.order).to.equal(2)
+      })
+
       it('should return UNKNOWN status', () => {
         // Given
         const stateOrder = 1
@@ -149,29 +173,17 @@ describe('param service', () => {
 
       it('should return STARTING status', () => {
         // Given
-        const stateOrder = 2
-
-        // When
-        const returned = paramService.getStatusByOrder(stateOrder)
-
-        // Then
-        expect(returned.label).to.equal('STARTING')
-        expect(returned.order).to.equal(2)
-      })
-
-      it('should return CONFIGURING status', () => {
-        // Given
         const stateOrder = 3
 
         // When
         const returned = paramService.getStatusByOrder(stateOrder)
 
         // Then
-        expect(returned.label).to.equal('CONFIGURING')
+        expect(returned.label).to.equal('STARTING')
         expect(returned.order).to.equal(3)
       })
 
-      it('should return RUNNING status', () => {
+      it('should return CONFIGURING status', () => {
         // Given
         const stateOrder = 4
 
@@ -179,8 +191,20 @@ describe('param service', () => {
         const returned = paramService.getStatusByOrder(stateOrder)
 
         // Then
-        expect(returned.label).to.equal('RUNNING')
+        expect(returned.label).to.equal('CONFIGURING')
         expect(returned.order).to.equal(4)
+      })
+
+      it('should return RUNNING status', () => {
+        // Given
+        const stateOrder = 5
+
+        // When
+        const returned = paramService.getStatusByOrder(stateOrder)
+
+        // Then
+        expect(returned.label).to.equal('RUNNING')
+        expect(returned.order).to.equal(5)
       })
     })
 
