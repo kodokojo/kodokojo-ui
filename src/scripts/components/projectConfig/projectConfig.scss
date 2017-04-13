@@ -1,5 +1,6 @@
 @import '../../../styles/meta';
 
+// TODO DRY this, some duplication with organisation.scss
 .projectConfig-container {
   display: flex;
   flex: 1 1 auto;
@@ -36,14 +37,19 @@
   .projectConfig-header {
     display: flex;
     flex: 1 1 auto;
-    flex-flow: row wrap;
-    align-items: flex-end;
+    flex-flow: row nowrap;
+    align-items: center;
     justify-content: flex-start;
     width: 100%;
     min-height: 90px;
     padding: 1rem;
     font-size: $font-size-larger;
     color: $color-font-5;
+
+    .projectConfig-icon {
+      margin-right: 1rem;
+    }
+
   }
 
   .projectConfig-info {

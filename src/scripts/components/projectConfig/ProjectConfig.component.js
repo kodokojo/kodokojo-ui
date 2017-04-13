@@ -33,6 +33,10 @@ export class ProjectConfig extends React.Component {
         title={ name }
       >
         <div className={ theme['projectConfig-header']}>
+          <FontIcon
+            className={ theme['projectConfig-icon'] }
+            value="layers"
+          />
           { name }
         </div>
         <div className={ theme['projectConfig-info']}>
