@@ -95,11 +95,11 @@ const initialState = {
       name: 'myOrganisation'
     },
     projectConfig: {
-      id: '07cd3b82b9d720645fa8ad0bb5a4',
+      id: '1',
       name: 'NewProject'
     },
     project: {
-      id: '4028dab8ee34ec8d0b8f4b5e02adc82d'
+      id: '1'
     }
   },
   db: {
@@ -155,10 +155,26 @@ const initialState = {
     }
   },
   projectConfig: {
-    id: '07cd3b82b9d720645fa1c0281764e5f8ad0bb5a4',
-    isFetching: false,
-    project: {
-      id: '4028dab8ee34ec8d0b8f4be133ec9d5e02adc82d'
+    list: {
+      '1': {
+        id: '1',
+        name: 'Project',
+        isFetching: false,
+        users: [
+          '1',
+          '2'
+        ],
+        stacks: [
+          {
+            bricks: [
+              { state: 'STOPPED' }
+            ]
+          }
+        ],
+        project: {
+          id: '1'
+        }
+      } 
     }
   },
   event: {

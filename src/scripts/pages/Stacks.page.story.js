@@ -82,41 +82,55 @@ const initialState = {
       titleKey: 'members-label'
     }
   },
+  context: {
+    projectConfig: {
+      id: '1'
+    },
+    project: {
+      id: '1'
+    }
+  },
   projectConfig: {
-    stacks: [
-      {
-        bricks: [
+    list: {
+      '1': {
+        id: '1',
+        stacks: [
           {
-            type: 'type',
-            name: 'name',
-            state: 'RUNNING',
-            version: '2.1.2',
-            url: '#entity-type-linktobrick.kodokojo.io'
-          },
-          {
-            type: 'type',
-            name: 'name',
-            state: 'STARTING',
-            version: '2.1.2',
-            url: ''
-          },
-          {
-            type: 'type',
-            name: 'name',
-            state: 'ONFAILURE',
-            version: '2.1.2',
-            url: '#entity-type-linktobrick.kodokojo.io'
-          },
-          {
-            type: 'type',
-            name: 'name',
-            state: undefined,
-            version: '2.1.2',
-            url: '#undefined-status'
+            bricks: [
+              {
+                type: 'type',
+                name: 'name',
+                state: 'RUNNING',
+                version: '2.1.2',
+                url: '#entity-type-linktobrick.kodokojo.io'
+              },
+              {
+                type: 'type',
+                name: 'name',
+                state: 'STARTING',
+                version: '2.1.2',
+                url: ''
+              },
+              {
+                type: 'type',
+                name: 'name',
+                state: 'ONFAILURE',
+                version: '2.1.2',
+                url: '#entity-type-linktobrick.kodokojo.io'
+              },
+              {
+                type: 'type',
+                name: 'name',
+                state: undefined,
+                version: '2.1.2',
+                url: '#undefined-status'
+              }
+            ]
           }
         ]
       }
-    ]
+    }
+
   }
 }
 

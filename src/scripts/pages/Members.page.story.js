@@ -46,9 +46,12 @@ const initialState = {
       name: 'root'
     },
     projectConfig: {
-      name: 'MyProject'
+      id: '1',
+      name: '1'
     },
-    project: {}
+    project: {
+      id: '1'
+    }
   },
   prefs: {
     version: {
@@ -65,12 +68,27 @@ const initialState = {
     }
   },
   projectConfig: {
-    id: '1',
-    users: [
-      'user-1',
-      'user-2',
-      'user-4'
-    ]
+    list: {
+      '1': {
+        id: '1',
+        name: 'projectConfig1',
+        users: [
+          'user-1',
+          'user-2',
+          'user-4'
+        ],
+        stacks: [
+          {
+            bricks: [
+              { state: 'RUNNING' },
+              { state: 'STARTING' },
+              { state: 'ONFAILURE' },
+              { state: undefined }
+            ]
+          }
+        ]
+      }
+    }
   },
   users: {
     'user-1': {
@@ -139,17 +157,21 @@ const location = {
 const storeInitial = configureStore(initialState)
 const storeWithForm = configureStore({
   ...initialState,
-  ...{
-    projectConfig: {
-      stacks: [
-        {
-          bricks: [
-            { state: 'RUNNING' },
-            { state: 'RUNNING' },
-            { state: 'RUNNING' }
-          ]
-        }
-      ]
+  projectConfig: {
+    ...initialState.projectConfig,
+    list: {
+      '1': {
+        ...initialState.projectConfig.list[1],
+        stacks: [
+          {
+            bricks: [
+              { state: 'RUNNING' },
+              { state: 'RUNNING' },
+              { state: 'RUNNING' }
+            ]
+          }
+        ]
+      }
     }
   }
 })
