@@ -40,6 +40,13 @@ const brickStarting = {
   version: '2.1.2',
   url: ''
 }
+const brickStopped = {
+  type: 'type',
+  name: 'name',
+  state: 'STOPPED',
+  version: '2.1.2',
+  url: '#entity-type-linktobrick.kodokojo.io'
+}
 const brickFailure = {
   type: 'type',
   name: 'name',
@@ -74,6 +81,11 @@ storiesOf('Brick', module)
   .add('failure', () => (
     <Brick
       brick={ brickFailure }
+    />
+  ))
+  .add('stopped', () => (
+    <Brick
+      brick={ brickStopped }
     />
   ))
   .add('default', () => (

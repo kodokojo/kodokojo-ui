@@ -172,7 +172,7 @@
     "immutability-helper": "2.0.0",
     "import": "0.0.6",
     "isomorphic-fetch": "2.2.1",
-    "kodokojo-ui-commons": "git+https://git@github.com/kodokojo/kodokojo-ui-commons.git#v1.5.0",
+    "kodokojo-ui-commons": "git+https://git@github.com/kodokojo/kodokojo-ui-commons.git#v1.5.3",
     "lodash": "4.17.2",
     "map-stream": "0.0.6",
     "normalize-css": "2.3.1",

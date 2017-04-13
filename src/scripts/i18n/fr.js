@@ -123,6 +123,7 @@ export default {
   'status-STARTING-label': 'Starting',
   'status-RUNNING-label': 'Running',
   'status-ONFAILURE-label': 'On failure',
+  'status-STOPPED-label': 'Stopped',
   'type-label': 'Type',
   'user-edit-tooltip-disabled': 'You can’t modify others members',
   'user-select-tooltip-disabled': 'You can’t delete yourself from project',

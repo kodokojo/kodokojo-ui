@@ -36,7 +36,8 @@ export class Status extends React.Component {
       'STARTING',
       'CONFIGURING',
       'ONFAILURE',
-      'RUNNING'
+      'RUNNING',
+      'STOPPED'
     ])
   }
 
