@@ -46,7 +46,7 @@ export class Brick extends React.Component {
     const status = getStatusByState(brick && brick.state ? brick.state : undefined)
     const brickClasses = classNames(theme.brick, theme['brick-item'])
     const baseUrl = brick.url ? brick.url : ''
-    const url = baseUrl.match(/^http/) ? baseUrl : `${document.location.protocol}//${baseUrl}`
+    const url = /^http/.test(baseUrl) ? baseUrl : `${document.location.protocol}//${baseUrl}`
 
     return (
       <div className={ brickClasses }>
