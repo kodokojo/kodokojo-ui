@@ -105,7 +105,9 @@ describe('mapping service', () => {
       organisationFromApi = {
         identifier: 'identifier',
         name: 'name',
-        right: 'RIGHT'
+        right: 'RIGHT',
+        nbUserTotal: 1,
+        nbProjectTotal: 2
       }
       mapOrganisationProjectConfigSpy = sinon.stub(mappingService, 'mapOrganisationProjectConfig', data => data)
     })
@@ -123,7 +125,9 @@ describe('mapping service', () => {
         id: 'identifier',
         name: 'name',
         group: 'RIGHT',
-        projectConfigs: []
+        projectConfigs: [],
+        usersNumber: 1,
+        projectConfigsNumber: 2
       })
       expect(mapOrganisationProjectConfigSpy).to.have.callCount(0)
     })
@@ -143,7 +147,9 @@ describe('mapping service', () => {
         id: 'identifier',
         name: 'name',
         group: 'RIGHT',
-        projectConfigs: organisationFromApi.projectConfigurations
+        projectConfigs: organisationFromApi.projectConfigurations,
+        usersNumber: 1,
+        projectConfigsNumber: 2
       })
       expect(mapOrganisationProjectConfigSpy).to.have.callCount(2)
       expect(mapOrganisationProjectConfigSpy).to.have.been.calledWith(organisationFromApi.projectConfigurations[0])
