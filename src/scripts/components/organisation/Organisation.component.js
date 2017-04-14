@@ -53,7 +53,7 @@ const Organisation = ({
           className={ theme['info-icon'] }
           value="layers"
         />
-        { usersNumber }
+        { projectConfigsNumber }
       </div>
       <div className={ theme['info-users']}>
         <FontIcon
