@@ -36,7 +36,6 @@ import CloseIcon from 'kodokojo-ui-commons/src/scripts/components/icons/CloseIco
 // Component
 import userValidator from './user.validator'
 import userTheme from './user.scss'
-import { mapUserOutput } from '../../services/mapping.service'
 import { getGroups } from '../../services/param.service'
 import { returnErrorKey } from '../../services/error.service'
 import { getUserFromId } from '../../commons/reducers'
@@ -112,7 +111,7 @@ export class UserForm extends React.Component {
       user, organisationId, onSubmitUserForm, onSubmitUserSuccess, onSubmitUserFailure
     } = this.props // eslint-disable-line no-shadow
 
-    const nextUser = mapUserOutput({
+    const nextUser = {
       id: user ? user.id : '',
       email: email ? email.trim() : '',
       firstName: firstName ? firstName.trim() : '',
@@ -121,7 +120,7 @@ export class UserForm extends React.Component {
       sshKeyPublic: sshKeyPublic ? sshKeyPublic.trim() : '',
       group,
       organisationId
-    })
+    }
 
     return onSubmitUserForm(nextUser)
       .then(() => {
